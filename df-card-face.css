@@ -1,0 +1,493 @@
+/* Face de carta composta: retrato → moldura → textos.
+   O __stage mantém proporção 744×1039 (igual ao zoom) dentro de qualquer slot —
+   assim Arsenal/mão/campo espelham a carta ampliada sem cortar a arte. */
+.df-card-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Fredoka (webfont carregado) é igual em desktop e mobile — evita o
+       fallback de plataforma (Segoe UI só existe no Windows) que fazia o
+       nome da carta ampliada em combate no celular parecer outra fonte. */
+    font-family: "Fredoka", "Segoe UI", "Trebuchet MS", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    container-type: size;
+    container-name: dffacehost;
+}
+
+/* Palco = moldura 744×1039 “contain” no slot; cqw dos textos usa este retângulo */
+.df-card-face__stage {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(100cqw, calc(100cqh * 744 / 1039));
+    height: min(100cqh, calc(100cqw * 1039 / 744));
+    aspect-ratio: 744 / 1039;
+    overflow: hidden;
+    container-type: inline-size;
+    container-name: dfcard;
+}
+
+.df-card-face__art-clip {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.df-card-face__art {
+    position: absolute;
+    /* Janela transparente da moldura Campeão — contain + leve scale preenche a janela */
+    left: 11%;
+    top: 14%;
+    width: 78%;
+    height: 55.5%;
+    object-fit: contain;
+    object-position: center center;
+    transform: scale(1.1);
+    transform-origin: center center;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.df-card-face--talent .df-card-face__art,
+.df-card-face--reaction .df-card-face__art {
+    left: 11%;
+    top: 16%;
+    width: 78%;
+    height: 56.5%;
+    object-fit: contain;
+    object-position: center center;
+    transform: scale(1.1);
+    transform-origin: center center;
+}
+
+.df-card-face__frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.df-card-face__power {
+    position: absolute;
+    z-index: 4;
+    left: 4.2%;
+    top: 3.1%;
+    width: 16.5%;
+    height: 11.8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 11.5cqw;
+    line-height: 1;
+    color: #fff;
+    text-shadow:
+        0 0.05em 0 rgba(0, 0, 0, 0.45),
+        0 0 0.15em rgba(0, 0, 0, 0.35);
+    letter-spacing: -0.02em;
+}
+
+.df-card-face--talent .df-card-face__power,
+.df-card-face--reaction .df-card-face__power {
+    left: 4.4%;
+}
+
+.df-card-face__power.df-card-face__power--flash {
+    animation: df-card-face-pow-flash 0.45s ease-out;
+}
+
+@keyframes df-card-face-pow-flash {
+    0% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+
+.df-card-face__name {
+    position: absolute;
+    z-index: 4;
+    left: 20%;
+    top: 4.2%;
+    width: 72%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    font-size: 6cqw;
+    line-height: 1.05;
+    padding: 0 2%;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Nomes longos: encolhe a fonte pra não cortar/estourar (autor: > 15 chars). */
+.df-card-face__name.df-card-face__name--long {
+    font-size: 5.1cqw;
+    letter-spacing: -0.01em;
+}
+.df-card-face__name.df-card-face__name--xlong {
+    font-size: 4.35cqw;
+    letter-spacing: -0.02em;
+}
+
+.df-card-face--champion .df-card-face__name {
+    color: #fff;
+    text-shadow: 0 0.06em 0.08em rgba(0, 40, 80, 0.55);
+}
+
+.df-card-face--talent .df-card-face__name,
+.df-card-face--reaction .df-card-face__name {
+    color: #4a2e18;
+    top: 4.6%;
+    left: 19%;
+    width: 74%;
+    text-shadow: none;
+}
+
+.df-card-face__ability {
+    position: absolute;
+    z-index: 4;
+    left: 10%;
+    top: 72.0%;
+    width: 80%;
+    height: 3.8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 4.45cqw;
+    line-height: 1.05;
+    color: #fff;
+    text-shadow: 0 0.05em 0.06em rgba(0, 40, 80, 0.4);
+    padding: 0 1%;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Nome de habilidade longo: encolhe a fonte (autor: > 18 chars). */
+.df-card-face__ability.df-card-face__ability--long {
+    font-size: 3.95cqw;
+    letter-spacing: -0.01em;
+}
+.df-card-face__ability.df-card-face__ability--xlong {
+    font-size: 3.5cqw;
+    letter-spacing: -0.02em;
+}
+
+.df-card-face--talent .df-card-face__ability,
+.df-card-face--reaction .df-card-face__ability {
+    display: none;
+}
+
+.df-card-face__desc {
+    position: absolute;
+    z-index: 4;
+    left: 11%;
+    width: 78%;
+    text-align: center;
+    font-weight: 600;
+    /* Um pouco maior (pedido do autor); ainda sem reticências */
+    font-size: 3.9cqw;
+    line-height: 1.16;
+    padding: 3.5% 2% 1.2%;
+    box-sizing: border-box;
+    overflow: hidden;
+    hyphens: auto;
+    display: block;
+}
+
+.df-card-face--champion .df-card-face__desc {
+    top: 78.7%;
+    height: 14.2%;
+    color: #3a3a3a;
+}
+
+.df-card-face--talent .df-card-face__desc,
+.df-card-face--reaction .df-card-face__desc {
+    top: 77.7%;
+    height: 15%;
+    color: #4a2e18;
+}
+
+.df-card-face__type {
+    position: absolute;
+    z-index: 4;
+    left: 34%;
+    top: 95.3%;
+    width: 32%;
+    height: 4.2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: 800;
+    font-size: 4.15cqw;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    -webkit-text-stroke: 0.035em rgba(255, 255, 255, 0.82);
+    paint-order: stroke fill;
+    text-shadow: 0 0.04em 0.08em rgba(0, 0, 0, 0.25);
+}
+
+.df-card-face--champion .df-card-face__type {
+    color: #fff;
+    font-size: 3.4cqw;
+    -webkit-text-stroke: 0;
+    text-shadow:
+        0 0.05em 0.08em rgba(0, 38, 88, 0.85),
+        0 0 0.16em rgba(0, 38, 88, 0.65);
+}
+
+.df-card-face--talent .df-card-face__type {
+    color: #c4142e;
+}
+
+.df-card-face--reaction .df-card-face__type {
+    color: #43a51d;
+}
+
+.df-card-face__desc strong {
+    font-weight: 800;
+}
+
+.ccard.has-composed-face > .pow,
+.ccard.has-composed-face > .nm,
+.ccard.has-composed-face > .gem-overlay,
+.hcard.has-composed-face > .pow,
+.hcard.has-composed-face > .nm,
+.hcard.has-composed-face > .cost,
+.hcard.has-composed-face > .talent-badge,
+.hcard.has-composed-face > .gem-overlay,
+.preview-card.has-composed-face > .pow,
+.preview-card.has-composed-face > .nm,
+.preview-card.has-composed-face > .cat,
+.preview-card.has-composed-face > .ability-desc,
+.preview-card.has-composed-face > .cost-badge,
+.preview-card.has-composed-face > .gem-overlay,
+.preview-card.has-composed-face > .preview-art-full {
+    display: none !important;
+}
+
+.ccard.has-composed-face,
+.hcard.has-composed-face,
+.preview-card.has-composed-face {
+    background-image: none !important;
+    background: transparent !important;
+}
+
+/* Enquanto portrait/moldura decodificam — fundo opaco (sem flash transparente). */
+.ccard.has-composed-face.df-card-face--loading,
+.hcard.has-composed-face.df-card-face--loading,
+.preview-card.has-composed-face.df-card-face--loading {
+    background: #1a1528 !important;
+}
+.ccard.has-composed-face.df-card-face--loading .df-card-face,
+.hcard.has-composed-face.df-card-face--loading .df-card-face,
+.preview-card.has-composed-face.df-card-face--loading .df-card-face {
+    opacity: 0;
+}
+.ccard.has-composed-face.art-ready .df-card-face,
+.hcard.has-composed-face.art-ready .df-card-face,
+.preview-card.has-composed-face.art-ready .df-card-face {
+    opacity: 1;
+    transition: opacity 0.12s ease-out;
+}
+
+/* Fantasma de arraste da mão: nunca tela preta (loading da face composta). */
+.drag-ghost-hand .hcard.has-composed-face,
+.drag-ghost-hand .ccard.has-composed-face {
+    background: transparent !important;
+}
+.drag-ghost-hand .hcard.df-card-face--loading,
+.drag-ghost-hand .ccard.df-card-face--loading {
+    background: transparent !important;
+}
+.drag-ghost-hand .df-card-face {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Roubar: a carta voando NUNCA fica preta (loading da face composta). */
+.roubar-card-fly.roubar-card-face,
+.roubar-card-fly.roubar-card-face.has-composed-face,
+.roubar-card-fly.roubar-card-face.df-card-face--loading {
+    background: transparent !important;
+    background-image: none !important;
+}
+.roubar-card-fly .df-card-face,
+.roubar-card-fly.df-card-face--loading .df-card-face,
+.roubar-card-fly.has-composed-face.df-card-face--loading .df-card-face {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.roubar-card-fly.roubar-card-face > img.card-art-bg {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 0;
+}
+.roubar-card-fly.has-composed-face > img.card-art-bg {
+    /* Preferir face composta; bitmap de fallback fica atrás. */
+    z-index: 0;
+}
+
+.ccard.has-composed-face > img.card-art-bg,
+.hcard.has-composed-face > img.card-art-bg {
+    display: none !important;
+}
+
+/* MP: fantasma da mão usa bitmap assado — não pode herdar o display:none acima. */
+body.df-pvp-mode .drag-ghost-hand .hcard.has-composed-face > img.card-art-bg,
+body.df-pvp-mode .drag-ghost-hand .hcard > img.df-ghost-face-img,
+body.df-pvp-mode .drag-ghost-hand img.df-ghost-face-img {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.df-arsenal-slot .df-card-face,
+.card-list-thumb .df-card-face,
+.card-zoom-thumb .df-card-face {
+    border-radius: 6%;
+}
+
+.df-card-face-host {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+/* Arsenal: slot pode perder aspect-ratio no mobile — o stage corrige a face */
+.df-arsenal-slot .df-card-face-host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#df-arsenal-zoom-host.has-composed-face {
+    aspect-ratio: 744 / 1039;
+    width: min(42vw, 340px) !important;
+    height: auto !important;
+    max-width: min(42vw, 340px) !important;
+    max-height: min(78vh, 520px) !important;
+}
+
+@media (max-width: 900px) {
+    #df-arsenal-zoom-host.has-composed-face {
+        width: min(58vw, 280px) !important;
+        max-width: min(58vw, 280px) !important;
+        max-height: min(72vh, 460px) !important;
+    }
+}
+
+/* Host do voo de invocação: container estável para cqw do Poder. */
+.summon-fly {
+    container-type: size;
+    position: relative;
+}
+.summon-fly .summon-fly-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.summon-fly .summon-fly-pow-overlay {
+    position: absolute;
+    z-index: 5;
+    left: 4.2%;
+    top: 3.1%;
+    width: 16.5%;
+    height: 11.8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Fredoka, "Segoe UI", Arial, sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.65rem, 11.5cqw, 1.45rem);
+    color: #fff;
+    text-shadow: 0 0 4px #000, 0 1px 2px #000;
+    pointer-events: none;
+    transform-origin: center center;
+}
+
+/* Clones de animação (invocação e combate): a face composta precisa do MESMO
+   container estável do campo, senão o `cqw` do Poder colapsa e o número sai
+   pequeno e fora do lugar durante o voo/choque. */
+.summon-fly .df-card-face,
+.summon-fly .df-card-face-host,
+.battle-fly .df-card-face,
+.battle-fly .df-card-face-host,
+.battle-fly .ccard .df-card-face,
+.combat-snap-ghost .df-card-face,
+.combat-snap-ghost .df-card-face-host {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    container-type: size;
+}
+.summon-fly .df-card-face__stage,
+.battle-fly .df-card-face__stage,
+.combat-snap-ghost .df-card-face__stage {
+    width: min(100%, calc(100% * 744 / 1039 * 1039 / 744));
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    aspect-ratio: 744 / 1039;
+    container-type: inline-size;
+}
+/* Mesma medida da carta parada (11.5cqw): sem clamp, o número não muda de
+   tamanho ao entrar/sair da animação. */
+.summon-fly .df-card-face__power,
+.battle-fly .df-card-face__power,
+.combat-snap-ghost .df-card-face__power,
+.ccard.combat-animating .df-card-face__power {
+    font-size: 11.5cqw;
+    line-height: 1;
+    transform: none !important;
+    transform-origin: center center;
+    will-change: auto;
+}
+
+/* Combate in-place: mesma estabilidade de container das faces compostas no voo. */
+.ccard.combat-animating .df-card-face,
+.ccard.combat-animating .df-card-face-host {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    container-type: size;
+}
+.ccard.combat-animating .df-card-face__stage {
+    width: min(100%, calc(100% * 744 / 1039 * 1039 / 744));
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    aspect-ratio: 744 / 1039;
+    container-type: inline-size;
+}

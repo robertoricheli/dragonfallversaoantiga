@@ -1,0 +1,246 @@
+/**
+ * Modo dev de layout — só carrega em localhost (?df_layout=1).
+ */
+html.df-layout-dev-active [data-df-layout-dev-target] {
+    outline: 2px dashed rgba(120, 220, 255, 0.85);
+    outline-offset: 2px;
+    cursor: move;
+    touch-action: none;
+}
+
+html.df-layout-dev-active [data-df-layout-dev-target].df-layout-dev-selected {
+    outline: 2px solid #7cffb2;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(124, 255, 178, 0.25);
+}
+
+html.df-layout-dev-active [data-df-layout-dev-target]:hover {
+    outline-color: #ffe08a;
+}
+
+/* Pedestais/contagens ocultos — visíveis só no modo dev (combate) */
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-pass-turn-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-ultimate-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-buy-card-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-ultimate-count-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-count-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-actions-label-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-actions-count-pedestal,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-badge,
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-badge-ai {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-pass-turn-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-ultimate-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-buy-card-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-ultimate-count-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-count-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-actions-label-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-actions-count-pedestal[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-badge[hidden],
+html.df-layout-dev-active.df-layout-dev-screen-combat #df-deck-badge-ai[hidden] {
+    display: block !important;
+}
+
+#df-layout-dev-panel {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    z-index: 999999;
+    width: min(360px, calc(100vw - 16px));
+    max-height: calc(100vh - 16px);
+    overflow: auto;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #e8eef5;
+    background: rgba(12, 16, 24, 0.94);
+    border: 1px solid rgba(120, 180, 255, 0.45);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+    pointer-events: auto;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#df-layout-dev-panel.df-layout-dev-panel-hidden {
+    display: none;
+}
+
+#df-layout-dev-panel header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 700;
+    font-size: 13px;
+    color: #9fd4ff;
+}
+
+#df-layout-dev-panel .df-ld-hint {
+    padding: 8px 12px;
+    color: #9aa8b8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#df-layout-dev-panel section {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#df-layout-dev-panel h3 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7cffb2;
+}
+
+#df-layout-dev-panel .df-ld-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#df-layout-dev-panel .df-ld-tab {
+    flex: 1 1 auto;
+    min-width: 70px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #dce6f0;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+#df-layout-dev-panel .df-ld-tab.is-active {
+    background: rgba(124, 255, 178, 0.15);
+    border-color: #7cffb2;
+    color: #7cffb2;
+}
+
+#df-layout-dev-panel .df-ld-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 140px;
+    overflow: auto;
+}
+
+#df-layout-dev-panel .df-ld-item {
+    text-align: left;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #c8d4e0;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+#df-layout-dev-panel .df-ld-item.is-selected {
+    border-color: #7cffb2;
+    background: rgba(124, 255, 178, 0.1);
+}
+
+#df-layout-dev-panel .df-ld-props {
+    display: grid;
+    grid-template-columns: 1fr 72px;
+    gap: 4px 8px;
+    align-items: center;
+}
+
+#df-layout-dev-panel .df-ld-props label {
+    color: #9aa8b8;
+    font-size: 11px;
+}
+
+#df-layout-dev-panel .df-ld-props input {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    font-size: 11px;
+    box-sizing: border-box;
+}
+
+#df-layout-dev-panel textarea {
+    width: 100%;
+    min-height: 88px;
+    max-height: 160px;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    color: #b8e8ff;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+#df-layout-dev-panel .df-ld-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#df-layout-dev-panel .df-ld-btn {
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e8eef5;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+#df-layout-dev-panel .df-ld-btn:hover {
+    background: rgba(124, 255, 178, 0.15);
+    border-color: #7cffb2;
+}
+
+#df-layout-dev-panel .df-ld-btn-primary {
+    background: rgba(124, 255, 178, 0.2);
+    border-color: #7cffb2;
+    color: #7cffb2;
+}
+
+html.df-layout-dev-combat-preview #game,
+html.df-layout-dev-combat-preview #game.active {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+html.df-layout-dev-combat-preview [data-df-layout-preview] {
+    pointer-events: none;
+}
+
+#df-layout-dev-panel .df-ld-btn-save {
+    background: rgba(255, 210, 100, 0.25);
+    border-color: #ffd264;
+    color: #ffd264;
+    font-weight: 700;
+}
+
+.df-layout-dev-resize-handle {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    width: 12px;
+    height: 12px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, #7cffb2 50%);
+    border-radius: 0 0 4px 0;
+    opacity: 0.85;
+    pointer-events: auto;
+}

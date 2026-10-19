@@ -1,0 +1,325 @@
+/* Dragonfall — lobby do Modo Treinamento */
+
+#df-training-setup,
+#df-ranked-setup {
+    background-color: #0a0608;
+    background-image: image-set(
+        url("../bg/A%20GUERRA.webp") type("image/webp"),
+        url("../bg/A%20GUERRA.png") type("image/png")
+    );
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 14px 18px 20px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#df-training-setup.active,
+#df-ranked-setup.active {
+    display: flex;
+    background-color: #0a0608;
+    background-image: image-set(
+        url("../bg/A%20GUERRA.webp") type("image/webp"),
+        url("../bg/A%20GUERRA.png") type("image/png")
+    );
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Rankeado reusa .screen — forçar stretch (não só center do .screen). */
+#df-ranked-setup.screen.active {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.df-training-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-top: 28px;
+    margin-bottom: 14px;
+}
+
+.df-training-head .title {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+    letter-spacing: 2px;
+    color: var(--df-ih-title, #e8f6ff);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55), 0 0 14px rgba(57, 186, 255, 0.25);
+}
+
+.df-training-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.df-training-panel {
+    background: var(--df-ih-panel-bg, linear-gradient(180deg, rgba(26, 58, 109, 0.82), rgba(12, 24, 48, 0.92)));
+    border: 3px solid rgba(57, 186, 255, 0.55);
+    border-radius: 18px;
+    padding: 12px 14px 14px;
+    box-shadow:
+        0 0 18px rgba(57, 186, 255, 0.22),
+        inset 0 1px 0 rgba(180, 240, 255, 0.2);
+}
+
+.df-training-panel.is-reveal {
+    opacity: 0;
+    transform: translateY(12px);
+}
+
+.df-training-panel-title {
+    margin: 0 0 10px;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.df-training-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.df-training-choice {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 120px;
+    border: 2px solid rgba(90, 58, 138, 0.65);
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(36, 22, 58, 0.95) 0%, rgba(22, 12, 36, 0.98) 100%);
+    color: #e8dcff;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.df-training-choice:hover {
+    border-color: rgba(57, 186, 255, 0.7);
+}
+
+.df-training-choice.selected {
+    border-color: #9ae0ff;
+    box-shadow: 0 0 14px rgba(57, 186, 255, 0.35);
+    color: #f2f8ff;
+}
+
+.df-training-choice:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+}
+
+.df-training-choice-sub {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+    opacity: 0.92;
+}
+
+.df-training-deck-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.df-training-deck-list[hidden] {
+    display: none !important;
+}
+
+.df-training-deck-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: 1px solid rgba(90, 58, 138, 0.45);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.22);
+    padding: 8px 10px;
+    cursor: pointer;
+    color: #ddd0f5;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.df-training-deck-item:hover {
+    border-color: rgba(57, 186, 255, 0.55);
+}
+
+.df-training-deck-item.selected {
+    border-color: #9ae0ff;
+    background: rgba(26, 58, 109, 0.45);
+}
+
+.df-training-deck-item.is-incomplete {
+    opacity: 0.55;
+}
+
+.df-training-deck-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(57, 186, 255, 0.18);
+    color: var(--df-ih-accent-yellow, #ffe066);
+    white-space: nowrap;
+}
+
+.df-training-deck-badge.warn {
+    background: rgba(255, 120, 90, 0.15);
+    color: #ff9a7a;
+}
+
+.df-training-hint {
+    margin: 8px 0 0;
+    font-size: 0.72rem;
+    color: #8a7aaa;
+    line-height: 1.4;
+}
+
+.df-training-foot {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding-top: 8px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.df-training-advance-btn,
+.df-training-back-btn {
+    min-width: 160px;
+    padding: 12px 28px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.df-training-back-btn {
+    border: 3px solid var(--df-ih-btn-border, #5ec8ff);
+    background: var(--df-ih-btn-cool, linear-gradient(180deg, #4a8fd4, #1a3a6d));
+    color: var(--df-ih-text, #f2f8ff);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.df-training-advance-btn {
+    border: 3px solid #ff8a8a;
+    background: linear-gradient(180deg, #e85a5a 0%, #b02828 42%, #7a1414 100%);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+    box-shadow:
+        0 0 20px rgba(220, 60, 60, 0.4),
+        inset 0 2px 0 rgba(255, 200, 200, 0.35),
+        0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.df-training-advance-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+html.df-mobile-desktop-fit #df-training-setup.active {
+    padding: 10px 12px 14px !important;
+}
+
+html.df-mobile-desktop-fit #df-training-setup.active .df-training-scroll {
+    gap: 10px !important;
+}
+
+html.df-mobile-desktop-fit #df-training-setup.active .df-training-choice {
+    font-size: 0.74rem !important;
+    padding: 8px 10px !important;
+}
+
+/* Mobile canvas fit — sobe acima do hub/vídeo (mesmo padrão do Arsenal). */
+html.df-mobile-desktop-fit #df-scale-root > #df-training-setup,
+html.df-mobile-desktop-fit #df-scale-root > #df-ranked-setup {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 30 !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-training-setup.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-ranked-setup.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
+    touch-action: manipulation !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+    padding-top: 36px !important;
+}
+
+.df-training-toast {
+    position: absolute;
+    left: 50%;
+    bottom: 72px;
+    transform: translateX(-50%);
+    max-width: min(92%, 420px);
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(20, 10, 32, 0.94);
+    border: 1px solid rgba(255, 215, 107, 0.45);
+    color: #ffe9b8;
+    font-size: 0.82rem;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 12;
+}
+
+.df-training-toast.is-visible {
+    opacity: 1;
+}
+
+body.df-training-open #df-hub-splash-layer,
+body.df-training-open #df-menu-splash-layer,
+body.df-training-open .df-mobile-bg-host {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+body.df-training-open #df-training-setup.active,
+body.df-training-open #df-ranked-setup.active {
+    z-index: 30;
+}

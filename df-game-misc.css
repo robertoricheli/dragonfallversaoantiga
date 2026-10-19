@@ -1,0 +1,1248 @@
+/* Estado "sem turno ativo" (entre partidas / menu): esconde o
+           indicador sem usar inline style (que sobrescreveria o media). */
+        #desktop-turn-indicator.dti-hidden { display: none !important; }
+
+        /* Box IA (baralho/descarte adversário) — oculto; baralho IA no HUB esquerdo. */
+        #desktop-right-hud .drh-box-secondary,
+        #deck-pile-ai,
+        #discard-pile-ai,
+        .top-bar-opponent-piles {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* ============================================================
+           JEKIRO — Fogo e Gelo (CONGELA): novas animações.
+           ============================================================ */
+        .jek-ice-vignette {
+            position: fixed; inset: 0; z-index: 9100; pointer-events: none;
+            background: radial-gradient(ellipse at center,
+                rgba(120, 220, 255, 0.0) 30%,
+                rgba(60, 140, 220, 0.35) 65%,
+                rgba(20, 60, 130, 0.55) 100%);
+            animation: jekIceVigIn 0.3s ease-out, jekIceVigOut 0.5s ease-in 0.9s forwards;
+        }
+        @keyframes jekIceVigIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes jekIceVigOut { to   { opacity: 0; } }
+
+        .jek-ice-shock {
+            position: fixed; z-index: 9120; pointer-events: none;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 4px solid #cef1ff;
+            box-shadow:
+                0 0 30px rgba(95, 208, 255, 0.95),
+                inset 0 0 20px rgba(206, 241, 255, 0.7);
+            transform: translate(-50%, -50%) scale(0.2);
+            opacity: 0;
+            animation: jekIceShock 0.8s ease-out forwards;
+        }
+        @keyframes jekIceShock {
+            0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+            20%  { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(5); opacity: 0; border-width: 1px; }
+        }
+
+        .jek-ice-block {
+            position: fixed; z-index: 9110; pointer-events: none;
+            width: 140px; height: 180px;
+            border-radius: 14px;
+            background: linear-gradient(160deg,
+                rgba(180, 230, 255, 0.55) 0%,
+                rgba(120, 200, 240, 0.35) 50%,
+                rgba(80, 160, 220, 0.45) 100%);
+            border: 2px solid rgba(220, 240, 255, 0.85);
+            box-shadow:
+                0 0 30px rgba(120, 210, 255, 0.7),
+                inset 0 0 20px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            transform: scale(0.3);
+            opacity: 0;
+            animation: jekIceBlock 1.2s cubic-bezier(.2,.7,.3,1.4) forwards;
+        }
+        @keyframes jekIceBlock {
+            0%   { transform: scale(0.3) rotate(-6deg); opacity: 0; }
+            30%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+            70%  { transform: scale(1) rotate(0); opacity: 1; }
+            100% { transform: scale(1.05) rotate(0); opacity: 0; }
+        }
+
+        .jek-ice-shard {
+            position: fixed; z-index: 9130; pointer-events: none;
+            width: 0; height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 22px solid #d8f1ff;
+            filter: drop-shadow(0 0 8px rgba(140, 220, 255, 0.95));
+            transform: translate(-50%, -50%) rotate(0) scale(0.3);
+            opacity: 0;
+            animation: jekIceShard 1.1s ease-out forwards;
+        }
+        @keyframes jekIceShard {
+            0%   { transform: translate(-50%, -50%) rotate(var(--rot)) scale(0.3); opacity: 0; }
+            18%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) rotate(var(--rot)) scale(1.2); opacity: 0; }
+        }
+
+        .jek-snow-fall {
+            position: fixed; z-index: 9125; pointer-events: none;
+            color: #e8f6ff;
+            text-shadow: 0 0 8px rgba(180, 230, 255, 0.9);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: jekSnowFall 1.3s ease-in forwards;
+        }
+        @keyframes jekSnowFall {
+            0%   { transform: translate(-50%, -50%) rotate(0); opacity: 0; }
+            20%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--drift)), calc(-50% + var(--fall))) rotate(180deg); opacity: 0; }
+        }
+
+        /* ============================================================
+           JEKIRO — Fogo e Gelo (QUEIMA): novas animações.
+           ============================================================ */
+        .jek-fire-vignette {
+            position: fixed; inset: 0; z-index: 9100; pointer-events: none;
+            background: radial-gradient(ellipse at center,
+                rgba(255, 200, 60, 0.0) 30%,
+                rgba(255, 120, 40, 0.40) 65%,
+                rgba(160, 40, 20, 0.55) 100%);
+            animation: jekFireVigIn 0.3s ease-out, jekFireVigOut 0.6s ease-in 0.9s forwards;
+        }
+        @keyframes jekFireVigIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes jekFireVigOut { to   { opacity: 0; } }
+
+        .jek-meteor {
+            position: fixed; z-index: 9135; pointer-events: none;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff8c0 0%, #ffb040 40%, #ff4010 80%);
+            box-shadow:
+                0 0 30px rgba(255, 140, 40, 0.95),
+                0 0 60px rgba(255, 80, 20, 0.7);
+            transform: translate(-50%, -50%) scale(0.3);
+            opacity: 0;
+            animation: jekMeteorFall 0.55s cubic-bezier(.6,.05,.85,.6) forwards;
+        }
+        @keyframes jekMeteorFall {
+            0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+            15%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.4); opacity: 1; }
+        }
+
+        .jek-fire-shock {
+            position: fixed; z-index: 9140; pointer-events: none;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 5px solid #ffe070;
+            box-shadow:
+                0 0 40px rgba(255, 160, 50, 0.95),
+                inset 0 0 24px rgba(255, 220, 120, 0.8);
+            transform: translate(-50%, -50%) scale(0.2);
+            opacity: 0;
+            animation: jekFireShock 0.85s ease-out forwards;
+        }
+        @keyframes jekFireShock {
+            0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+            18%  { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(5.5); opacity: 0; border-width: 1px; }
+        }
+
+        .jek-fire-pillar {
+            position: fixed; z-index: 9138; pointer-events: none;
+            width: 26px; height: 90px;
+            border-radius: 50% 50% 30% 30% / 60% 60% 30% 30%;
+            background: linear-gradient(180deg,
+                #fff4c0 0%,
+                #ffb040 40%,
+                #ff5010 75%,
+                rgba(120, 20, 0, 0) 100%);
+            box-shadow:
+                0 0 22px rgba(255, 140, 40, 0.9),
+                0 0 50px rgba(255, 80, 20, 0.6);
+            transform: translate(-50%, -100%) scaleY(0);
+            transform-origin: 50% 100%;
+            opacity: 0;
+            animation: jekFirePillar 0.95s ease-out forwards;
+        }
+        @keyframes jekFirePillar {
+            0%   { transform: translate(-50%, -100%) scaleY(0)  scaleX(0.6); opacity: 0; }
+            25%  { transform: translate(-50%, -100%) scaleY(1.1) scaleX(1.1); opacity: 1; }
+            70%  { transform: translate(-50%, -100%) scaleY(0.95) scaleX(0.95); opacity: 0.95; }
+            100% { transform: translate(-50%, -100%) scaleY(0.4) scaleX(0.5); opacity: 0; }
+        }
+
+        .jek-fire-ember {
+            position: fixed; z-index: 9142; pointer-events: none;
+            font-size: 1.5rem;
+            color: #ffd060;
+            filter: drop-shadow(0 0 10px rgba(255, 140, 40, 0.95));
+            transform: translate(-50%, -50%) scale(0.4);
+            opacity: 0;
+            animation: jekFireEmber 1.05s ease-out forwards;
+        }
+        @keyframes jekFireEmber {
+            0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+            18%  { opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) scale(0.7) rotate(180deg); opacity: 0; }
+        }
+
+        /* ============================================================
+           SANGUE DE DRAGÃO — Invocar Dragão (animação nova, limpa).
+           ============================================================ */
+        .drag-portal {
+            position: fixed; z-index: 9200; pointer-events: none;
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(255, 220, 120, 0.0) 35%, rgba(255, 80, 30, 0.55) 60%, transparent 80%),
+                conic-gradient(from 0deg, #ffd060, #ff4020, #a8001c, #ff4020, #ffd060);
+            mask: radial-gradient(circle, transparent 38%, #000 42%, #000 60%, transparent 64%);
+            -webkit-mask: radial-gradient(circle, transparent 38%, #000 42%, #000 60%, transparent 64%);
+            filter: drop-shadow(0 0 22px rgba(255, 90, 30, 0.95));
+            transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+            opacity: 0;
+            animation: dragPortal 1.45s ease-out forwards;
+        }
+        @keyframes dragPortal {
+            0%   { transform: translate(-50%, -50%) scale(0.3) rotate(0deg);     opacity: 0; }
+            20%  { transform: translate(-50%, -50%) scale(1.0) rotate(80deg);    opacity: 1; }
+            70%  { transform: translate(-50%, -50%) scale(1.05) rotate(280deg);  opacity: 0.95; }
+            100% { transform: translate(-50%, -50%) scale(0.7) rotate(360deg);   opacity: 0; }
+        }
+
+        .drag-beam {
+            position: fixed; z-index: 9210; pointer-events: none;
+            width: 70px; height: 600px;
+            background: linear-gradient(180deg,
+                rgba(255, 240, 180, 0) 0%,
+                rgba(255, 200, 100, 0.7) 30%,
+                rgba(255, 120, 50, 0.95) 70%,
+                rgba(255, 200, 100, 0.0) 100%);
+            box-shadow:
+                0 0 40px rgba(255, 140, 40, 0.85),
+                0 0 80px rgba(255, 80, 20, 0.55);
+            filter: blur(0.5px);
+            transform: translate(-50%, -100%) scaleY(0) scaleX(0.4);
+            transform-origin: 50% 100%;
+            opacity: 0;
+            animation: dragBeam 1.0s cubic-bezier(.2,.7,.3,1) forwards;
+        }
+        @keyframes dragBeam {
+            0%   { transform: translate(-50%, -100%) scaleY(0)   scaleX(0.4); opacity: 0; }
+            25%  { transform: translate(-50%, -100%) scaleY(1.1) scaleX(1.0); opacity: 1; }
+            70%  { transform: translate(-50%, -100%) scaleY(1.0) scaleX(0.9); opacity: 0.9; }
+            100% { transform: translate(-50%, -100%) scaleY(1.0) scaleX(0.2); opacity: 0; }
+        }
+
+        .drag-shock {
+            position: fixed; z-index: 9220; pointer-events: none;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 5px solid #ffd060;
+            box-shadow:
+                0 0 36px rgba(255, 160, 40, 0.95),
+                inset 0 0 24px rgba(255, 220, 140, 0.7);
+            transform: translate(-50%, -50%) scale(0.2);
+            opacity: 0;
+            animation: dragShock 0.85s ease-out forwards;
+        }
+        @keyframes dragShock {
+            0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+            20%  { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(6); opacity: 0; border-width: 1px; }
+        }
+
+        .drag-flash {
+            position: fixed; z-index: 9230; pointer-events: none;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 255, 220, 0.95) 0%,
+                rgba(255, 200, 100, 0.65) 35%,
+                rgba(255, 100, 30, 0.0) 75%);
+            transform: translate(-50%, -50%) scale(0.4);
+            opacity: 0;
+            animation: dragFlash 0.65s ease-out forwards;
+        }
+        @keyframes dragFlash {
+            0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+            30%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+        }
+
+        .drag-spawn-glow {
+            box-shadow:
+                0 0 28px rgba(255, 160, 40, 0.95),
+                0 0 60px rgba(255, 80, 20, 0.55) !important;
+            animation: dragSpawnGlow 0.65s ease-out;
+        }
+        @keyframes dragSpawnGlow {
+            0%   { filter: brightness(2.2) saturate(1.5); }
+            100% { filter: brightness(1) saturate(1); }
+        }
+
+        /* ====================================================================
+           1.21.7 — TRAVA FINAL (última regra do documento): campo 100% fixo
+           no hover. Só animações legítimas (combate, drag, contagem) escapam.
+           ==================================================================== */
+        #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+        #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):active,
+        #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+        #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+            transition: none !important;
+            transform: none !important;
+            rotate: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            filter: none !important;
+            will-change: auto !important;
+            z-index: auto !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            align-self: flex-start !important;
+            top: auto !important;
+            left: auto !important;
+            contain: none !important;
+            transform-style: flat !important;
+            cursor: pointer !important;
+        }
+        /* Desktop: todas as fileiras do campo alinhadas ao topo — evita salto vertical no hover. */
+        html:not(.df-mobile) #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped),
+        html:not(.df-mobile) #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+        html:not(.df-mobile) #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):active,
+        html:not(.df-mobile) #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+        html:not(.df-mobile) #game .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+            align-self: flex-start !important;
+            flex: 0 0 90px !important;
+            width: 90px !important;
+            min-width: 90px !important;
+            max-width: 90px !important;
+            height: 126px !important;
+            min-height: 126px !important;
+            max-height: 126px !important;
+        }
+        /* Campo do jogador (desktop): redundante com regra acima — mantido por compat. */
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped),
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):active,
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+            align-self: start !important;
+        }
+        #game .quadrant-field .ccard.df-target-levitating:not(.combat-animating):not(.field-drag-src) {
+            will-change: transform !important;
+            z-index: 44 !important;
+            pointer-events: auto !important;
+        }
+        #game .quadrant-field .ccard.df-field-static:not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game .quadrant-field .ccard.df-field-static:not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.counting-bounce):not(.counting-bounce-tapped):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.df-field-static.tapped:not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+        #game .quadrant-field .ccard.df-field-static.tapped:not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.df-field-static.has-art::after,
+        #game .quadrant-field .ccard.df-field-static.has-art:hover::after {
+            transform: none !important;
+        }
+
+        /* Invocação: bloqueio seguro até o fim da cinemática (sem trava fantasma). */
+        #game .quadrant-field .ccard.df-summon-busy,
+        #game .quadrant-field .ccard.is-summoning {
+            pointer-events: none !important;
+        }
+        #game .quadrant-field .ccard.df-summon-settle {
+            transition: transform 320ms cubic-bezier(0.33, 0.02, 0.18, 1) !important;
+        }
+        html:not(.df-mobile) #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging) {
+            align-self: flex-start !important;
+        }
+
+        /* ====================================================================
+           1.22.1 — AUTOR: campo + mãos estáticas no hover (regra final)
+           ==================================================================== */
+        #game .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+        #game .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):active,
+        #game .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+        #game .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+            transition: none !important;
+            animation: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            filter: none !important;
+            will-change: auto !important;
+            z-index: auto !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            top: auto !important;
+            left: auto !important;
+            cursor: pointer !important;
+        }
+        #game .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+        #game .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.has-art::after,
+        #game .quadrant-field .ccard.has-art:hover::after {
+            transition: none !important;
+            transform: none !important;
+        }
+        #game .hand-wrap,
+        #game .hand-wrap:hover,
+        #game .hand-wrap.selected,
+        #game .hand-wrap.selected:hover,
+        #game .hand-wrap:hover + .hand-wrap,
+        #game .hand-wrap:has(+ .hand-wrap:hover),
+        #game .hand-wrap:hover + .hand-wrap + .hand-wrap,
+        #game .hand-wrap:has(+ .hand-wrap + .hand-wrap:hover) {
+            transform:
+                translate3d(var(--fan-x), var(--fan-y), 0)
+                rotateZ(var(--fan-rot)) !important;
+            transform-origin: 50% 180% !important;
+            z-index: var(--fan-stack, auto) !important;
+            transition: none !important;
+            filter: none !important;
+        }
+        #game .hand-wrap .hcard,
+        #game .hand-wrap:hover .hcard,
+        #game .hand-wrap:active .hcard,
+        #game .hand-wrap.selected .hcard {
+            transform: none !important;
+            transition: none !important;
+            filter: none !important;
+            will-change: auto !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target:not(.combat-animating):not(.df-target-levitating):not(.vt-red):not(.vt-blue):not(.vt-green):not(.vt-orange):not(.vt-purple),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target:not(.combat-animating):not(.df-target-levitating):not(.vt-red):not(.vt-blue):not(.vt-green):not(.vt-orange):not(.vt-purple):hover {
+            animation: fieldValidBorderPulse 1.1s ease-in-out infinite !important;
+            transform: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        /* Variantes coloridas: pulse correto em TODAS as plataformas (vence o verde genérico). */
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating):hover,
+        body[data-targeting="target-champion"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating),
+        body[data-targeting="target-champion"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating):hover,
+        body[data-targeting="ultimate-target"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating),
+        body[data-targeting="ultimate-target"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating):hover,
+        body[data-targeting="select-defender"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating),
+        body[data-targeting="select-defender"] #game .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):not(.df-target-levitating):hover {
+            animation: fieldRedBorderPulse 0.9s ease-in-out infinite !important;
+            border: 5.5px solid rgba(255, 70, 70, 1) !important;
+            box-shadow: none !important;
+            filter: none !important;
+            transform: none !important;
+            z-index: 52 !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating):hover {
+            animation: fieldOrangeBorderPulse 0.9s ease-in-out infinite !important;
+            border: 5.5px solid rgba(255, 160, 50, 1) !important;
+            box-shadow: none !important;
+            z-index: 48 !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating):hover {
+            animation: fieldBlueBorderPulse 0.9s ease-in-out infinite !important;
+            border: 5.5px solid rgba(70, 160, 255, 1) !important;
+            box-shadow: none !important;
+            z-index: 48 !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating):hover,
+        body[data-targeting="target-ally"] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating),
+        body[data-targeting="target-ally"] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating):hover,
+        body[data-targeting="ultimate-target"] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating),
+        body[data-targeting="ultimate-target"] #game .quadrant-field .ccard.valid-target.vt-green:not(.df-target-levitating):not(.combat-animating):hover {
+            animation: fieldGreenBorderPulse 0.9s ease-in-out infinite !important;
+            border: 5.5px solid rgba(80, 255, 115, 1) !important;
+            box-shadow: none !important;
+            filter: none !important;
+            transform: none !important;
+            z-index: 52 !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-green.df-target-levitating:not(.combat-animating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-green.df-target-levitating:not(.combat-animating):hover {
+            border: 5.5px solid rgba(80, 255, 115, 1) !important;
+            transform: unset !important;
+            z-index: 54 !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating),
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating):hover,
+        body[data-targeting="target-champion"] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating),
+        body[data-targeting="target-champion"] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating):hover,
+        body[data-targeting="target-ally"] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating),
+        body[data-targeting="target-ally"] #game .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating):hover,
+        body[data-dragging-ritual] #game .quadrant-field .ccard.ritual-drag-target,
+        body[data-dragging-ritual] #game .quadrant-field .ccard.ritual-drag-target:hover {
+            animation: fieldPurpleBorderPulse 0.75s ease-in-out infinite !important;
+            border: 5.5px solid rgba(200, 85, 255, 1) !important;
+            box-shadow: none !important;
+        }
+        body[data-targeting] #game .quadrant-field .ccard.valid-target.tapped:not(.combat-animating):hover {
+            transform: none !important;
+        }
+
+        /* ====================================================================
+           1.22.2 — CAMPO FIXO com jogo ativo (regra final do autor)
+           ==================================================================== */
+        #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+        #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):active,
+        #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+        #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+            transition: none !important;
+            animation: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            filter: none !important;
+            will-change: auto !important;
+            z-index: auto !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            top: auto !important;
+            left: auto !important;
+            cursor: pointer !important;
+        }
+        #game.active .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+        #game.active .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game.active .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+        #game.active .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game.active .quadrant-field .ccard.has-art::after,
+        #game.active .quadrant-field .ccard.has-art:hover::after {
+            transform: none !important;
+            transition: none !important;
+        }
+        #game.active .quadrant-field .ccard.shielded-aura:not(.combat-animating)::before,
+        #game.active .quadrant-field .ccard.barrier-aura:not(.combat-animating)::before,
+        #game.active .quadrant-field .ccard.shielded-aura:not(.combat-animating):hover::before,
+        #game.active .quadrant-field .ccard.barrier-aura:not(.combat-animating):hover::before {
+            animation: none !important;
+            transform: none !important;
+        }
+        body.df-combat-active #game.active .quadrant-field .ccard:not(.combat-animating):not(.field-drag-src):not(.field-dragging) {
+            pointer-events: none !important;
+        }
+        body.df-combat-active #game.active .quadrant-field .ccard.combat-animating {
+            pointer-events: none !important;
+        }
+
+        /* ====================================================================
+           1.22.3 — DESKTOP: campo 100% fixo no hover (causa raiz)
+           ----------------------------------------------------------------
+           No desktop, regras antigas mudavam box-shadow no :hover (sombra
+           maior = carta “sobe”). Mobile não usa hover real — por isso só
+           aparecia no desktop. Esta trava vence TODAS as regras anteriores.
+           ==================================================================== */
+        @media (min-width: 901px) {
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):active,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):focus-visible {
+                transition: none !important;
+                animation: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                top: auto !important;
+                left: auto !important;
+                cursor: pointer !important;
+                box-shadow: var(--shadow-card) !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped),
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):hover {
+                transform: none !important;
+                rotate: none !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover {
+                transform: none !important;
+                rotate: none !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art::after,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art:hover::after {
+                transform: none !important;
+                transition: none !important;
+                opacity: 0.5 !important;
+            }
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art::after,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art:hover::after {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.shielded-aura:not(.combat-animating),
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.barrier-aura:not(.combat-animating),
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.shielded-aura:not(.combat-animating):hover,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.barrier-aura:not(.combat-animating):hover {
+                animation: none !important;
+                filter: none !important;
+            }
+            /* Vence regras antigas do #quadrant-0 que mudavam sombra/blur no hover. */
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):hover,
+            html.df-desktop-field-lock #game.active #quadrant-1 .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):hover,
+            html.df-desktop-field-lock #game.active #quadrant-2 .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):hover,
+            html.df-desktop-field-lock #game.active #quadrant-3 .quadrant-field .ccard:not(.valid-target):not(.target):not(.combat-animating):hover {
+                box-shadow: var(--shadow-card) !important;
+                filter: none !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art::after,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art:hover::after {
+                opacity: 0.5 !important;
+                filter: none !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            /* Ritual: roxo durante arrasto e na fase target-ally — vence a trava do campo */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-purple,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-purple:hover,
+            html.df-desktop-field-lock body[data-targeting="target-champion"] #game.active .quadrant-field .ccard.valid-target.vt-purple,
+            html.df-desktop-field-lock body[data-targeting="target-champion"] #game.active .quadrant-field .ccard.valid-target.vt-purple:hover,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.ritual-drag-target,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.ritual-drag-target:hover {
+                animation: fieldPurpleBorderPulse 0.75s ease-in-out infinite !important;
+                border: 5.5px solid rgba(200, 85, 255, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 48 !important;
+            }
+            /* Poção / Proteção — borda azul nos alvos (ultimate-target) */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-blue,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-blue:hover {
+                animation: fieldBlueBorderPulse 0.9s ease-in-out infinite !important;
+                border: 5.5px solid rgba(70, 160, 255, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 48 !important;
+            }
+            /* Bola de Fogo / Bomba Explosiva / inimigos — borda VERMELHA */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-red,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-red:hover,
+            html.df-desktop-field-lock body[data-targeting] #game.active .quadrant-field .ccard.valid-target.vt-red,
+            html.df-desktop-field-lock body[data-targeting] #game.active .quadrant-field .ccard.valid-target.vt-red:hover,
+            html.df-desktop-field-lock body[data-targeting="target-champion"] #game.active .quadrant-field .ccard.valid-target.vt-red,
+            html.df-desktop-field-lock body[data-targeting="target-champion"] #game.active .quadrant-field .ccard.valid-target.vt-red:hover,
+            html.df-desktop-field-lock body[data-targeting="ultimate-target"] #game.active .quadrant-field .ccard.valid-target.vt-red,
+            html.df-desktop-field-lock body[data-targeting="ultimate-target"] #game.active .quadrant-field .ccard.valid-target.vt-red:hover {
+                animation: fieldRedBorderPulse 0.9s ease-in-out infinite !important;
+                border: 5.5px solid rgba(255, 70, 70, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 52 !important;
+            }
+            /* Investida / Pirate — borda laranja */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-orange,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-orange:hover {
+                animation: fieldOrangeBorderPulse 0.9s ease-in-out infinite !important;
+                border: 5.5px solid rgba(255, 160, 50, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 48 !important;
+            }
+            /* Baforada Venenosa / Fortalecer — borda verde nos alvos */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-green,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-green:hover {
+                animation: fieldGreenBorderPulse 0.9s ease-in-out infinite !important;
+                border: 5.5px solid rgba(80, 255, 115, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 48 !important;
+            }
+            /* Ritual — roxo intenso vence trava do campo (arrasto + fase target-ally) */
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.ritual-drag-target,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.ritual-drag-target:hover,
+            html.df-desktop-field-lock body[data-dragging-ritual] #game.active .quadrant-field .ccard.ritual-drag-target {
+                animation: fieldPurpleBorderPulse 0.75s ease-in-out infinite !important;
+                border: 5.5px solid rgba(200, 85, 255, 1) !important;
+                box-shadow: none !important;
+                filter: none !important;
+                transform: none !important;
+                z-index: 48 !important;
+            }
+            /* Campo jogador: zero sombra/fundo — só <img> (evita retângulo escuro no hover). */
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art:not(.tapped):not(.valid-target):not(.ritual-drag-target),
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art:not(.tapped):not(.valid-target):not(.ritual-drag-target):hover {
+                box-shadow: none !important;
+                background: none !important;
+                background-image: none !important;
+                background-color: transparent !important;
+                border-color: transparent !important;
+                filter: none !important;
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            /* Adversários: sombra estável com/sem hover */
+            html.df-desktop-field-lock #game.active #quadrant-1 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target),
+            html.df-desktop-field-lock #game.active #quadrant-1 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target):hover,
+            html.df-desktop-field-lock #game.active #quadrant-2 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target),
+            html.df-desktop-field-lock #game.active #quadrant-2 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target):hover,
+            html.df-desktop-field-lock #game.active #quadrant-3 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target),
+            html.df-desktop-field-lock #game.active #quadrant-3 .quadrant-field .ccard:not(.valid-target):not(.ritual-drag-target):hover {
+                box-shadow: var(--shadow-card) !important;
+                filter: none !important;
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art:not(.valid-target):not(.ritual-drag-target)::after,
+            html.df-desktop-field-lock #game.active .quadrant-field .ccard.has-art:not(.valid-target):not(.ritual-drag-target):hover::after,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art:not(.valid-target):not(.ritual-drag-target)::after,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.has-art:not(.valid-target):not(.ritual-drag-target):hover::after {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                filter: none !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Voo Amedrontar / Sinistrela — wrapper fixo, carta sempre visível */
+        .df-scare-fly-wrap {
+            pointer-events: none !important;
+            transition: none !important;
+            animation: none !important;
+            z-index: 9888 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        .df-scare-fly-wrap .df-scare-fly-card {
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+        .df-scare-fly-card.tapped {
+            transform: none !important;
+            rotate: 0deg !important;
+        }
+        .combat-src-hidden {
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            animation: none !important;
+        }
+
+        /* ====================================================================
+           1.23.4 — AUTOR: campo fixo; mão do jogador com lift suave no hover
+           ==================================================================== */
+        .df-scare-fly-trail {
+            opacity: 0.5;
+            filter: blur(2px);
+            transition: none !important;
+        }
+        #game.active #quadrant-0 .hand-wrap.df-scare-hand-land .hcard {
+            box-shadow:
+                0 0 22px rgba(255, 90, 120, 0.85),
+                0 4px 14px rgba(0, 0, 0, 0.55) !important;
+        }
+        @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+            /* Campo jogador (#quadrant-0): zero movimento e zero sombra no hover — uma camada (img). */
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):not(.df-target-levitating):not(.ritual-drag-target):not(.drag-attack-target),
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):not(.df-target-levitating):not(.ritual-drag-target):not(.drag-attack-target):hover,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):not(.df-target-levitating):not(.ritual-drag-target):not(.drag-attack-target):active,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):not(.df-target-levitating):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                rotate: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                top: auto !important;
+                left: auto !important;
+                cursor: pointer !important;
+                box-shadow: none !important;
+                background: none !important;
+                background-image: none !important;
+                background-color: transparent !important;
+            }
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible {
+                margin-left: 18px !important;
+                margin-right: 18px !important;
+            }
+            /* Campo adversário: estático no hover + sombra leve. */
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                rotate: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                top: auto !important;
+                left: auto !important;
+                cursor: pointer !important;
+                box-shadow: var(--shadow-card) !important;
+            }
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game #quadrant-1 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible,
+            html.df-desktop-field-lock #game #quadrant-2 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible,
+            html.df-desktop-field-lock #game #quadrant-3 .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible {
+                margin-left: 18px !important;
+                margin-right: 18px !important;
+            }
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder),
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover,
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):active,
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):focus-visible {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):not(.counting-bounce):not(.counting-bounce-tapped):not(.fear-card-shudder):hover {
+                transform: none !important;
+                rotate: none !important;
+            }
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover {
+                transform: none !important;
+                rotate: none !important;
+                filter: brightness(0.6) !important;
+            }
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging) {
+                filter: brightness(0.6) !important;
+            }
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static.has-art::after,
+            html.df-desktop-field-lock #game .quadrant-field .ccard.df-field-static.has-art:hover::after {
+                opacity: 0.5 !important;
+                transform: none !important;
+                transition: none !important;
+                filter: none !important;
+            }
+            html.df-desktop-field-lock #game #quadrant-0 .quadrant-field .ccard.df-field-static.has-art::after,
+            html.df-desktop-field-lock #game #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:hover::after {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            /* Mão do JOGADOR: leve subida no hover — sem scale; transform
+               instantâneo (transition animava re-fans e causava bob). */
+            #game.active #quadrant-0 .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src) {
+                transition: z-index 0s !important;
+            }
+            #game.active #quadrant-0 .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src):hover {
+                transform:
+                    translate3d(var(--fan-x), calc(var(--fan-y) - 14px), 0)
+                    rotateZ(var(--fan-rot)) !important;
+                z-index: 220 !important;
+                filter: none !important;
+            }
+            #game.active #quadrant-0 .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src) .hcard,
+            #game.active #quadrant-0 .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src):hover .hcard {
+                transform: none !important;
+                transition: none !important;
+                filter: none !important;
+                animation: none !important;
+            }
+            body.dragging-card #game.active #quadrant-0 .quadrant-hand > .hand-wrap:hover {
+                transform:
+                    translate3d(var(--fan-x), var(--fan-y), 0)
+                    rotateZ(var(--fan-rot)) !important;
+                z-index: var(--fan-stack, auto) !important;
+            }
+        }
+
+        /* Opções — prévia ao vivo da qualidade VFX (Fase 3) */
+        .opt-vfx-preview-row {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(184, 230, 160, 0.18);
+        }
+        #opt-vfx-preview-canvas {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid rgba(184, 230, 160, 0.28);
+            background: radial-gradient(ellipse at 50% 55%,
+                rgba(30, 50, 35, 0.95) 0%,
+                rgba(8, 14, 10, 0.98) 100%);
+            box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+        }
+        #opt-vfx-preview-label {
+            min-height: 1.1rem;
+        }
+
+        #game .quadrant-field .ccard.valid-target,
+        #game .quadrant-field .ccard.valid-target:hover,
+        #game .quadrant-field .ccard.valid-target.vt-red,
+        #game .quadrant-field .ccard.valid-target.vt-orange,
+        #game .quadrant-field .ccard.valid-target.vt-blue,
+        #game .quadrant-field .ccard.valid-target.vt-green,
+        #game .quadrant-field .ccard.valid-target.vt-purple,
+        #game .quadrant-field .ccard.target,
+        #game .quadrant-field .ccard.drag-attack-target,
+        #game .quadrant-field .ccard.ritual-drag-target,
+        #game .quadrant-field .ccard.attacker,
+        #game .quadrant-field .ccard.hl,
+        body[data-targeting] #game .quadrant-field .ccard.valid-target,
+        body[data-targeting] #game .quadrant-field .ccard.valid-target:hover,
+        body[data-dragging-ritual] #game .quadrant-field .ccard.ritual-drag-target {
+            box-shadow: none !important;
+            filter: none !important;
+            outline: none !important;
+        }
+
+        /* 1.22.2 — campo adversário: sombra idêntica com/sem hover */
+        #game #quadrant-1 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning),
+        #game #quadrant-1 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):hover,
+        #game #quadrant-2 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning),
+        #game #quadrant-2 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):hover,
+        #game #quadrant-3 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning),
+        #game #quadrant-3 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):hover {
+            box-shadow: var(--shadow-card) !important;
+            filter: none !important;
+        }
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning),
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:not(.valid-target):not(.target):not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.is-summoning):hover {
+            box-shadow: none !important;
+            background: none !important;
+            background-image: none !important;
+            filter: none !important;
+        }
+        #game .quadrant-field .ccard.df-field-static.field-present-landscape:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.drag-attack-target):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target),
+        #game .quadrant-field .ccard.df-field-static.field-present-landscape:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.drag-attack-target):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):hover {
+            transform: rotate(-90deg) !important;
+            rotate: none !important;
+        }
+
+        /* 1.22.4 — trava final adversários: cartas idênticas com/sem hover */
+        #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game #quadrant-1 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+        #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game #quadrant-2 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+        #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game #quadrant-3 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+            box-shadow: var(--shadow-card) !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            transition: none !important;
+            animation: none !important;
+            filter: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            will-change: auto !important;
+            z-index: auto !important;
+        }
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):active,
+        #game #quadrant-0 .quadrant-field .ccard.df-field-static:not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+            box-shadow: none !important;
+            background: none !important;
+            background-image: none !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            transition: none !important;
+            animation: none !important;
+            filter: none !important;
+            translate: none !important;
+            scale: 1 !important;
+            will-change: auto !important;
+            z-index: auto !important;
+        }
+        #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game .quadrant-field .ccard.df-field-static:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+        #game .quadrant-field .ccard.df-field-static.tapped:not(.combat-animating):not(.field-drag-src):not(.field-dragging):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+            transform: none !important;
+            rotate: none !important;
+        }
+        #game .quadrant-field .ccard.df-field-static.field-present-landscape:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.drag-attack-target):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target),
+        #game .quadrant-field .ccard.df-field-static.field-present-landscape:not(.tapped):not(.combat-animating):not(.is-summoning):not(.field-drag-src):not(.field-dragging):not(.drag-attack-target):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):hover {
+            transform: rotate(-90deg) !important;
+            rotate: none !important;
+        }
+
+        /* 1.22.5 — DUelo mode-2 / campo do jogador: zero movimento no hover (regra final) */
+        @media (min-width: 901px) {
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):active,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+                flex: 0 0 90px !important;
+                width: 90px !important;
+                min-width: 90px !important;
+                max-width: 90px !important;
+                height: 126px !important;
+                min-height: 126px !important;
+                max-height: 126px !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                align-self: flex-start !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transition: none !important;
+                animation: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                transform: none !important;
+                rotate: none !important;
+            }
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target),
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):not(.valid-target):not(.target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+                transform: none !important;
+                rotate: none !important;
+            }
+        }
+
+        /* 1.22.6 — Campo do jogador (desktop duelo): fileira flex centralizada */
+        @media (min-width: 901px) {
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field {
+                display: flex !important;
+                flex-flow: row nowrap !important;
+                justify-content: center !important;
+                align-items: flex-start !important;
+                align-content: flex-start !important;
+                gap: 10px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle),
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):hover,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):active,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):focus-visible {
+                flex: 0 0 90px !important;
+                position: relative !important;
+                align-self: flex-start !important;
+                inset: auto !important;
+                float: none !important;
+                box-sizing: border-box !important;
+                width: 90px !important;
+                min-width: 90px !important;
+                max-width: 90px !important;
+                height: 126px !important;
+                min-height: 126px !important;
+                max-height: 126px !important;
+                margin: 0 !important;
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                rotate: none !important;
+                transition: none !important;
+                animation: none !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                box-shadow: none !important;
+                outline: none !important;
+            }
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning),
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):hover {
+                transform: none !important;
+                margin-left: 18px !important;
+                margin-right: 18px !important;
+            }
+            /* Alvo válido: borda + zoom GSAP — levitação permitida no campo do jogador */
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.valid-target:not(.df-target-levitating),
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.valid-target:not(.df-target-levitating):hover {
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+            }
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.df-target-levitating,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.df-target-levitating:hover {
+                will-change: transform !important;
+                z-index: 44 !important;
+            }
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.tapped.valid-target,
+            html:not(.df-mobile) #game.active #game-grid.mode-2 #quadrant-0 .quadrant-field > .ccard.df-field-static.tapped.valid-target:hover {
+                transform: none !important;
+            }
+        }
+
+        /* 1.22.7 — AUTOR: campo do jogador desktop 100% fixo (última regra do documento) */
+        @media (min-width: 901px) {
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field {
+                display: flex !important;
+                flex-flow: row nowrap !important;
+                flex-wrap: nowrap !important;
+                justify-content: center !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):active,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+                position: relative !important;
+                align-self: flex-start !important;
+                flex: 0 0 90px !important;
+                width: 90px !important;
+                min-width: 90px !important;
+                max-width: 90px !important;
+                height: 126px !important;
+                min-height: 126px !important;
+                max-height: 126px !important;
+                margin: 0 !important;
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                rotate: none !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transition: none !important;
+                animation: none !important;
+                filter: none !important;
+                will-change: auto !important;
+                z-index: auto !important;
+                box-shadow: none !important;
+                outline: none !important;
+                cursor: pointer !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating),
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-target-levitating):hover {
+                transform: none !important;
+                margin-left: 18px !important;
+                margin-right: 18px !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.shielded-aura:not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.shielded-aura:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.barrier-aura:not(.combat-animating):not(.field-drag-src):not(.field-dragging),
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.barrier-aura:not(.combat-animating):not(.field-drag-src):not(.field-dragging):hover,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.shielded-aura:not(.combat-animating)::before,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.barrier-aura:not(.combat-animating)::before {
+                animation: none !important;
+                transform: none !important;
+                filter: none !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art::after,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:hover::after {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transform: none !important;
+                transition: none !important;
+                filter: none !important;
+            }
+        }
+
+        /* 1.22.8 — Campo jogador desktop: uma camada de arte, zero fantasma/deslocamento no hover */
+        @media (min-width: 901px) {
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:hover,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:active,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:focus-visible {
+                background-image: none !important;
+                background-color: transparent !important;
+                overflow: hidden !important;
+                transform: none !important;
+                translate: none !important;
+                scale: 1 !important;
+                rotate: 0deg !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                top: auto !important;
+                left: auto !important;
+                position: relative !important;
+                align-self: flex-start !important;
+                transition: none !important;
+                animation: none !important;
+                will-change: auto !important;
+                filter: none !important;
+                box-shadow: none !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art.tapped,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art.tapped:hover,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art.tapped:focus-visible {
+                transform: none !important;
+                rotate: none !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art::after,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:hover::after,
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art:focus-visible::after {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                filter: none !important;
+                transform: none !important;
+            }
+            html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.has-art > img.card-art-bg {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }

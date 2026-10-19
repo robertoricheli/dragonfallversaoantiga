@@ -1,0 +1,627 @@
+/**
+ * Hub do herói — arte «HUB DO HERÓI DO JOGADOR PRINCIPAL / IA» (bg/).
+ * Jogador: canto inferior direito, joia à esquerda.
+ * IA: canto inferior esquerdo, joia à direita.
+ */
+:root {
+    --df-hero-hub-width: 253px;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas {
+    --df-hero-hub-width: 235px;
+}
+
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit.df-combat-canvas {
+        --df-hero-hub-width: 232px;
+    }
+}
+
+@media (min-width: 901px) {
+    html:not(.df-mobile-desktop-fit):has(#game.active) {
+        --df-hero-hub-width: 267px;
+    }
+}
+
+/* Reset do cartão antigo quando a pilha com moldura existe */
+.dlh-hero-panel:has(.dlhp-stack) {
+    display: block !important;
+    flex-direction: unset !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    width: auto !important;
+    max-width: none !important;
+    pointer-events: auto !important;
+}
+
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-info,
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-stat-row,
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-timer {
+    display: none !important;
+}
+
+/* Visibilidade em combate (flag combatHeroHubUi) */
+html:has(#game.active) #desktop-left-hud .dlh-hero-panel:has(.dlhp-stack),
+html:has(#game.active) #desktop-right-hud .dlh-hero-panel:has(.dlhp-stack) {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+html.df-hide-combat-hero-hubs:has(#game.active) #desktop-left-hud .dlh-hero-panel,
+html.df-hide-combat-hero-hubs:has(#game.active) #desktop-right-hud .dlh-hero-panel {
+    display: none !important;
+}
+
+.dlh-hero-panel .dlhp-stack {
+    position: relative;
+    display: block;
+    width: min(var(--df-hero-hub-width), 100%);
+    max-width: 100%;
+    line-height: 0;
+}
+
+.dlh-hero-panel .dlhp-frame {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    position: relative;
+    z-index: 3;
+}
+
+.dlh-hero-panel .dlhp-portrait {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 7%;
+    background-color: #1a1020;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+    height: auto !important;
+    flex: none !important;
+    display: block !important;
+    transition: filter 0.18s ease;
+}
+
+.dlh-hero-panel--player .dlhp-portrait,
+.dlh-hero-panel--player .dlhp-portrait-hit {
+    left: 39%;
+    top: 43.5%;
+    width: 39.5%;
+    height: 44%;
+}
+
+.dlh-hero-panel--ai .dlhp-portrait,
+.dlh-hero-panel--ai .dlhp-portrait-hit {
+    left: 20%;
+    top: 42%;
+    width: 40%;
+    height: 46%;
+}
+
+.dlh-hero-panel .dlhp-portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.dlh-hero-panel .dlhp-portrait-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: clamp(1.4rem, 8vw, 2.6rem);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.dlh-hero-panel .dlhp-portrait-img[hidden],
+.dlh-hero-panel .dlhp-portrait-emoji[hidden] {
+    display: none !important;
+}
+
+.dlh-hero-panel .dlhp-portrait-hit {
+    position: absolute;
+    z-index: 4;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 7%;
+}
+
+.dlh-hero-panel .dlhp-portrait-hit:focus-visible {
+    outline: 2px solid #ffd070;
+    outline-offset: 2px;
+}
+
+.dlh-hero-panel:has(.dlhp-portrait-hit:hover) .dlhp-portrait,
+.dlh-hero-panel:has(.dlhp-portrait-hit:focus-visible) .dlhp-portrait {
+    filter: brightness(1.1);
+}
+
+/* Nome no banner de madeira */
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-name {
+    position: absolute;
+    z-index: 5;
+    left: 7%;
+    top: 20.5%;
+    width: 86%;
+    height: 15%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1.05;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #f8eed8;
+    text-shadow:
+        0 2px 0 #3d2414,
+        0 0 1px #120804,
+        1px 1px 0 #2a160c,
+        -1px 1px 0 #2a160c,
+        1px -1px 0 #2a160c,
+        -1px -1px 0 #2a160c;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    cursor: default;
+    margin: 0 !important;
+    padding: 0 2px !important;
+    background: none !important;
+    border: none !important;
+    min-height: 0 !important;
+    flex: none !important;
+    max-width: none !important;
+    order: unset !important;
+}
+
+/* PV na joia */
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-vp-row {
+    position: absolute;
+    z-index: 5;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    flex: none !important;
+    width: auto !important;
+    order: unset !important;
+    direction: ltr !important;
+}
+
+.dlh-hero-panel--player .dlhp-name {
+    top: 20.5%;
+}
+
+.dlh-hero-panel--ai .dlhp-name {
+    top: 18.2%;
+}
+
+.dlh-hero-panel--player .dlhp-vp-row {
+    left: 9%;
+    top: 65%;
+    width: 23%;
+    height: 26%;
+}
+
+.dlh-hero-panel--ai .dlhp-vp-row {
+    left: 64%;
+    top: 67.3%;
+    width: 23%;
+    height: 20%;
+}
+
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-vp {
+    display: block !important;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: clamp(34.5px, 15.75vw, 60px);
+    line-height: 1;
+    color: #ffffff;
+    -webkit-text-stroke: 2.5px #000000;
+    paint-order: stroke fill;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-vp::before {
+    content: none !important;
+    display: none !important;
+}
+
+.dlh-hero-panel:has(.dlhp-stack) .dlhp-status {
+    position: absolute;
+    z-index: 6;
+    right: 21%;
+    top: 17%;
+    left: auto;
+    width: auto;
+    min-height: 0;
+    line-height: 1;
+    font-size: 0.72rem;
+    text-align: center;
+    color: #ffd870;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    order: unset !important;
+}
+
+.dlh-hero-panel .dlhp-status:empty,
+.dlh-hero-panel .dlhp-status[hidden] {
+    display: none !important;
+}
+
+/* Sem destaque de turno na moldura — nenhuma borda/glow (jamais verde). */
+
+/* Cantos inferiores — desktop nativo */
+html:not(.df-mobile-desktop-fit):has(#game.active) #desktop-left-hud {
+    top: auto !important;
+    bottom: 0 !important;
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+html:not(.df-mobile-desktop-fit):has(#game.active) #desktop-right-hud {
+    top: auto !important;
+    bottom: 0 !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+    flex-direction: column !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-left-hud .dlh-hero-panel:has(.dlhp-stack),
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .dlh-hero-panel:has(.dlhp-stack) {
+    width: auto !important;
+    max-width: none !important;
+    min-height: 0 !important;
+}
+
+/* ==========================================================================
+   OVERRIDES FORTES — vencem regras antigas do df-canvas-shield.css
+   (seletor com #id + :has() para superar a especificidade do cartão antigo).
+   ========================================================================== */
+
+/* Container = só a moldura: sem cartão, sem borda, sem corte */
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack),
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) {
+    display: block !important;
+    flex-direction: unset !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+}
+
+/* JAMAIS destaque verde/vermelho de turno na moldura */
+html .dlh-hero-panel.is-active-turn,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player.is-active-turn:has(.dlhp-stack),
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai.is-active-turn:has(.dlhp-stack),
+html.df-desktop-windowed.df-combat-canvas #dlh-hero-player.is-active-turn:has(.dlhp-stack),
+html.df-desktop-windowed.df-combat-canvas #dlh-hero-ai.is-active-turn:has(.dlhp-stack),
+html.df-desktop-fullscreen.df-combat-canvas #dlh-hero-player.is-active-turn:has(.dlhp-stack),
+html.df-desktop-fullscreen.df-combat-canvas #dlh-hero-ai.is-active-turn:has(.dlhp-stack) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    animation: none !important;
+}
+
+/* Retrato do herói ATRÁS da moldura, encaixado na janela dourada */
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait-hit {
+    position: absolute !important;
+    left: 39% !important;
+    top: 43.5% !important;
+    width: 39.5% !important;
+    height: 44% !important;
+    flex: none !important;
+    align-self: auto !important;
+    border: none !important;
+    border-radius: 7% !important;
+    box-shadow: none !important;
+    background-color: #1a1020 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait-hit {
+    position: absolute !important;
+    left: 20% !important;
+    top: 42% !important;
+    width: 40% !important;
+    height: 46% !important;
+    flex: none !important;
+    align-self: auto !important;
+    border: none !important;
+    border-radius: 7% !important;
+    box-shadow: none !important;
+    background-color: #1a1020 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait {
+    z-index: 1 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait-hit,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait-hit {
+    z-index: 4 !important;
+    background: transparent !important;
+}
+
+/* Nome no banner de madeira — centralizado na placa (alturas medidas por moldura) */
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name {
+    position: absolute !important;
+    left: 7% !important;
+    width: 86% !important;
+    max-width: 86% !important;
+    height: 15% !important;
+    text-align: center !important;
+    color: #f8eed8 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name {
+    top: 20.5% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name {
+    top: 18.2% !important;
+}
+
+/* Joia — posição fixa do PV */
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp-row {
+    position: absolute !important;
+    left: 9% !important;
+    top: 65% !important;
+    width: 23% !important;
+    height: 26% !important;
+    min-height: 0 !important;
+    flex: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    direction: ltr !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row {
+    position: absolute !important;
+    left: 65% !important;
+    top: 68.8% !important;
+    width: 23% !important;
+    height: 20% !important;
+    min-height: 0 !important;
+    flex: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    direction: ltr !important;
+}
+
+/* Número do PV — MENOR, branco com borda preta, SEM caixa/moldura */
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp {
+    display: block !important;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif !important;
+    font-size: clamp(15px, 5.2vw, 23px) !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.02em !important;
+    color: #ffffff !important;
+    -webkit-text-stroke: 2.1px #000000 !important;
+    paint-order: stroke fill !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: 100% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp::before,
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Hub nunca cortado nos cantos */
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-left-hud,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-right-hud {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* === Moldura PNG: zero borda verde/laranja/dourada (vence df-game-board + canvas-shield) === */
+#dlh-hero-player.dlh-hero-panel:has(.dlhp-stack),
+#dlh-hero-ai.dlh-hero-panel:has(.dlhp-stack),
+#dlh-hero-player.dlh-hero-panel.is-active-turn:has(.dlhp-stack),
+#dlh-hero-ai.dlh-hero-panel.is-active-turn:has(.dlhp-stack) {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: none !important;
+    border-radius: 0 !important;
+    filter: none !important;
+    animation: none !important;
+}
+
+#dlh-hero-player.dlh-hero-panel:has(.dlhp-stack) .dlhp-portrait,
+#dlh-hero-ai.dlh-hero-panel:has(.dlhp-stack) .dlhp-portrait,
+#dlh-hero-player.dlh-hero-panel.is-active-turn:has(.dlhp-stack) .dlhp-portrait,
+#dlh-hero-ai.dlh-hero-panel.is-active-turn:has(.dlhp-stack) .dlhp-portrait {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#dlh-hero-player.dlh-hero-panel:has(.dlhp-stack).df-hub-turn-vfx-fallback,
+#dlh-hero-ai.dlh-hero-panel:has(.dlhp-stack).df-hub-turn-vfx-fallback {
+    animation: none !important;
+    transform: none !important;
+}
+
+/* === Desktop SEM tela cheia (janela): hub do jogador principal mais à esquerda === */
+html.df-desktop-windowed.df-combat-canvas:has(#game.active) #df-scale-root,
+html.df-desktop-windowed.df-combat-canvas:has(#game.active) #game.active {
+    overflow: visible !important;
+}
+
+html.df-desktop-windowed.df-combat-canvas:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-desktop-windowed.df-combat-canvas:has(#game.active) #game > #desktop-right-hud {
+    right: -40px !important;
+}
+
+/* === Hubs encostados na base do canvas (todas as versões fit) === */
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #game > #desktop-left-hud,
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #game > #desktop-right-hud {
+    bottom: 0 !important;
+}
+
+/* Mobile: dock na borda da tela sem cortar o hub na letterbox */
+html.df-mobile-desktop-fit.df-hud-dock-viewport.df-combat-canvas:has(#game.active) #df-scale-root,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #game.active {
+    overflow: visible !important;
+}
+
+/* Mobile: jogador principal mais à direita */
+html.df-mobile-desktop-fit.df-hud-dock-viewport.df-combat-canvas:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #game > #desktop-right-hud {
+    right: -8px !important;
+}
+
+/* Desktop em janela: ajuste fino dos nomes na placa (IA à esquerda, jogador à direita) */
+html.df-desktop-windowed.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name {
+    justify-content: center !important;
+    text-align: center !important;
+    padding-right: 13% !important;
+    padding-left: 0 !important;
+}
+
+html.df-desktop-windowed.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name {
+    justify-content: center !important;
+    text-align: center !important;
+    padding-left: 13% !important;
+    padding-right: 0 !important;
+}
+
+/* Desktop em janela: PV da IA quase nada à direita e quase nada para cima */
+html.df-desktop-windowed.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row {
+    left: 67% !important;
+    top: 68% !important;
+}
+
+/* Mobile: ajuste fino dos nomes na placa (IA à esquerda, jogador à direita) */
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name {
+        padding-right: 14% !important;
+        padding-left: 0 !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name {
+        padding-left: 14% !important;
+        padding-right: 0 !important;
+    }
+
+    /* Mobile: PV da IA quase nada à direita */
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row {
+        left: 67% !important;
+        top: 68% !important;
+    }
+}
+
+/* F11: altura dos hubs (vence bottom inline do pinCombatCanvas) */
+html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-left-hud,
+html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #game > #desktop-left-hud,
+html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #game > #desktop-right-hud {
+    bottom: 4px !important;
+}
+
+/* F11: hub um pouco maior */
+html.df-desktop-fullscreen.df-combat-canvas {
+    --df-hero-hub-width: 258px;
+}
+
+/* F11: PV da IA no centro exato da joia (medido no PNG) */
+html.df-desktop-fullscreen.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row {
+    left: 67.5% !important;
+    top: 68% !important;
+}
+
+/* F11: nome da IA um pouco à esquerda; nome do jogador principal um pouco à direita */
+html.df-desktop-fullscreen.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name {
+    justify-content: center !important;
+    text-align: center !important;
+    padding-right: 12% !important;
+    padding-left: 0 !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name {
+    justify-content: center !important;
+    text-align: center !important;
+    padding-left: 12% !important;
+    padding-right: 0 !important;
+}

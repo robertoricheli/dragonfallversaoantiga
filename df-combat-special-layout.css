@@ -1,0 +1,1006 @@
+/**
+ * Tela de Combate Especial — layout + chrome CSS.
+ * Fundo: TELA DE COMBATE ESPECIAL.png
+ * Desktop tela cheia: cover (sem compressão; corta laterais).
+ * Janela/mobile: stretch 100%×100%.
+ */
+:root {
+    --df-battle-inset-x: 13.5%;
+    --df-battle-inset-y-top: 11%;
+    --df-battle-inset-y-bottom: 11%;
+    --df-hud-safe: 24px;
+    --df-combat-cyan: #39baff;
+    --df-combat-green: #5ccf31;
+    --df-combat-red: #e84a4a;
+    --df-combat-red-deep: #8a1818;
+    --df-combat-panel: linear-gradient(180deg, #2a5a9a 0%, #153a6a 42%, #0a1c38 100%);
+    --df-combat-panel-hot: linear-gradient(180deg, #6ad63a 0%, #3aa81e 40%, #1e6a12 100%);
+    --df-combat-panel-red: linear-gradient(180deg, #e86060 0%, #b02828 45%, #6a1010 100%);
+    --df-combat-btn-border: #7ad4ff;
+    --df-combat-btn-glow: rgba(57, 186, 255, 0.45);
+}
+
+/* ========== Tokens base (fora da moldura) ========== */
+html.df-combat-special {
+    --df-opcoes-pedestal-x: 6.8%;
+    --df-opcoes-pedestal-y: 7.2%;
+    --df-opcoes-pedestal-w: 8.5%;
+    --df-opcoes-scale: 1;
+    --df-actions-scale: 1;
+    --df-actlbl-pedestal-x: 88.5%;
+    --df-actlbl-pedestal-y: 8.5%;
+    --df-actlbl-pedestal-w: 5.8%;
+    --df-actct-pedestal-x: 94.2%;
+    --df-actct-pedestal-y: 8.5%;
+    --df-actct-pedestal-w: 3.8%;
+    --df-turn-banner-pedestal-x: 50%;
+    --df-turn-banner-pedestal-y: 50%;
+    /* Largura do pill «Sua vez» / «Vez do adversário». */
+    --df-turn-banner-pedestal-w: 11.5%;
+    --df-pass-pedestal-x: 7.2%;
+    --df-pass-pedestal-y: 32%;
+    --df-pass-pedestal-w: 10.5%;
+    --df-buy-pedestal-x: 7.2%;
+    --df-buy-pedestal-y: 52%;
+    --df-buy-pedestal-w: 10.5%;
+    --df-deckct-pedestal-x: 7.2%;
+    --df-deckct-pedestal-y: 64%;
+    --df-deckct-pedestal-w: 5.2%;
+    --df-ult-pedestal-x: 93%;
+    --df-ult-pedestal-y: 38%;
+    --df-ult-pedestal-w: 8.2%;
+    --df-ultct-pedestal-x: 93%;
+    --df-ultct-pedestal-y: 52%;
+    --df-ultct-pedestal-w: 5.5%;
+    --df-player-hand-y-nudge: 0px;
+    --df-player-hand-pan-x: 0px;
+    /* Cancela o padding-top do tabuleiro (11% de 1280 = 141px de layout):
+       leva a mão da IA até a borda superior da tela. */
+    --df-ai-hand-top: -141px;
+    --df-ai-hand-pan-x: 0px;
+    --df-player-field-y-nudge: 0px;
+    --df-ai-field-y-nudge: 0px;
+    /* Eixo X = centro do banner (sem offset lateral). */
+    --df-field-x-bias: 0px;
+    --df-player-field-x-nudge: 0px;
+    --df-ai-field-x-nudge: 0px;
+    --df-hub-left-nudge: 0px;
+    --df-hub-right-nudge: 0px;
+    --df-pass-scale: 1;
+    --df-buy-scale: 1;
+    --df-ult-scale: 1;
+    --df-field-card-w: 116px;
+    --df-field-card-h: 163px;
+}
+
+html.df-combat-special.df-arena-desktop-fullscreen {
+    --df-battle-inset-x: 5.5%;
+    --df-battle-inset-y-top: 9%;
+    --df-battle-inset-y-bottom: 8%;
+    --df-player-hand-y-nudge: 120px;
+    /* Fullscreen usa inset-y-top 9% → 9% de 1280 = 115px. */
+    --df-ai-hand-top: -116px;
+    --df-ai-hand-pan-x: 0px;
+    /* Jogador principal um pouco mais abaixo no desktop em tela cheia. */
+    --df-player-field-y-nudge: 108px;
+    --df-ai-field-y-nudge: -48px;
+    --df-player-field-x-nudge: 0px;
+    --df-ai-field-x-nudge: 0px;
+    --df-pass-scale: 1.2;
+    --df-buy-scale: 1.2;
+    /* +10% sobre 1.625. */
+    --df-ult-scale: 1.7875;
+    --df-ult-pedestal-x: 98%;
+    --df-ult-pedestal-y: 48.5%;
+    --df-ultct-pedestal-x: 98%;
+    --df-ultct-pedestal-y: 59%;
+    --df-pass-pedestal-x: 1.0%;
+    --df-pass-pedestal-y: 40.5%;
+    --df-buy-pedestal-x: 1.0%;
+    --df-buy-pedestal-y: 59.5%;
+    --df-deckct-pedestal-x: 1.0%;
+    --df-deckct-pedestal-y: 67%;
+    /* hub-left +: direita; hub-right +: esquerda (translate -1×). */
+    --df-hub-left-nudge: 6px;
+    --df-hub-right-nudge: 6px;
+    --df-opcoes-pedestal-x: 2.8%;
+    --df-opcoes-pedestal-y: 6.6%;
+    /* Rótulo e número de Ações +20% (1.15 × 1.20). */
+    --df-actions-scale: 1.38;
+    --df-actlbl-pedestal-y: 7.4%;
+    --df-actct-pedestal-y: 7.4%;
+    --df-actlbl-pedestal-x: 91.5%;
+    --df-actct-pedestal-x: 96.0%;
+}
+
+html.df-combat-special.df-arena-desktop-windowed {
+    --df-player-hand-y-nudge: 32px;
+    --df-player-hand-pan-x: 8px;
+    --df-ai-hand-top: -160px;
+    --df-ai-hand-pan-x: 0px;
+    /* Jogador principal um pouco mais acima no desktop em janela. */
+    --df-player-field-y-nudge: 26px;
+    --df-ai-field-y-nudge: -30px;
+    --df-player-field-x-nudge: 0px;
+    --df-ai-field-x-nudge: 0px;
+    --df-pass-scale: 1.15;
+    --df-buy-scale: 1.15;
+    /* +20% sobre 1.50. */
+    --df-ult-scale: 1.8;
+    --df-pass-pedestal-x: -0.5%;
+    --df-pass-pedestal-y: 38.5%;
+    --df-buy-pedestal-x: -0.5%;
+    --df-buy-pedestal-y: 60%;
+    --df-deckct-pedestal-x: -0.5%;
+    --df-deckct-pedestal-y: 66.5%;
+    --df-ult-pedestal-x: 100.5%;
+    --df-ult-pedestal-y: 48.5%;
+    --df-ultct-pedestal-x: 100.5%;
+    --df-ultct-pedestal-y: 60.5%;
+    --df-opcoes-pedestal-x: 2.0%;
+    --df-opcoes-pedestal-y: 8.2%;
+    --df-opcoes-scale: 1.25;
+    --df-actions-scale: 1.25;
+    --df-actlbl-pedestal-x: 91.5%;
+    --df-actct-pedestal-x: 97.8%;
+    --df-actlbl-pedestal-y: 7.2%;
+    --df-actct-pedestal-y: 7.2%;
+    --df-hub-left-nudge: -20px;
+    /* Valor menor = painel direito deslocado um pouco mais para a direita. */
+    --df-hub-right-nudge: 4px;
+}
+
+html.df-combat-special.df-arena-mobile {
+    --df-player-hand-y-nudge: 34px;
+    --df-ai-hand-top: -141px;
+    --df-ai-hand-pan-x: 0px;
+    --df-player-field-y-nudge: 28px;
+    /* Campo da IA um pouco mais acima no mobile. */
+    --df-ai-field-y-nudge: -26px;
+    --df-player-field-x-nudge: 0px;
+    --df-ai-field-x-nudge: 0px;
+    --df-pass-scale: 1.15;
+    --df-buy-scale: 1.15;
+    /* +10% sobre 1.4375 e leve deslocamento à direita. */
+    --df-ult-scale: 1.58125;
+    --df-ult-pedestal-x: 105%;
+    --df-ult-pedestal-y: 48.5%;
+    --df-ultct-pedestal-x: 103.4%;
+    --df-ultct-pedestal-y: 61%;
+    --df-ult-pedestal-w: 8.5%;
+    --df-ultct-pedestal-w: 5.2%;
+    --df-pass-pedestal-x: -5.0%;
+    --df-pass-pedestal-y: 38%;
+    --df-pass-pedestal-w: 10.2%;
+    --df-buy-pedestal-x: -5.3%;
+    --df-buy-pedestal-y: 56.5%;
+    --df-buy-pedestal-w: 10.2%;
+    --df-deckct-pedestal-x: -5.3%;
+    --df-deckct-pedestal-y: 65.5%;
+    --df-deckct-pedestal-w: 4.4%;
+    /* IA hub → esquerda; jogador → direita. */
+    --df-hub-left-nudge: -88px;
+    /* Valor menor = painel direito deslocado mais para a direita. */
+    --df-hub-right-nudge: 100px;
+    --df-opcoes-pedestal-x: -1.8%;
+    --df-opcoes-pedestal-y: 9.0%;
+    --df-opcoes-pedestal-w: 10.0%;
+    --df-opcoes-scale: 1.3;
+    /* Ações +20% sobre o tamanho anterior; próximos mas com folga. */
+    --df-actlbl-pedestal-x: 93.1%;
+    --df-actct-pedestal-x: 99.9%;
+    --df-actlbl-pedestal-y: 8.4%;
+    --df-actct-pedestal-y: 8.4%;
+    --df-actions-scale: 1.884;
+}
+
+/* ========== Fundo ========== */
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-desktop-fullscreen,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-desktop-fullscreen #df-rotate-stage {
+    background-size: cover !important;
+    background-position: center center !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-desktop-windowed,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-desktop-windowed #df-rotate-stage,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-mobile,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-mobile #df-rotate-stage {
+    background-size: 100% 100% !important;
+    background-position: center center !important;
+}
+
+/* Parede invisível: libera overflow no canvas (mobile clipava pedestais nas bordas) */
+html.df-combat-special.df-mobile-desktop-fit #df-rotate-stage,
+html.df-combat-special.df-mobile-desktop-fit #df-scale-root,
+html.df-combat-special.df-mobile-desktop-fit #df-scale-root > #game.active,
+html.df-combat-special.df-mobile-desktop-fit #game.active,
+html.df-combat-special.df-mobile-desktop-fit #game.active #game-grid,
+html.df-combat-special.df-mobile-desktop-fit #game.active #game-grid.mode-2 {
+    overflow: visible !important;
+}
+
+/* ========== Zona de batalha ========== */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2,
+html.df-combat-special #game.active #game-grid.mode-2 {
+    padding:
+        var(--df-battle-inset-y-top)
+        var(--df-battle-inset-x)
+        var(--df-battle-inset-y-bottom)
+        var(--df-battle-inset-x) !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    position: relative !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 {
+    grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr) !important;
+    row-gap: 6px !important;
+}
+
+html.df-combat-special .quadrant {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+html.df-combat-special .quadrant-field-label,
+html.df-combat-special .quadrant-header {
+    display: none !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas {
+    /* Fallback; df-viewport-adapt grava os +20% efetivos inline no <html>. */
+    --df-field-card-w: 116px;
+    --df-field-card-h: 163px;
+    --df-hand-card-w: 115px;
+    --df-hand-card-h: 161px;
+    --df-ai-hand-visible-h: 126px;
+}
+
+/*
+ * Mão IA: fica no quadrante (preserva o CSS do verso de .ai-quadrant) e sobe
+ * o padding do tabuleiro via --df-ai-hand-top até a borda superior da tela.
+ * O JS (DfLayout.pinSpecialAiHandToGameTop) refina o valor em px reais.
+ */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active > .quadrant-hand[data-df-ai-hand="1"],
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 .quadrant-hand,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant .quadrant-hand,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-1 .quadrant-hand,
+html.df-combat-special.df-desktop-fullscreen.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 .quadrant-hand {
+    --df-hand-card-w: 92px;
+    --df-hand-card-h: 126px;
+    --df-ai-hand-visible-h: 126px;
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    /* --df-ai-hand-top cancela o padding do tabuleiro; menos uma altura de carta
+       porque o verso gira 180° com pivô na base e desce esse tanto. */
+    top: calc(var(--df-ai-hand-top, -141px) - var(--df-hand-card-h, 126px) - 24px) !important;
+    bottom: auto !important;
+    width: max-content !important;
+    max-width: 96% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: translateX(-50%) !important;
+    translate: none !important;
+    z-index: 60 !important;
+    pointer-events: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active > .quadrant-hand[data-df-ai-hand="1"] .hand-wrap.ai-hand-wrap,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-1 .quadrant-hand .hand-wrap.ai-hand-wrap,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand .hand-wrap.ai-hand-wrap {
+    width: var(--df-hand-card-w, 92px) !important;
+    height: var(--df-hand-card-h, 126px) !important;
+    min-width: var(--df-hand-card-w, 92px) !important;
+    min-height: var(--df-hand-card-h, 126px) !important;
+    flex: 0 0 var(--df-hand-card-w, 92px) !important;
+    overflow: visible !important;
+    filter: none !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active > .quadrant-hand[data-df-ai-hand="1"] .ai-back,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active > .quadrant-hand[data-df-ai-hand="1"] .hcard,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-1 .quadrant-hand .ai-back,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-1 .quadrant-hand .hcard,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand .ai-back,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand .hcard,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 .ai-quadrant .quadrant-hand .ai-back {
+    width: var(--df-hand-card-w, 92px) !important;
+    height: var(--df-hand-card-h, 126px) !important;
+    min-width: var(--df-hand-card-w, 92px) !important;
+    min-height: var(--df-hand-card-h, 126px) !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 10px !important;
+    border-width: 2px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-1,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant {
+    overflow: visible !important;
+    position: relative !important;
+    width: 100% !important;
+}
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 {
+    overflow: visible !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-field,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-field {
+    flex: 0 0 auto !important;
+    min-height: calc(var(--df-field-card-h, 163px) + 8px) !important;
+    align-content: center !important;
+    justify-content: flex-start !important;
+    /* Fallback: centro do bloco de N cartas exige JS; meia-carta só para N=1. */
+    padding-left: var(--df-field-anchor-pad, 0px) !important;
+    gap: 10px !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-field {
+    /* Nudge leve — o centro vem do --df-field-anchor-pad (JS). */
+    transform: translateX(var(--df-player-field-x-nudge, 0px))
+        translateY(var(--df-player-field-y-nudge, 0px)) !important;
+}
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-field,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant .quadrant-field {
+    transform: translateX(var(--df-ai-field-x-nudge, 0px))
+        translateY(var(--df-ai-field-y-nudge, 0px)) !important;
+}
+
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand {
+    min-height: 200px !important;
+    transform: translateX(var(--df-player-hand-pan-x, 0px))
+        translateY(var(--df-player-hand-y-nudge, 0px)) !important;
+    z-index: 30 !important;
+    overflow: visible !important;
+}
+
+/* Trava explícita: regras legadas mais específicas não podem anular os +20%. */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand .hand-wrap:not(.ai-hand-wrap),
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand .hcard {
+    width: var(--df-hand-card-w, 115px) !important;
+    height: var(--df-hand-card-h, 161px) !important;
+    min-width: var(--df-hand-card-w, 115px) !important;
+    min-height: var(--df-hand-card-h, 161px) !important;
+    max-width: var(--df-hand-card-w, 115px) !important;
+    max-height: var(--df-hand-card-h, 161px) !important;
+    flex: 0 0 var(--df-hand-card-w, 115px) !important;
+}
+
+html.df-combat-special .quadrant-field {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    width: 100% !important;
+    padding-left: var(--df-field-anchor-pad, 0px) !important;
+    box-sizing: border-box !important;
+}
+
+html.df-combat-special .quadrant-field .ccard,
+html.df-combat-special #quadrant-0 .quadrant-field .ccard,
+html.df-combat-special .ai-quadrant .quadrant-field .ccard {
+    flex: 0 0 var(--df-field-card-w, 116px) !important;
+    width: var(--df-field-card-w, 116px) !important;
+    min-width: var(--df-field-card-w, 116px) !important;
+    max-width: var(--df-field-card-w, 116px) !important;
+    height: var(--df-field-card-h, 163px) !important;
+    min-height: var(--df-field-card-h, 163px) !important;
+    max-height: var(--df-field-card-h, 163px) !important;
+    box-sizing: border-box !important;
+}
+
+/* Paridade final: vence as travas históricas específicas do campo local
+   (canvas-shield/game-board) e usa o mesmo slot físico para jogador e IA. */
+html.df-combat-special #game.active #game-grid.mode-2 #quadrant-0.player-quadrant .quadrant-field,
+html.df-combat-special #game.active #game-grid.mode-2 .ai-quadrant .quadrant-field {
+    --df-field-card-w: 116px !important;
+    --df-field-card-h: 163px !important;
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    padding-left: var(--df-field-anchor-pad, 0px) !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+}
+
+html.df-combat-special #game.active #game-grid.mode-2 #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static,
+html.df-combat-special #game.active #game-grid.mode-2 .ai-quadrant .quadrant-field > .ccard.df-field-static {
+    flex: 0 0 116px !important;
+    width: 116px !important;
+    min-width: 116px !important;
+    max-width: 116px !important;
+    height: 163px !important;
+    min-height: 163px !important;
+    max-height: 163px !important;
+}
+
+/* Esconde timer canto (todas as versões, incl. mobile) */
+html.df-combat-special #desktop-timer,
+html.df-combat-special #desktop-timer.df-arena-clock,
+html.df-combat-special #desktop-timer.df-arena-clock--numeric,
+html.df-combat-special.df-clock-numeric #desktop-timer.df-arena-clock,
+html.df-combat-special.df-arena-mobile #desktop-timer,
+html.df-combat-special #df-arena-clock-pixi-mount,
+html.df-combat-special #desktop-turn-indicator,
+html.df-combat-special #df-deck-badge,
+html.df-combat-special #df-deck-badge-ai,
+html.df-combat-special #desktop-logo {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* ========== Pedestais: esconde PNG + âncora nas bordas (sem clip por translate -50%) ========== */
+html.df-combat-special #df-combat-opcoes-pedestal,
+html.df-combat-special #df-pass-turn-pedestal,
+html.df-combat-special #df-buy-card-pedestal,
+html.df-combat-special #df-ultimate-pedestal,
+html.df-combat-special #df-actions-label-pedestal,
+html.df-combat-special #df-actions-count-pedestal,
+html.df-combat-special #df-turn-banner-pedestal,
+html.df-combat-special #df-deck-count-pedestal,
+html.df-combat-special #df-ultimate-count-pedestal {
+    max-width: none !important;
+    min-width: 0 !important;
+    z-index: 216 !important;
+    overflow: visible !important;
+}
+
+/* Esquerda: `left` = borda esquerda (sem translate -50% que corta na margem) */
+html.df-combat-special #df-combat-opcoes-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-combat-opcoes-pedestal {
+    transform: translate(0, -50%) scale(var(--df-opcoes-scale, 1)) !important;
+}
+html.df-combat-special #df-pass-turn-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-pass-turn-pedestal {
+    transform: translate(0, -50%) scale(var(--df-pass-scale, 1)) !important;
+}
+html.df-combat-special #df-buy-card-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-buy-card-pedestal {
+    transform: translate(0, -50%) scale(var(--df-buy-scale, 1)) !important;
+}
+/* Contagens: centradas sob o botão (quase coladas) */
+html.df-combat-special #df-deck-count-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-deck-count-pedestal {
+    left: calc(var(--df-buy-pedestal-x) + (var(--df-buy-pedestal-w) * 0.5)) !important;
+    top: var(--df-deckct-pedestal-y) !important;
+    transform: translate(-50%, -50%) !important;
+}
+html.df-combat-special #df-ultimate-count-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-ultimate-count-pedestal {
+    left: calc(var(--df-ult-pedestal-x) - (var(--df-ult-pedestal-w) * 0.5)) !important;
+    top: var(--df-ultct-pedestal-y) !important;
+    transform: translate(-50%, -50%) !important;
+}
+/* Direita: `left` = borda direita */
+html.df-combat-special #df-actions-label-pedestal,
+html.df-combat-special #df-actions-count-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-actions-label-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-actions-count-pedestal {
+    transform: translate(-100%, -50%) scale(var(--df-actions-scale, 1)) !important;
+}
+html.df-combat-special #df-ultimate-pedestal,
+html.df-combat-special.df-mobile-desktop-fit #df-ultimate-pedestal {
+    transform: translate(-100%, -50%) scale(var(--df-ult-scale, 1)) !important;
+}
+
+/* O rótulo deve permanecer dentro da área útil do hexágono em qualquer escala. */
+html.df-combat-special #df-ultimate-pedestal .df-hex-btn-overlay {
+    inset: 20% 19% 22% !important;
+}
+
+html.df-combat-special #df-ultimate-pedestal .df-hex-btn-label {
+    max-width: 100% !important;
+    font-size: clamp(0.46rem, 0.82vw, 0.66rem) !important;
+    letter-spacing: 0.025em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+/* Desktop: texto menor para permanecer inteiramente dentro do PNG ampliado. */
+html.df-combat-special.df-arena-desktop-fullscreen #df-ultimate-pedestal .df-hex-btn-label,
+html.df-combat-special.df-arena-desktop-windowed #df-ultimate-pedestal .df-hex-btn-label {
+    font-size: clamp(0.42rem, 0.72vw, 0.58rem) !important;
+}
+
+/* Opções usam face CSS; banners de turno = pill CSS (prints atualizados), não placas pedra PNG. */
+html.df-combat-special .df-combat-opcoes-face,
+html.df-combat-special .df-turn-banner-face {
+    display: none !important;
+}
+
+/* ========== Opções (épico) ========== */
+html.df-combat-special #combat-opcoes-btn.df-combat-opcoes-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.55em 0.75em !important;
+    border-radius: 12px !important;
+    border: 2.5px solid var(--df-combat-btn-border) !important;
+    background: var(--df-combat-panel) !important;
+    box-shadow:
+        0 0 0 1px rgba(200, 240, 255, 0.35) inset,
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 0 14px var(--df-combat-btn-glow),
+        0 6px 16px rgba(0, 0, 0, 0.5) !important;
+    color: #f2f8ff !important;
+    font-family: "Fredoka", "Trebuchet MS", sans-serif !important;
+    font-weight: 700 !important;
+    font-size: clamp(0.72rem, 1.3vw, 0.92rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+}
+html.df-combat-special #combat-opcoes-btn.df-combat-opcoes-btn::before {
+    content: "⚙  Opções";
+}
+html.df-combat-special #combat-opcoes-btn:hover {
+    filter: brightness(1.12);
+}
+html.df-combat-special #combat-opcoes-btn:active {
+    transform: scale(0.96) translateY(1px);
+}
+
+/* ========== Ações (topo direito) ========== */
+html.df-combat-special .df-actions-pedestal-label {
+    font-family: "Fredoka", "Trebuchet MS", sans-serif !important;
+    font-weight: 700 !important;
+    font-size: clamp(0.72rem, 1.35vw, 0.95rem) !important;
+    color: #eaf8ff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    background: var(--df-combat-panel);
+    border: 2.5px solid var(--df-combat-btn-border);
+    border-radius: 999px;
+    padding: 0.4em 0.85em;
+    text-align: center;
+    box-shadow:
+        0 0 0 1px rgba(200, 240, 255, 0.3) inset,
+        0 4px 12px rgba(0, 0, 0, 0.45);
+}
+html.df-combat-special .df-actions-pedestal-num {
+    font-family: "Baloo 2", "Fredoka", sans-serif !important;
+    font-weight: 800 !important;
+    font-size: clamp(1.15rem, 2.3vw, 1.6rem) !important;
+    color: #ffe066 !important;
+    text-shadow: 0 0 10px rgba(255, 220, 80, 0.5), 0 2px 4px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(180deg, #3a6098 0%, #152848 100%);
+    border: 2.5px solid #ffe066;
+    border-radius: 50%;
+    width: 1.75em;
+    height: 1.75em;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 0 14px rgba(255, 200, 60, 0.4), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* ========== Banner de turno (centro) — pills SUA VEZ / VEZ DO ADVERSÁRIO ========== */
+html.df-combat-special #df-turn-banner-pedestal {
+    line-height: 1 !important;
+    z-index: 230 !important;
+    pointer-events: none !important;
+    max-width: min(200px, 18vw) !important;
+    min-width: 108px !important;
+}
+html.df-combat-special #df-turn-banner-pedestal::after {
+    display: none;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.42em 0.85em;
+    border-radius: 999px;
+    border: 2px solid #9ad4ff;
+    font-family: "Fredoka", "Trebuchet MS", sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.62rem, 1.15vw, 0.82rem);
+    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+        0 4px 12px rgba(0, 0, 0, 0.45);
+}
+html.df-combat-special #df-turn-banner-pedestal.is-your-turn::after {
+    display: block;
+    content: "Sua vez";
+    background: linear-gradient(180deg, #4aa8ff 0%, #1a6ad4 48%, #0a3a88 100%);
+    border-color: #b8e0ff;
+}
+html.df-combat-special #df-turn-banner-pedestal.is-ai-turn::after {
+    display: block;
+    content: "Vez do\A adversário";
+    white-space: pre-line;
+    border-radius: 14px;
+    padding: 0.38em 0.75em;
+    line-height: 1.15;
+    background: linear-gradient(180deg, #e85a5a 0%, #c42828 48%, #8a1010 100%);
+    border-color: #ffb0b0;
+    box-shadow:
+        0 0 0 1px rgba(255, 200, 200, 0.22) inset,
+        0 0 12px rgba(232, 74, 74, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* ========== Passar / Comprar / Ultimate — faces PNG (ver df-*-pedestal.css) ========== */
+html.df-combat-special #df-pass-turn-pedestal .df-pass-turn-visual,
+html.df-combat-special #df-buy-card-pedestal .df-buy-card-pedestal-visual,
+html.df-combat-special #df-ultimate-pedestal .df-ultimate-pedestal-visual {
+    display: block !important;
+    aspect-ratio: 1 / 1 !important;
+}
+html.df-combat-special .df-pass-turn-face,
+html.df-combat-special .df-buy-card-pedestal-face,
+html.df-combat-special .df-ultimate-pedestal-img,
+html.df-combat-special .df-ultimate-face {
+    display: block !important;
+}
+html.df-combat-special #df-deck-count-pedestal,
+html.df-combat-special #df-ultimate-count-pedestal {
+    display: none !important;
+}
+
+/* ========== Hubs quadrados (vence df-hero-hub absolute + moldura PNG) ========== */
+html.df-combat-special #desktop-left-hud,
+html.df-combat-special #desktop-right-hud {
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    z-index: 210 !important;
+    pointer-events: auto !important;
+}
+html.df-combat-special #desktop-left-hud .dlh-hero-panel,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #desktop-left-hud .dlh-hero-panel,
+html.df-combat-special #desktop-right-hud .dlh-hero-panel,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .dlh-hero-panel {
+    overflow: visible !important;
+}
+html.df-combat-special #desktop-left-hud .dlh-hero-panel,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #desktop-left-hud .dlh-hero-panel {
+    transform: translateX(var(--df-hub-left-nudge, 0px));
+}
+html.df-combat-special #desktop-right-hud .dlh-hero-panel,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .dlh-hero-panel {
+    transform: translateX(calc(-1 * var(--df-hub-right-nudge, 0px)));
+}
+html.df-combat-special .dlh-hero-panel .dlhp-frame,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-frame,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-frame {
+    display: none !important;
+}
+
+html.df-combat-special .dlh-hero-panel .dlhp-stack,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-stack,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-stack {
+    display: block !important;
+    position: relative !important;
+    width: 122px !important;
+    height: 122px !important;
+    min-width: 122px !important;
+    min-height: 122px !important;
+    max-width: 122px !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    border-radius: 16px !important;
+    border: 2.5px solid var(--df-combat-cyan) !important;
+    background:
+        linear-gradient(165deg, rgba(60, 120, 200, 0.35) 0%, transparent 45%),
+        linear-gradient(180deg, #1e4a82 0%, #0e2448 48%, #061020 100%) !important;
+    box-shadow:
+        0 0 0 1px rgba(200, 240, 255, 0.35) inset,
+        0 0 14px rgba(57, 186, 255, 0.28),
+        0 8px 18px rgba(0, 0, 0, 0.55) !important;
+    line-height: 1.15 !important;
+    overflow: visible !important;
+}
+
+/* Retrato preenche o quadrado — background-image do JS (não usar shorthand background) */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait,
+html.df-combat-special .dlh-hero-panel--player .dlhp-portrait,
+html.df-combat-special .dlh-hero-panel--ai .dlhp-portrait,
+html.df-combat-special .dlh-hero-panel .dlhp-portrait {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 13px !important;
+    overflow: hidden !important;
+    background-color: #0a1428 !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    z-index: 1 !important;
+    flex: none !important;
+    box-shadow: none !important;
+    display: block !important;
+}
+html.df-combat-special .dlh-hero-panel .dlhp-portrait-img,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-portrait-img,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-portrait-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block !important;
+}
+html.df-combat-special .dlh-hero-panel .dlhp-portrait-emoji {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    z-index: 1;
+}
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-portrait-hit,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-portrait-hit,
+html.df-combat-special .dlh-hero-panel--player .dlhp-portrait-hit,
+html.df-combat-special .dlh-hero-panel--ai .dlhp-portrait-hit,
+html.df-combat-special .dlh-hero-panel .dlhp-portrait-hit {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    border-radius: 13px !important;
+    border: none !important;
+    background: transparent !important;
+    z-index: 4 !important;
+}
+
+/* Nome sobre o retrato (PV e timer ficam fora do hub) */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-name,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-name,
+html.df-combat-special .dlh-hero-panel--player .dlhp-name,
+html.df-combat-special .dlh-hero-panel--ai .dlhp-name,
+html.df-combat-special .dlh-hero-panel:has(.dlhp-stack) .dlhp-name,
+html.df-combat-special .dlh-hero-panel .dlhp-name {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    bottom: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+    font-family: "Fredoka", "Trebuchet MS", sans-serif !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    color: #f2f8ff !important;
+    text-align: center !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.7) !important;
+    -webkit-text-stroke: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: none !important;
+    border: none !important;
+    z-index: 3 !important;
+    pointer-events: none !important;
+}
+
+/* PV fora do hub: jogador à esquerda; IA à direita (base inferior) */
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp-row,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row,
+html.df-combat-special .dlh-hero-panel--player .dlhp-vp-row,
+html.df-combat-special .dlh-hero-panel--ai .dlhp-vp-row,
+html.df-combat-special .dlh-hero-panel:has(.dlhp-stack) .dlhp-vp-row,
+html.df-combat-special .dlh-hero-panel .dlhp-vp-row {
+    position: absolute !important;
+    top: auto !important;
+    bottom: 4px !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.3em !important;
+    margin: 0 !important;
+    padding: 0.2em 0.45em !important;
+    border-radius: 8px !important;
+    background: rgba(0, 0, 0, 0.62) !important;
+    border: 1.5px solid rgba(120, 190, 255, 0.5) !important;
+    box-shadow: none !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+}
+html.df-combat-special #dlh-hero-player .dlhp-vp-row,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp-row {
+    left: auto !important;
+    right: calc(100% + 8px) !important;
+}
+html.df-combat-special #dlh-hero-ai .dlhp-vp-row,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row {
+    left: calc(100% + 8px) !important;
+    right: auto !important;
+}
+html.df-combat-special .dlh-hero-panel:has(.dlhp-stack) .dlhp-vp-row::before,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp-row::before,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp-row::before {
+    content: "PV";
+    font-family: "Fredoka", sans-serif;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #b8e0ff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+html.df-combat-special .dlh-hero-panel:has(.dlhp-stack) .dlhp-vp,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:has(.dlhp-stack) .dlhp-vp,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai:has(.dlhp-stack) .dlhp-vp,
+html.df-combat-special .dlh-hero-panel .dlhp-vp {
+    font-family: "Baloo 2", "Fredoka", sans-serif !important;
+    font-size: 1.575rem !important;
+    font-weight: 800 !important;
+    color: #ffe066 !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85) !important;
+    line-height: 1 !important;
+}
+
+/* Relógio acima do hub (próximo, sem colar) */
+html.df-combat-special .dlh-hero-panel .dlhp-turn-clock,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-turn-clock,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-turn-clock {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+    position: absolute !important;
+    left: 50% !important;
+    top: auto !important;
+    bottom: calc(100% + 12px) !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0.2em 0.45em !important;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.62);
+    border: 1.5px solid rgba(120, 190, 255, 0.5);
+    min-height: 0;
+    z-index: 6;
+}
+html.df-combat-special .dlh-hero-panel .dlhp-clock-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+    color: #7ad4ff;
+    text-shadow: 0 0 8px rgba(57, 186, 255, 0.65);
+}
+html.df-combat-special .dlh-hero-panel .dlhp-clock-time {
+    font-family: "Baloo 2", "Fredoka", sans-serif;
+    font-weight: 800;
+    font-size: 1.275rem;
+    color: #ffe066;
+    min-width: 1.2em;
+    text-align: center;
+}
+html.df-combat-special .dlh-hero-panel .dlhp-clock-time.urgent {
+    color: #ff2a2a;
+    text-shadow: 0 0 10px rgba(255, 40, 40, 0.7);
+}
+html.df-combat-special .dlh-hero-panel .dlhp-clock-time[hidden] {
+    display: none !important;
+}
+html.df-combat-special .dlh-hero-panel.is-active-turn .dlhp-clock-icon {
+    color: #ffe066;
+}
+html.df-combat-special .dlh-hero-panel.is-active-turn .dlhp-turn-clock {
+    border-color: rgba(255, 200, 80, 0.65);
+    box-shadow: 0 0 10px rgba(255, 180, 40, 0.3);
+}
+/* Sem linha/destaque no hub quando for a vez do jogador (CSS + Pixi desligado) */
+html.df-combat-special .dlh-hero-panel.is-active-turn,
+html.df-combat-special #dlh-hero-player.is-active-turn,
+html.df-combat-special #dlh-hero-ai.is-active-turn,
+html.df-combat-special .dlh-hero-panel.is-active-turn .dlhp-stack,
+html.df-combat-special .dlh-hero-panel.df-hub-turn-vfx-fallback,
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player.is-active-turn:has(.dlhp-stack),
+html.df-combat-special.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai.is-active-turn:has(.dlhp-stack) {
+    outline: none !important;
+    border: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    animation: none !important;
+}
+html.df-combat-special .dlh-hero-panel.is-active-turn .dlhp-stack,
+html.df-combat-special #dlh-hero-player.is-active-turn .dlhp-stack,
+html.df-combat-special #dlh-hero-ai.is-active-turn .dlhp-stack {
+    border: 2.5px solid var(--df-combat-cyan) !important;
+    box-shadow:
+        0 0 0 1px rgba(200, 240, 255, 0.35) inset,
+        0 0 14px rgba(57, 186, 255, 0.28),
+        0 8px 18px rgba(0, 0, 0, 0.55) !important;
+}
+
+html.df-combat-special .dlh-hero-panel .dlhp-role-label,
+html.df-combat-special #dlh-hero-player .dlhp-role-label,
+html.df-combat-special #dlh-hero-ai .dlhp-role-label {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    bottom: -16px !important;
+    width: 100%;
+    text-align: center;
+    font-family: "Fredoka", sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    z-index: 3;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+html.df-combat-special #dlh-hero-player .dlhp-role-label { color: #7ae04a; }
+html.df-combat-special #dlh-hero-ai .dlhp-role-label { color: #9ecfff; }
+
+/* Mobile: pedestais PNG um pouco menores; Opções continua CSS. */
+html.df-combat-special.df-arena-mobile #df-ultimate-pedestal {
+    max-width: 112px !important;
+}
+html.df-combat-special.df-arena-mobile #combat-opcoes-btn.df-combat-opcoes-btn {
+    min-height: 38px;
+    padding: 0.35em 0.5em !important;
+    font-size: clamp(0.58rem, 1.5vw, 0.72rem) !important;
+}
+
+html.df-combat-special:not(.df-mobile-desktop-fit):has(#game.active) #game-grid.mode-2 {
+    padding:
+        var(--df-battle-inset-y-top)
+        var(--df-battle-inset-x)
+        var(--df-battle-inset-y-bottom)
+        var(--df-battle-inset-x) !important;
+}

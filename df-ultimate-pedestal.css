@@ -1,0 +1,198 @@
+/**
+ * Botão Ultimate — pedestal direito (PNG hexagonal único + overlay interno).
+ */
+:root {
+    --df-ult-pedestal-x: 91.4%;
+    --df-ult-pedestal-y: 45.0%;
+    --df-ult-pedestal-w: 15.0%;
+    --df-ultct-pedestal-x: 92.8%;
+    --df-ultct-pedestal-y: 55.2%;
+    --df-ultct-pedestal-w: 5.8%;
+}
+
+#df-ultimate-pedestal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 215;
+    pointer-events: none;
+    display: none;
+    background: transparent !important;
+    left: var(--df-ult-pedestal-x);
+    top: var(--df-ult-pedestal-y);
+    width: var(--df-ult-pedestal-w);
+    max-width: 148px;
+    min-width: 72px;
+}
+
+html.df-arena-mobile #df-ultimate-pedestal {
+    max-width: 128px;
+}
+
+/* Contador externo legado — número vive dentro do botão. */
+#df-ultimate-count-pedestal {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+body:has(#game.active) #df-ultimate-pedestal:not([hidden]) {
+    display: block;
+}
+
+html.df-mobile-desktop-fit body > #df-ultimate-pedestal[data-df-pedestal-sync="stage-cover"],
+html.df-mobile-desktop-fit body > #df-pass-turn-pedestal[data-df-pedestal-sync="stage-cover"] {
+    position: fixed !important;
+    max-width: none;
+    min-width: 0;
+    z-index: 180;
+    left: auto;
+    top: auto;
+    width: auto;
+}
+
+#ultimate-pedestal-btn,
+#df-ultimate-pedestal #ultimate-pedestal-btn {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: auto;
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    line-height: 0;
+    overflow: visible;
+    color: transparent !important;
+}
+
+#df-ultimate-pedestal.df-ultimate-can-use #ultimate-pedestal-btn {
+    cursor: pointer;
+}
+
+#df-ultimate-pedestal #ultimate-pedestal-btn:disabled,
+#df-ultimate-pedestal.df-ultimate-disabled #ultimate-pedestal-btn {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+#ultimate-pedestal-btn:focus-visible {
+    outline: 2px solid rgba(255, 120, 100, 0.85);
+    outline-offset: 3px;
+    border-radius: 999px;
+}
+
+.df-ultimate-pedestal-visual {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    transform: translateZ(0);
+    transition: transform 0.14s cubic-bezier(0.34, 1.08, 0.48, 1), filter 0.18s ease;
+    background: transparent !important;
+}
+
+.df-ultimate-pedestal-img,
+.df-ultimate-face {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    background: transparent !important;
+    display: block;
+    opacity: 1;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32));
+}
+
+#df-ultimate-pedestal .df-hex-btn-overlay {
+    inset: 18% 16% 20%;
+}
+
+#df-ultimate-pedestal .df-hex-btn-icon--ult {
+    font-size: clamp(1rem, 2vw, 1.45rem);
+    line-height: 1;
+    color: #ffe9a8;
+    text-shadow:
+        0 0 10px rgba(255, 160, 80, 0.85),
+        0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+#df-ultimate-pedestal .df-hex-btn-row {
+    gap: 0.06em;
+}
+
+#df-ultimate-pedestal .df-ultimate-count-pedestal-num,
+#df-ultimate-pedestal .df-hex-btn-count {
+    color: #ffe9a8;
+    -webkit-text-stroke: 0.08em #5c3018;
+    min-width: 0;
+    margin-left: 0.02em;
+}
+
+/* Fora do turno: um pouco mais escuro. */
+#df-ultimate-pedestal.is-opponent-turn .df-ultimate-pedestal-visual,
+#df-ultimate-pedestal.is-opponent-turn .df-ultimate-face,
+#df-ultimate-pedestal.is-opponent-turn .df-hex-btn-overlay {
+    opacity: 1 !important;
+    filter: brightness(0.78) saturate(0.94) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32));
+}
+
+#df-ultimate-pedestal.df-ultimate-disabled:not(.is-opponent-turn) .df-ultimate-pedestal-visual,
+#df-ultimate-pedestal.df-ultimate-disabled:not(.is-opponent-turn) .df-ultimate-face,
+#df-ultimate-pedestal.df-ultimate-disabled:not(.is-opponent-turn) .df-hex-btn-overlay {
+    opacity: 1 !important;
+    filter: brightness(0.86) saturate(0.96) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32));
+}
+
+#df-ultimate-pedestal.df-ultimate-can-use #ultimate-pedestal-btn:hover .df-ultimate-pedestal-visual {
+    filter: drop-shadow(0 0 10px rgba(255, 160, 120, 0.42)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32));
+}
+
+#df-ultimate-pedestal.df-ultimate-can-use #ultimate-pedestal-btn:active:not(:disabled) .df-ultimate-pedestal-visual {
+    transform: scale(0.972) translateY(2px);
+    filter: brightness(0.94) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.38));
+    transition: transform 0.06s ease-out, filter 0.06s ease-out;
+}
+
+#df-ultimate-pedestal.df-ultimate-pressing .df-ultimate-pedestal-visual {
+    animation: dfUltimatePress 0.22s cubic-bezier(0.34, 1.12, 0.48, 1) forwards;
+}
+
+@keyframes dfUltimatePress {
+    0% { transform: scale(1) translateY(0); filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32)); }
+    42% { transform: scale(0.968) translateY(3px); filter: brightness(0.9) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4)); }
+    100% { transform: scale(1) translateY(0); filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.32)); }
+}
+
+#ultimate-btn,
+#bottom-bar #ultimate-btn,
+#desktop-right-hud #ultimate-btn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .df-ultimate-pedestal-visual,
+    .df-ultimate-face {
+        transition: filter 0.12s linear !important;
+    }
+
+    #df-ultimate-pedestal.df-ultimate-pressing .df-ultimate-pedestal-visual {
+        animation: none !important;
+    }
+
+    #df-ultimate-pedestal.df-ultimate-can-use #ultimate-pedestal-btn:active:not(:disabled) .df-ultimate-pedestal-visual {
+        transform: scale(0.985);
+    }
+}

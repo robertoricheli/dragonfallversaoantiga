@@ -1,0 +1,94 @@
+/**
+ * Banners «Sua vez» / «Vez do adversário» — topo esquerdo do tabuleiro central.
+ */
+:root {
+    --df-turn-banner-pedestal-x: 38.8%;
+    --df-turn-banner-pedestal-y: 16.6%;
+    --df-turn-banner-pedestal-w: 11.5%;
+}
+
+#df-turn-banner-pedestal {
+    position: absolute;
+    left: var(--df-turn-banner-pedestal-x);
+    top: var(--df-turn-banner-pedestal-y);
+    transform: translate(-50%, -50%);
+    width: var(--df-turn-banner-pedestal-w);
+    max-width: min(200px, 18vw);
+    min-width: 96px;
+    z-index: 214;
+    pointer-events: none;
+    display: none;
+    line-height: 0;
+}
+
+body:has(#game.active) #df-turn-banner-pedestal:not([hidden]) {
+    display: block;
+}
+
+html.df-mobile-desktop-fit body > #df-turn-banner-pedestal[data-df-pedestal-sync="stage-cover"] {
+    position: fixed !important;
+    max-width: none;
+    min-width: 0;
+    z-index: 178;
+    left: auto;
+    top: auto;
+    width: auto;
+}
+
+/* Fora do combate especial: também usa pill (não PNG pedra). */
+.df-turn-banner-face {
+    display: none !important;
+}
+
+#df-turn-banner-pedestal::after {
+    display: none;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.42em 0.85em;
+    border-radius: 999px;
+    border: 2px solid #9ad4ff;
+    font-family: "Fredoka", "Trebuchet MS", sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.62rem, 1.15vw, 0.82rem);
+    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+        0 4px 12px rgba(0, 0, 0, 0.45);
+    line-height: 1.15;
+}
+
+#df-turn-banner-pedestal.is-your-turn::after {
+    display: block;
+    content: "SUA VEZ";
+    background: linear-gradient(180deg, #4aa8ff 0%, #1a6ad4 48%, #0a3a88 100%);
+    border-color: #b8e0ff;
+}
+
+#df-turn-banner-pedestal.is-ai-turn::after {
+    display: block;
+    content: "VEZ DO ADVERSÁRIO";
+    white-space: nowrap;
+    border-radius: 14px;
+    padding: 0.38em 0.75em;
+    background: linear-gradient(180deg, #e85a5a 0%, #c42828 48%, #8a1010 100%);
+    border-color: #ffb0b0;
+    box-shadow:
+        0 0 0 1px rgba(255, 200, 200, 0.22) inset,
+        0 0 12px rgba(232, 74, 74, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Desktop janela / mobile — leve escala */
+html.df-arena-desktop-windowed #df-turn-banner-pedestal::after {
+    transform: scale(1, 0.99);
+    transform-origin: center center;
+}
+
+html.df-arena-mobile #df-turn-banner-pedestal::after {
+    transform: scale(1.04, 1.02);
+    transform-origin: center center;
+}

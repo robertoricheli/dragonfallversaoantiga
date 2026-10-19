@@ -1,0 +1,662 @@
+/**
+ * Dragonfall — tema menus Idle Heroes (paleta ciano / painéis azul / CTA verde).
+ * Aplica a: menus JOGAR, treino, herói, online, notas, opções, mercado, arsenal, auth, perfil (chrome).
+ * NÃO aplica a: hub splash, menu splash, arena de combate.
+ */
+:root {
+    --df-ih-bg-top: #1e3a5f;
+    --df-ih-bg-mid: #152a48;
+    --df-ih-bg-bot: #0c1528;
+    --df-ih-bg-glow: rgba(57, 186, 255, 0.32);
+    --df-ih-bg-warm: rgba(40, 120, 90, 0.16);
+    --df-ih-screen-bg:
+        radial-gradient(ellipse 90% 70% at 50% 18%, var(--df-ih-bg-glow) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 50% at 50% 100%, var(--df-ih-bg-warm) 0%, transparent 50%),
+        linear-gradient(165deg, var(--df-ih-bg-top) 0%, var(--df-ih-bg-mid) 48%, var(--df-ih-bg-bot) 100%);
+    --df-ih-panel-bg: linear-gradient(180deg, rgba(26, 58, 109, 0.82) 0%, rgba(12, 24, 48, 0.92) 100%);
+    --df-ih-panel-border: #39baff;
+    --df-ih-panel-glow: rgba(57, 186, 255, 0.45);
+    --df-ih-btn-cool: linear-gradient(180deg, #4a8fd4 0%, #2a5a98 42%, #1a3a6d 100%);
+    --df-ih-btn-warm: linear-gradient(180deg, #7ae04a 0%, #5ccf31 38%, #3a9e1a 100%);
+    --df-ih-btn-border: #5ec8ff;
+    --df-ih-btn-border-inner: rgba(180, 240, 255, 0.5);
+    --df-ih-btn-warm-border: #b8ff80;
+    --df-ih-btn-warm-text: #143808;
+    --df-ih-text: #f2f8ff;
+    --df-ih-text-muted: #9ab4d0;
+    --df-ih-title: #e8f6ff;
+    --df-ih-accent-yellow: #ffe066;
+    --df-ih-tab-champion: linear-gradient(180deg, #3d7fd4 0%, #1a4a9a 100%);
+    --df-ih-tab-talent: linear-gradient(180deg, #e84c4c 0%, #9a2020 100%);
+    --df-ih-tab-reaction: linear-gradient(180deg, #5ccf31 0%, #2a7a18 100%);
+    --df-ih-tab-all: linear-gradient(180deg, #5a7ab0 0%, #2a3a68 100%);
+}
+
+/* ---------- Fundos das telas CSS-only ---------- */
+#df-play-mode.screen,
+#ai-mode-select.screen,
+#mercado-screen.screen,
+#opcoes.screen,
+#release-notes.screen,
+#df-arsenal.screen,
+#df-training-setup.screen,
+#hero-select.screen,
+#objective-select.screen,
+#mode.screen,
+#card-list.screen {
+    background: var(--df-ih-screen-bg) !important;
+    position: relative;
+    isolation: isolate;
+}
+
+/* Fundos ilustrados: COVER preenchendo toda a tela (igual HUB/combate).
+   No modo canvas-fit a arte é pintada no #df-rotate-stage (viewport inteiro)
+   e a tela fica transparente — sem barras pretas nas extremidades e sem
+   emenda no limite do canvas. Ver bloco "Canvas-fit" abaixo. */
+#df-play-mode.screen {
+    background: #0a0608 url("../bg/FUNDO%20DE%20COMBATE.png") center center / cover no-repeat !important;
+}
+#df-training-setup.screen {
+    background: #0a0608 url("../bg/A%20GUERRA.png") center center / cover no-repeat !important;
+}
+#hero-select.screen {
+    background: #0a0608 url("../bg/DESOLA%C3%87%C3%83O.webp") center center / cover no-repeat !important;
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-color: #0a0608 !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+#df-arsenal.screen {
+    background: #0a0608 url("../bg/SALA%20DE%20ARSENAL.png") center center / cover no-repeat !important;
+}
+
+#df-play-mode.screen::before,
+#ai-mode-select.screen::before,
+#online-lobby.screen::before,
+#mercado-screen.screen::before,
+#opcoes.screen::before,
+#release-notes.screen::before,
+#df-arsenal.screen::before,
+#df-training-setup.screen::before,
+#hero-select.screen::before,
+#objective-select.screen::before,
+#mode.screen::before,
+#card-list.screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 40%, rgba(57, 186, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(8, 12, 24, 0.55) 100%);
+}
+
+#df-play-mode.screen::before,
+#df-training-setup.screen::before,
+#hero-select.screen::before,
+#online-lobby.screen::before,
+#df-arsenal.screen::before {
+    background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 45%, rgba(8, 12, 24, 0.28) 100%);
+}
+
+#df-play-mode.screen > *,
+#ai-mode-select.screen > *,
+#online-lobby.screen > *,
+#mercado-screen.screen > *,
+#opcoes.screen > *,
+#release-notes.screen > *,
+#df-arsenal.screen > *,
+#df-training-setup.screen > *,
+#hero-select.screen > *,
+#objective-select.screen > *,
+#mode.screen > *,
+#card-list.screen > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Auth layers (sem PNG de cena) */
+#df-auth-gate-layer,
+#df-auth-form-layer,
+#df-auth-forgot-layer {
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(57, 186, 255, 0.28) 0%, transparent 55%),
+        rgba(12, 20, 36, 0.92) !important;
+}
+
+#df-auth-gate-layer .df-auth-panel,
+#df-auth-form-layer .df-auth-panel,
+#df-auth-forgot-layer .df-auth-panel {
+    background: var(--df-ih-panel-bg) !important;
+    border: 3px solid var(--df-ih-panel-border) !important;
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.45),
+        0 0 24px var(--df-ih-panel-glow),
+        inset 0 1px 0 rgba(180, 240, 255, 0.35),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.25) !important;
+    border-radius: 18px !important;
+}
+
+/* ---------- Títulos ---------- */
+#df-play-mode .title,
+#ai-mode-select .title,
+#online-lobby .title,
+#mercado-screen .title,
+#opcoes .title,
+#release-notes .title,
+#df-arsenal .title,
+#df-training-setup .title,
+#hero-select .title,
+#objective-select .title,
+#mode .title,
+#card-list .title {
+    color: var(--df-ih-title) !important;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.75),
+        0 0 18px rgba(57, 186, 255, 0.25) !important;
+    letter-spacing: 0.08em;
+}
+
+#df-play-mode .df-play-mode-hint {
+    color: #ffffff !important;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(0, 0, 0, 0.65) !important;
+}
+
+#ai-mode-select .play-menu-hint,
+#online-lobby .play-menu-hint,
+#mercado-screen .mode-construction-note,
+#df-play-mode .mode-construction-note {
+    color: var(--df-ih-text-muted) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Botões menu (cápsula ornamentada) ---------- */
+#df-play-mode .menu-btn,
+#ai-mode-select .menu-btn,
+#online-lobby .menu-btn,
+#mercado-screen .menu-btn,
+#opcoes .menu-btn,
+#release-notes .menu-btn,
+#df-arsenal .menu-btn,
+#df-training-setup .menu-btn,
+#hero-select .menu-btn,
+#objective-select .menu-btn,
+#mode .menu-btn,
+#card-list .menu-btn,
+#howto-overlay .menu-btn {
+    border-radius: 22px !important;
+    border: 3px solid var(--df-ih-btn-border) !important;
+    background: var(--df-ih-btn-cool) !important;
+    color: var(--df-ih-text) !important;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.85),
+        0 0 1px #000 !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.45),
+        inset 0 2px 0 var(--df-ih-btn-border-inner),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.35) !important;
+    font-family: "Fredoka", "Cinzel", sans-serif !important;
+    letter-spacing: 0.04em !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
+}
+
+#df-play-mode .menu-btn:hover,
+#ai-mode-select .menu-btn:hover,
+#online-lobby .menu-btn:hover,
+#mercado-screen .menu-btn:hover,
+#opcoes .menu-btn:hover,
+#release-notes .menu-btn:hover,
+#df-arsenal .menu-btn:hover,
+#df-training-setup .menu-btn:hover,
+#hero-select .menu-btn:hover,
+#objective-select .menu-btn:hover,
+#mode .menu-btn:hover,
+#card-list .menu-btn:hover,
+#howto-overlay .menu-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.5),
+        0 0 18px var(--df-ih-panel-glow),
+        inset 0 2px 0 var(--df-ih-btn-border-inner),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+#df-play-mode .menu-btn.selected,
+#ai-mode-select .menu-btn.selected,
+#online-lobby .menu-btn.selected,
+#opcoes .menu-btn.selected,
+#hero-select .menu-btn.selected,
+#objective-select .menu-btn.selected,
+#mode .menu-btn.selected,
+#df-training-setup .menu-btn.selected {
+    background: var(--df-ih-btn-warm) !important;
+    color: var(--df-ih-btn-warm-text) !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    border-color: var(--df-ih-btn-warm-border) !important;
+    box-shadow:
+        0 0 24px rgba(92, 207, 49, 0.5),
+        0 6px 14px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -3px 6px rgba(20, 80, 10, 0.35) !important;
+    transform: scale(1.03) !important;
+}
+
+/* Primária: Jogador contra IA */
+#df-play-mode #btn-play-mode-ai.menu-btn {
+    background: var(--df-ih-btn-warm) !important;
+    color: var(--df-ih-btn-warm-text) !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    border-color: var(--df-ih-btn-warm-border) !important;
+}
+
+#df-play-mode #btn-play-mode-ai.menu-btn:hover {
+    color: #0c2804 !important;
+}
+
+/* Voltar = cool */
+#df-play-mode #btn-play-mode-back.menu-btn,
+#ai-mode-select #btn-ai-mode-back.menu-btn,
+#online-lobby #btn-online-back.menu-btn,
+#opcoes #btn-opcoes-back.menu-btn,
+#release-notes #btn-notes-back.menu-btn,
+#mercado-screen #btn-mercado-back.menu-btn {
+    background: var(--df-ih-btn-cool) !important;
+    color: var(--df-ih-text) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85) !important;
+    border-color: var(--df-ih-btn-border) !important;
+}
+
+/* ---------- Cards (hero / mode / objective) ---------- */
+#hero-select .hero-card,
+#mode .mode-card,
+#objective-select .objective-card {
+    background: var(--df-ih-panel-bg) !important;
+    border: 3px solid rgba(57, 186, 255, 0.65) !important;
+    border-radius: 16px !important;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 0 14px rgba(57, 186, 255, 0.2),
+        inset 0 1px 0 rgba(180, 240, 255, 0.25) !important;
+    color: var(--df-ih-text) !important;
+}
+
+#hero-select .hero-card:hover,
+#hero-select .hero-card.selected,
+#mode .mode-card:hover,
+#mode .mode-card.selected,
+#objective-select .objective-card:hover,
+#objective-select .objective-card.selected {
+    border-color: #9ae0ff !important;
+    box-shadow:
+        0 0 22px var(--df-ih-panel-glow),
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+#objective-select .objective-card .pts {
+    color: var(--df-ih-accent-yellow) !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+#objective-select .objective-card .lbl {
+    color: var(--df-ih-text-muted) !important;
+}
+
+/* ---------- Treino — botões alternam vermelho / azul; textos brancos ---------- */
+#df-training-setup .df-training-panel-title,
+#df-training-setup .df-training-choice,
+#df-training-setup .df-training-choice-sub,
+#df-training-setup .df-training-deck-item,
+#df-training-setup .df-training-hint,
+#df-training-setup .df-training-back-btn,
+#df-training-setup .df-training-advance-btn {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85) !important;
+}
+
+#df-training-setup .df-training-choice {
+    border-radius: 14px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Alternância: 1º/3º azul · 2º/4º vermelho */
+#df-training-setup .df-training-choices .df-training-choice:nth-child(odd) {
+    background: linear-gradient(180deg, #4a8fd4 0%, #2a5a98 42%, #1a3a6d 100%) !important;
+    border: 2px solid rgba(94, 200, 255, 0.85) !important;
+}
+#df-training-setup .df-training-choices .df-training-choice:nth-child(even) {
+    background: linear-gradient(180deg, #e85a5a 0%, #b02828 42%, #7a1414 100%) !important;
+    border: 2px solid rgba(255, 140, 140, 0.85) !important;
+}
+
+/* Hover = realce discreto. Selecionado = moldura dourada + escala (inconfundível). */
+#df-training-setup .df-training-choices .df-training-choice:hover {
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+    filter: brightness(1.08);
+}
+
+#df-training-setup .df-training-choices .df-training-choice:not(.selected):not(:disabled) {
+    filter: saturate(0.7) brightness(0.74);
+    opacity: 0.84;
+}
+
+#df-training-setup .df-training-choices .df-training-choice.selected,
+#df-training-setup .df-training-deck-list .df-training-deck-item.selected {
+    border: 3px solid var(--df-ih-accent-yellow, #ffe066) !important;
+    box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.55),
+        0 0 22px rgba(255, 224, 102, 0.75),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        0 6px 16px rgba(0, 0, 0, 0.45) !important;
+    filter: brightness(1.16) saturate(1.1);
+    opacity: 1;
+    transform: scale(1.045);
+    z-index: 2;
+}
+
+#df-training-setup .df-training-choices .df-training-choice.selected {
+    position: relative;
+}
+
+/* Selo de confirmação no canto — leitura instantânea de "esta é a escolhida". */
+#df-training-setup .df-training-choices .df-training-choice.selected::after {
+    content: "✓";
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--df-ih-accent-yellow, #ffe066);
+    color: #241a04;
+    border: 2px solid rgba(0, 0, 0, 0.6);
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 18px;
+    text-align: center;
+    text-shadow: none;
+    box-shadow: 0 0 12px rgba(255, 224, 102, 0.85);
+    pointer-events: none;
+}
+
+#df-training-setup .df-training-back-btn {
+    border-radius: 22px !important;
+    border: 3px solid #5ec8ff !important;
+    background: linear-gradient(180deg, #4a8fd4 0%, #2a5a98 42%, #1a3a6d 100%) !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85) !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.45),
+        inset 0 2px 0 rgba(180, 240, 255, 0.45) !important;
+}
+
+#df-training-setup .df-training-advance-btn {
+    border-radius: 22px !important;
+    border: 3px solid #ff8a8a !important;
+    background: linear-gradient(180deg, #e85a5a 0%, #b02828 42%, #7a1414 100%) !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85) !important;
+    box-shadow:
+        0 0 20px rgba(220, 60, 60, 0.4),
+        inset 0 2px 0 rgba(255, 200, 200, 0.35) !important;
+}
+
+#df-training-setup .df-training-head .title {
+    color: var(--df-ih-title) !important;
+}
+
+#df-training-setup .df-training-panel {
+    background: var(--df-ih-panel-bg) !important;
+    border: 3px solid rgba(57, 186, 255, 0.55) !important;
+    border-radius: 18px !important;
+    box-shadow:
+        0 0 18px rgba(57, 186, 255, 0.22),
+        inset 0 1px 0 rgba(180, 240, 255, 0.2) !important;
+}
+
+/* ---------- Arsenal (overrides tema; detalhe fino em df-arsenal.css) ---------- */
+#df-arsenal .df-arsenal-pane {
+    background: linear-gradient(180deg, rgba(20, 48, 90, 0.88) 0%, rgba(10, 22, 44, 0.94) 100%) !important;
+    border: 4px solid var(--df-ih-panel-border) !important;
+    border-radius: 22px !important;
+    box-shadow:
+        0 0 28px var(--df-ih-panel-glow),
+        inset 0 1px 0 rgba(180, 240, 255, 0.28),
+        0 8px 22px rgba(0, 0, 0, 0.4) !important;
+}
+
+#df-arsenal .df-arsenal-pane-title {
+    color: var(--df-ih-title) !important;
+}
+
+#df-arsenal .df-arsenal-page-btn,
+#df-arsenal .df-arsenal-delete-btn,
+#df-arsenal .df-arsenal-deck-tab,
+#df-arsenal .df-arsenal-delete-yes,
+#df-arsenal .df-arsenal-delete-no {
+    border-radius: 14px !important;
+    border: 2px solid rgba(57, 186, 255, 0.75) !important;
+    background: var(--df-ih-btn-cool) !important;
+    color: var(--df-ih-text) !important;
+    box-shadow: inset 0 1px 0 rgba(180, 240, 255, 0.3), 0 3px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+#df-arsenal .df-arsenal-deck-tab.selected {
+    border-color: var(--df-ih-accent-yellow) !important;
+    box-shadow:
+        0 0 14px rgba(255, 224, 102, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+#df-arsenal .df-arsenal-save-btn {
+    border-radius: 16px !important;
+    border: 3px solid var(--df-ih-btn-warm-border) !important;
+    background: var(--df-ih-btn-warm) !important;
+    color: var(--df-ih-btn-warm-text) !important;
+    box-shadow:
+        0 0 20px rgba(92, 207, 49, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -3px 6px rgba(20, 80, 10, 0.35) !important;
+}
+
+#df-arsenal .df-arsenal-tab {
+    border-radius: 12px 12px 0 0 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+#df-arsenal .df-arsenal-deck-name {
+    background: rgba(8, 16, 32, 0.65) !important;
+    border-color: rgba(57, 186, 255, 0.55) !important;
+    color: var(--df-ih-text) !important;
+}
+
+/* ---------- Opções / Notas ---------- */
+#opcoes .df-opcoes-vol-panel,
+#release-notes .release-notes-scroll {
+    background: var(--df-ih-panel-bg) !important;
+    border: 3px solid rgba(57, 186, 255, 0.6) !important;
+    border-radius: 18px !important;
+    padding: 16px 18px !important;
+    box-shadow:
+        0 0 20px rgba(57, 186, 255, 0.25),
+        inset 0 1px 0 rgba(180, 240, 255, 0.22),
+        0 6px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+#release-notes .release-note-item {
+    background: rgba(57, 186, 255, 0.06) !important;
+    border-color: rgba(57, 186, 255, 0.35) !important;
+}
+
+/* Tela de espera online: texto marrom bem escuro sobre a arte de DESOLAÇÃO.
+   Escopo #online-lobby — não afeta .title / .play-menu-hint de outras telas.
+   O botão Voltar (.menu-btn) fica de fora de propósito. */
+#online-lobby .title,
+#online-lobby .mode-construction-note,
+#online-lobby .play-menu-hint,
+#online-lobby #online-status,
+#online-lobby #pvp-queue-panel > p,
+#online-lobby #pvp-queue-seconds,
+#online-lobby #pvp-advanced-panel > summary {
+    color: #3D2817 !important;
+    text-shadow: none !important;
+}
+
+#ai-mode-select #btn-ai-mode-hard.menu-btn {
+    background: var(--df-ih-btn-warm) !important;
+    color: var(--df-ih-btn-warm-text) !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    border-color: var(--df-ih-btn-warm-border) !important;
+}
+
+/* ---------- Auth buttons ---------- */
+.df-auth-btn {
+    border-radius: 16px !important;
+    border: 2px solid rgba(57, 186, 255, 0.7) !important;
+    background: var(--df-ih-btn-cool) !important;
+    color: var(--df-ih-text) !important;
+    box-shadow: inset 0 1px 0 rgba(180, 240, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+}
+
+.df-auth-btn-primary {
+    background: var(--df-ih-btn-warm) !important;
+    border-color: var(--df-ih-btn-warm-border) !important;
+    color: var(--df-ih-btn-warm-text) !important;
+}
+
+/* ---------- Canvas-fit: forçar fundo nas telas ativas ---------- */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #ai-mode-select.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #mercado-screen.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #opcoes.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #release-notes.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #objective-select.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #mode.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #card-list.active {
+    background: var(--df-ih-screen-bg) !important;
+}
+
+/* Fila ranked / lobby: mesmo DESOLAÇÃO da seleção de herói (mobile sem caixa preta). */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #online-lobby.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #online-lobby.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #df-scale-root > #online-lobby.active {
+    background-color: #0a0608 !important;
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+#online-lobby.screen {
+    background-color: #0a0608 !important;
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+#online-lobby.screen::before {
+    background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 45%, rgba(8, 12, 24, 0.28) 100%) !important;
+}
+
+/* Fonte única do fundo ilustrado: data-df-menu-bg (setado por dfSyncLetterboxBg).
+   Cover na própria tela ativa (escala do canvas cobre o viewport) + stage/html
+   para qualquer letterbox residual. Sem contain. */
+/* Pintura do fundo ilustrado: só cor de placeholder aqui.
+   A arte vem do inline de dfSyncLetterboxBg / DfLayout.ensureMenuBgReady
+   (mesma URL canônica do warm) — evita competir com image-set sem hash. */
+html.df-mobile-desktop-fit[data-df-menu-bg="play"] #df-rotate-stage,
+html.df-mobile-desktop-fit[data-df-menu-bg="play"],
+html.df-mobile-desktop-fit[data-df-menu-bg="play"]:not(:has(#game.active)) #df-play-mode.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="play"]:not(:has(#game.active)) #df-scale-root > #df-play-mode.active {
+    background-color: #0a0608 !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+html.df-mobile-desktop-fit[data-df-menu-bg="training"] #df-rotate-stage,
+html.df-mobile-desktop-fit[data-df-menu-bg="training"],
+html.df-mobile-desktop-fit[data-df-menu-bg="training"]:not(:has(#game.active)) #df-training-setup.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="training"]:not(:has(#game.active)) #df-scale-root > #df-training-setup.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-training-setup.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #df-training-setup.active {
+    background-color: #0a0608 !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"] #df-rotate-stage,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"],
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #hero-select.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #df-scale-root > #hero-select.active,
+html.df-mobile-desktop-fit.df-desktop-fullscreen[data-df-menu-bg="hero"] #df-rotate-stage,
+html.df-mobile-desktop-fit.df-desktop-fullscreen:not(:has(#game.active)) #df-scale-root > #hero-select.active {
+    background-color: #0a0608 !important;
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+html.df-mobile-desktop-fit[data-df-menu-bg="arsenal"] #df-rotate-stage,
+html.df-mobile-desktop-fit[data-df-menu-bg="arsenal"],
+html.df-mobile-desktop-fit[data-df-menu-bg="arsenal"]:not(:has(#game.active)) #df-arsenal.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="arsenal"]:not(:has(#game.active)) #df-scale-root > #df-arsenal.active {
+    background-color: #0a0608 !important;
+    background-image: image-set(
+        url("../bg/SALA%20DE%20ARSENAL.webp") type("image/webp"),
+        url("../bg/SALA%20DE%20ARSENAL.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+/* Hub ativo: splash acima do canvas; stage transparente — evita tela preta ao Voltar. */
+html.df-mobile-desktop-fit:not(:has(#game.active)):has(#play-menu.active) #df-hub-splash-layer {
+    display: block !important;
+    visibility: visible !important;
+    z-index: 300 !important;
+    pointer-events: auto !important;
+}
+html.df-mobile-desktop-fit:not(:has(#game.active)):has(#play-menu.active) #df-rotate-stage {
+    background: transparent !important;
+}
+
+/* Treino/Jogar lobby: hub NUNCA por cima (ganha de :has(#play-menu.active) residual). */
+html.df-mobile-desktop-fit:not(:has(#game.active)):has(#df-training-setup.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:not(:has(#game.active)):has(#df-training-setup.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:not(:has(#game.active)) body.df-training-open #df-hub-splash-layer,
+html.df-mobile-desktop-fit:not(:has(#game.active)) body.df-training-open .df-mobile-bg-host {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+
+/* Hub splash não pode vazar por cima/atrás das telas ilustradas */
+html.df-mobile-desktop-fit[data-df-menu-bg] #df-hub-splash-layer,
+html.df-mobile-desktop-fit[data-df-menu-bg] .df-mobile-bg-host {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Não pintar #main / #play-menu quando transparentes sobre splash/hub */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #main.main-splash-screen,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #play-menu.active {
+    background: transparent !important;
+}

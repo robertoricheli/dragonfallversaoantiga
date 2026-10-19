@@ -1,0 +1,1009 @@
+/* Dragonfall — Arsenal (catálogo + montagem de baralhos) */
+
+#df-arsenal {
+    background: #0a0608 url("../bg/SALA%20DE%20ARSENAL.png") center center / cover no-repeat;
+    padding: 12px 16px 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+#df-arsenal.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.df-arsenal-head {
+    width: min(1280px, 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.df-arsenal-head .title {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    letter-spacing: 3px;
+}
+
+.df-arsenal-body {
+    width: min(1280px, 100%);
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(12px, 2vw, 24px);
+    align-items: stretch;
+}
+
+.df-arsenal-pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+    background: linear-gradient(180deg, rgba(20, 48, 90, 0.88) 0%, rgba(10, 22, 44, 0.94) 100%);
+    border: 4px solid var(--df-ih-panel-border, #39baff);
+    border-radius: 22px;
+    padding: 12px 14px 14px;
+    box-shadow:
+        0 0 28px var(--df-ih-panel-glow, rgba(57, 186, 255, 0.45)),
+        inset 0 1px 0 rgba(180, 240, 255, 0.28),
+        0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+.df-arsenal-pane-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--df-ih-title, #e8f6ff);
+    text-align: center;
+    margin: 0 0 8px;
+    font-weight: 800;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+.df-arsenal-pane-title--deck {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.df-arsenal-deck-title-ico {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+#df-arsenal-catalog-count {
+    color: var(--df-ih-accent-yellow, #ffe066);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.df-arsenal-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 0 0 10px;
+    flex-shrink: 0;
+    padding: 0 2px;
+}
+
+.df-arsenal-tab {
+    border: 2px solid transparent;
+    border-radius: 12px 12px 0 0;
+    padding: 8px 12px 10px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}
+
+.df-arsenal-tab-ico {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.df-arsenal-tab:hover { transform: translateY(-2px); }
+.df-arsenal-tab.selected {
+    transform: translateY(0) scale(1.06);
+    filter: brightness(1.12);
+    z-index: 2;
+    box-shadow: 0 -2px 14px rgba(255, 255, 255, 0.2);
+    padding-bottom: 12px;
+}
+
+.df-arsenal-tab--champion {
+    background: var(--df-ih-tab-champion, linear-gradient(180deg, #3d7fd4, #1a4a9a));
+    border-color: #6ab0ff;
+}
+.df-arsenal-tab--talent {
+    background: var(--df-ih-tab-talent, linear-gradient(180deg, #e84c4c, #9a2020));
+    border-color: #ff8080;
+}
+.df-arsenal-tab--reaction {
+    background: var(--df-ih-tab-reaction, linear-gradient(180deg, #5ccf31, #2a7a18));
+    border-color: #90f060;
+}
+.df-arsenal-tab--all {
+    background: var(--df-ih-tab-all, linear-gradient(180deg, #5a7ab0, #2a3a68));
+    border-color: #8ab0e0;
+}
+
+.df-arsenal-deck-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.df-arsenal-deck-name {
+    background: rgba(8, 16, 32, 0.65);
+    border: 2px solid rgba(57, 186, 255, 0.55);
+    border-radius: 10px;
+    color: var(--df-ih-text, #f2f8ff);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 6px 10px;
+    min-width: 0;
+    width: min(220px, 70%);
+    text-align: center;
+}
+
+.df-arsenal-deck-name:focus {
+    outline: 2px solid rgba(57, 186, 255, 0.65);
+    border-color: var(--df-ih-panel-border, #39baff);
+}
+
+.df-arsenal-deck-pencil {
+    font-size: 1rem;
+    opacity: 0.85;
+    user-select: none;
+}
+
+.df-arsenal-grid-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.df-arsenal-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: clamp(4px, 0.55vw, 7px);
+    width: 100%;
+    max-width: 520px;
+    align-content: start;
+    justify-content: center;
+    touch-action: none;
+}
+
+.df-arsenal-slot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 5 / 7;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px solid rgba(180, 120, 200, 0.4);
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.df-arsenal-slot.is-dragging {
+    opacity: 0.55;
+    box-shadow: 0 0 14px rgba(255, 215, 107, 0.35);
+}
+
+.df-arsenal-slot.is-drag-armed {
+    transform: scale(1.06);
+    box-shadow: 0 0 16px rgba(200, 180, 255, 0.45);
+    z-index: 4;
+}
+
+.df-arsenal-slot.is-settle-flash {
+    z-index: 6;
+    transform-origin: center center;
+}
+
+.df-arsenal-slot.is-empty {
+    cursor: default;
+}
+
+.df-arsenal-slot:hover:not(.is-empty):not(.is-in-deck) {
+    border-color: #c8e8ff;
+    box-shadow: 0 0 12px rgba(57, 186, 255, 0.45);
+}
+
+.df-arsenal-slot.is-drop-target {
+    border-color: #9ae0ff;
+    box-shadow: 0 0 14px rgba(57, 186, 255, 0.55);
+}
+
+.df-arsenal-slot.is-in-deck {
+    cursor: pointer;
+}
+
+.df-arsenal-slot.is-in-deck::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background: rgba(0, 0, 0, 0.58);
+    pointer-events: none;
+}
+
+.df-arsenal-zoom-btn {
+    display: none !important;
+}
+
+.df-arsenal-zoom-icon {
+    display: none !important;
+}
+
+.df-arsenal-slot .card-list-face {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    pointer-events: none;
+    border-radius: 4px;
+}
+
+.df-arsenal-slot .card-list-face.df-card-face-host {
+    object-fit: unset;
+}
+
+.df-arsenal-slot .card-list-face.df-card-face-host .df-card-face {
+    border-radius: 4px;
+}
+
+.df-arsenal-slot.type-champion { border-color: rgba(74, 127, 212, 0.45); }
+.df-arsenal-slot.type-talent { border-color: rgba(212, 74, 90, 0.45); }
+.df-arsenal-slot.type-reaction { border-color: rgba(74, 212, 122, 0.45); }
+
+/* Zoom — carta ampliada + VOLTAR / ADICIONAR|RETIRAR */
+.df-arsenal-zoom-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 220;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.74);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.df-arsenal-zoom-layer.is-open {
+    display: flex !important;
+}
+
+.df-arsenal-zoom-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: min(92vw, 560px);
+    cursor: default;
+    pointer-events: auto;
+}
+
+/* Palco do zoom: setas de navegação flanqueando a carta ampliada.
+   As setas ficam FORA da carta no desktop e sobrepostas às bordas no mobile,
+   onde não há largura sobrando. */
+.df-arsenal-zoom-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.df-arsenal-zoom-nav {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--df-ih-btn-border, #5ec8ff);
+    background: var(--df-ih-btn-cool, #2a5a98);
+    color: #fff;
+    font-family: Cinzel, Georgia, serif;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0 0 4px;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    transition: transform 0.14s ease, filter 0.14s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.df-arsenal-zoom-nav:hover {
+    filter: brightness(1.18);
+}
+
+.df-arsenal-zoom-nav:active {
+    transform: scale(0.92);
+}
+
+.df-arsenal-zoom-nav[hidden] {
+    display: none;
+}
+
+/* Deslize curto indicando a direção ao trocar de carta. */
+@keyframes df-arsenal-zoom-in-next {
+    from { opacity: 0.35; transform: translateX(26px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes df-arsenal-zoom-in-prev {
+    from { opacity: 0.35; transform: translateX(-26px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.df-arsenal-zoom-dialog.is-nav-next .df-arsenal-zoom-stage {
+    animation: df-arsenal-zoom-in-next 0.22s ease-out;
+}
+
+.df-arsenal-zoom-dialog.is-nav-prev .df-arsenal-zoom-stage {
+    animation: df-arsenal-zoom-in-prev 0.22s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .df-arsenal-zoom-dialog.is-nav-next .df-arsenal-zoom-stage,
+    .df-arsenal-zoom-dialog.is-nav-prev .df-arsenal-zoom-stage {
+        animation: none;
+    }
+}
+
+.df-arsenal-zoom-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.df-arsenal-zoom-btn-back,
+.df-arsenal-zoom-btn-action {
+    min-width: 132px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 215, 107, 0.55);
+    font-family: Cinzel, Georgia, serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.12s, filter 0.12s, opacity 0.12s;
+}
+
+.df-arsenal-zoom-btn-back {
+    background: linear-gradient(180deg, #3a4a3a 0%, #1e2a1e 100%);
+    color: #e8f0e4;
+    border-color: rgba(120, 180, 120, 0.55);
+}
+
+.df-arsenal-zoom-btn-action.is-add {
+    background: linear-gradient(180deg, #5a4a20 0%, #2e2410 100%);
+    color: #ffd76b;
+}
+
+.df-arsenal-zoom-btn-action.is-remove {
+    background: linear-gradient(180deg, #5a2828 0%, #2e1212 100%);
+    color: #ffc8c8;
+    border-color: rgba(220, 100, 100, 0.55);
+}
+
+.df-arsenal-zoom-btn-back:hover,
+.df-arsenal-zoom-btn-action:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+.df-arsenal-zoom-btn-action:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.df-arsenal-zoom-host,
+#df-arsenal-zoom-host.df-arsenal-zoom-art {
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: min(70vw, 520px);
+    max-height: min(72vh, 640px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.df-arsenal-zoom-host .df-arsenal-zoom-art-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.df-arsenal-zoom-host.has-composed-face .df-arsenal-zoom-art-img {
+    display: none;
+}
+
+#df-arsenal-zoom-art.df-arsenal-zoom-art {
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: min(88vw, 680px);
+    max-height: min(88vh, 960px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center center;
+    border-radius: 8px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.72);
+    pointer-events: auto;
+    image-rendering: auto;
+    border: none;
+    outline: none;
+}
+
+body.df-arsenal-zoom-open .df-arsenal-body,
+body.df-arsenal-zoom-open .df-arsenal-head {
+    filter: brightness(0.42);
+}
+
+/* Ghost de arraste — canvas 1280×720 no mobile (DfLayout), viewport no desktop */
+.df-arsenal-drag-ghost {
+    position: absolute;
+    z-index: 100005;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.62);
+    opacity: 0.96;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html:not(.df-mobile-desktop-fit) .df-arsenal-drag-ghost {
+    position: fixed;
+}
+
+.df-arsenal-drag-ghost-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.df-arsenal-drag-ghost-fallback {
+    width: 100%;
+    height: 100%;
+    background: #1a1028;
+    border-radius: inherit;
+}
+
+.df-arsenal-pixi-mount {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100006;
+}
+
+.df-arsenal-pager,
+.df-arsenal-deck-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.df-arsenal-pager {
+    background: linear-gradient(180deg, rgba(40, 90, 160, 0.55), rgba(20, 48, 96, 0.75));
+    border: 2px solid rgba(57, 186, 255, 0.55);
+    border-radius: 999px;
+    padding: 4px 10px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 14px rgba(57, 186, 255, 0.25);
+}
+
+.df-arsenal-page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--df-ih-btn-border, #5ec8ff);
+    background: var(--df-ih-btn-cool, #2a5a98);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.df-arsenal-page-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.df-arsenal-page-label {
+    font-size: 0.82rem;
+    color: var(--df-ih-text, #f2f8ff);
+    min-width: 88px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.df-arsenal-deck-tabs {
+    display: flex;
+    gap: 6px;
+}
+
+.df-arsenal-deck-tab {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid rgba(57, 186, 255, 0.65);
+    background: var(--df-ih-btn-cool, #2a5a98);
+    color: var(--df-ih-text, #f2f8ff);
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.df-arsenal-deck-tab.selected {
+    border-color: var(--df-ih-accent-yellow, #ffe066);
+    background: linear-gradient(180deg, #3d7fd4, #1a4a9a);
+    color: var(--df-ih-accent-yellow, #ffe066);
+    box-shadow: 0 0 12px rgba(255, 224, 102, 0.45);
+}
+
+.df-arsenal-save-btn {
+    border: 3px solid var(--df-ih-btn-warm-border, #b8ff80);
+    background: var(--df-ih-btn-warm, linear-gradient(180deg, #7ae04a, #3a9e1a));
+    color: var(--df-ih-btn-warm-text, #143808);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 10px 22px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow:
+        0 0 18px rgba(92, 207, 49, 0.45),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -3px 6px rgba(20, 80, 10, 0.35);
+}
+
+.df-arsenal-save-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.df-arsenal-delete-btn {
+    border: 2px solid #8a3a4a;
+    background: linear-gradient(180deg, #4a1820, #2a0c12);
+    color: #ffc8d0;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.72rem;
+}
+
+.df-arsenal-delete-btn:hover {
+    border-color: #c05060;
+    color: #ffe0e6;
+}
+
+.df-arsenal-delete-confirm {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(20, 8, 16, 0.92);
+    border: 1px solid rgba(255, 120, 140, 0.45);
+    text-align: center;
+}
+
+.df-arsenal-delete-text {
+    margin: 0 0 8px;
+    color: #ffd0d8;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.df-arsenal-delete-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.df-arsenal-delete-yes,
+.df-arsenal-delete-no {
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+
+.df-arsenal-delete-yes {
+    border: 2px solid #c05060;
+    background: #4a1820;
+    color: #ffd0d8;
+}
+
+.df-arsenal-delete-no {
+    border: 2px solid #6a5a40;
+    background: #2a2418;
+    color: #ffecc8;
+}
+
+.df-arsenal-save-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.df-arsenal-save-btn.is-busy { opacity: 0.7; pointer-events: none; }
+
+.df-arsenal-toast {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100010;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: rgba(20, 10, 30, 0.92);
+    border: 1px solid rgba(255, 215, 107, 0.45);
+    color: #ffecc8;
+    font-size: 0.85rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.df-arsenal-toast.is-visible { opacity: 1; }
+
+.df-arsenal-pane.is-drag-over {
+    outline: 2px dashed rgba(255, 215, 107, 0.45);
+    outline-offset: -4px;
+}
+
+body.df-arsenal-dragging {
+    touch-action: none !important;
+    user-select: none !important;
+}
+
+body.df-arsenal-open #df-hub-splash-layer,
+body.df-arsenal-open #df-menu-splash-layer {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+body.df-arsenal-open .df-mobile-bg-host {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+body.df-arsenal-open #df-arsenal.active {
+    z-index: 30;
+}
+
+/* ========== Mobile canvas fit — mesmo layout horizontal do desktop (1280×720) ========== */
+html.df-mobile-desktop-fit #df-scale-root > #df-arsenal {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 30 !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-arsenal.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #df-arsenal.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 6px 8px !important;
+    overflow: hidden !important;
+    touch-action: none !important;
+    z-index: 30 !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-head {
+    width: 100% !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-head .title {
+    font-size: 1.2rem !important;
+    letter-spacing: 2px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-body {
+    width: 100% !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-pane {
+    min-height: 0 !important;
+    padding: 6px 8px 8px !important;
+    border-radius: 10px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-pane-title {
+    font-size: 0.58rem !important;
+    margin-bottom: 4px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-tabs {
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-tab {
+    padding: 3px 7px !important;
+    font-size: 0.58rem !important;
+    border-radius: 6px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-header {
+    margin-bottom: 4px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-name {
+    font-size: 0.72rem !important;
+    padding: 4px 8px !important;
+    width: min(160px, 62%) !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-pencil {
+    font-size: 0.85rem !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-grid-wrap {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    padding: 0 !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-grid {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    gap: 2px !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
+    align-content: stretch !important;
+    justify-content: stretch !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-slot {
+    aspect-ratio: unset !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-slot .card-list-face {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* Zoom do Arsenal no body (fora do canvas escalado) — porte desktop */
+body > #df-arsenal-zoom-layer.df-arsenal-zoom-layer {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 100050 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+}
+
+body > #df-arsenal-zoom-layer #df-arsenal-zoom-host,
+body > #df-arsenal-zoom-layer #df-arsenal-zoom-art,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-host {
+    max-width: min(70vw, 520px) !important;
+    max-height: min(72vh, 640px) !important;
+    pointer-events: none !important;
+}
+
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-dialog,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-actions,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-stage,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-btn-back,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-nav,
+body > #df-arsenal-zoom-layer .df-arsenal-zoom-btn-action {
+    pointer-events: auto !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active #df-arsenal-zoom-art {
+    max-width: min(70vw, 520px) !important;
+    max-height: min(72vh, 640px) !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-slot.is-settle-flash {
+    animation: df-arsenal-slot-settle 0.16s ease-out forwards;
+}
+
+@keyframes df-arsenal-slot-settle {
+    from {
+        transform: scale(0.92);
+        opacity: 0.72;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+body.df-arsenal-dragging .df-arsenal-drag-ghost {
+    will-change: left, top;
+    contain: layout style paint;
+}
+
+/* Mobile / telas estreitas: a carta ampliada já ocupa quase toda a largura,
+   então as setas passam a flutuar sobre as bordas dela em vez de disputar
+   espaço horizontal (o que encolheria a carta). */
+@media (max-width: 900px), (pointer: coarse) {
+    .df-arsenal-zoom-stage {
+        gap: 0;
+    }
+
+    .df-arsenal-zoom-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        font-size: 1.7rem;
+        background: rgba(20, 38, 66, 0.82);
+        z-index: 2;
+    }
+
+    .df-arsenal-zoom-nav--prev {
+        left: -6px;
+    }
+
+    .df-arsenal-zoom-nav--next {
+        right: -6px;
+    }
+
+    .df-arsenal-zoom-nav:active {
+        transform: translateY(-50%) scale(0.92);
+    }
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-pager,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-footer {
+    margin-top: 4px !important;
+    gap: 6px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-page-btn,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-tab {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.72rem !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-page-label {
+    font-size: 0.68rem !important;
+    min-width: 72px !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-save-btn,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-delete-btn {
+    padding: 5px 10px !important;
+    font-size: 0.62rem !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-slot,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-grid,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-grid-wrap,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-zoom-layer,
+html.df-mobile-desktop-fit #df-arsenal.active #df-arsenal-zoom-art,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-tab,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-page-btn,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-deck-tab,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-save-btn,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-delete-btn,
+html.df-mobile-desktop-fit #df-arsenal.active #btn-arsenal-back {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+}
+
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-grid,
+html.df-mobile-desktop-fit #df-arsenal.active .df-arsenal-slot {
+    touch-action: none !important;
+}
+
+body.df-arsenal-dragging html.df-mobile-desktop-fit #df-arsenal.active {
+    touch-action: none !important;
+}
+
+/* Viewport estreito fora do canvas fit: empilha só se não for mobile-desktop-fit */
+@media (max-width: 900px), (max-height: 620px) {
+    html:not(.df-mobile-desktop-fit) .df-arsenal-body {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    html:not(.df-mobile-desktop-fit) .df-arsenal-pane {
+        min-height: 280px;
+    }
+
+    html:not(.df-mobile-desktop-fit) .df-arsenal-zoom-art,
+    html:not(.df-mobile-desktop-fit) #df-arsenal-zoom-art,
+    html:not(.df-mobile-desktop-fit) .df-arsenal-zoom-host {
+        max-width: min(70vw, 520px);
+        max-height: min(88vh, 720px);
+    }
+}

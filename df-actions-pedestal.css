@@ -1,0 +1,137 @@
+/**
+ * Rótulo "Ações" + contagem na pedra do topo do campo de batalha.
+ */
+:root {
+    --df-actlbl-pedestal-x: 53.9%;
+    --df-actlbl-pedestal-y: 13.5%;
+    --df-actlbl-pedestal-w: 9.2%;
+    --df-actct-pedestal-x: 71.9%;
+    --df-actct-pedestal-y: 12.8%;
+    --df-actct-pedestal-w: 5.2%;
+}
+
+#df-actions-label-pedestal,
+#df-actions-count-pedestal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 217;
+    pointer-events: none;
+    display: none;
+    background: transparent !important;
+}
+
+#df-actions-label-pedestal {
+    left: var(--df-actlbl-pedestal-x);
+    top: var(--df-actlbl-pedestal-y);
+    width: var(--df-actlbl-pedestal-w);
+    max-width: 112px;
+    min-width: 52px;
+    font-size: var(--df-actlbl-slot-size, 52px);
+}
+
+#df-actions-count-pedestal {
+    left: var(--df-actct-pedestal-x);
+    top: var(--df-actct-pedestal-y);
+    width: var(--df-actct-pedestal-w);
+    max-width: 54px;
+    min-width: 28px;
+    font-size: var(--df-actct-slot-size, 40px);
+}
+
+body:has(#game.active) #df-actions-label-pedestal:not([hidden]),
+body:has(#game.active) #df-actions-count-pedestal:not([hidden]) {
+    display: block;
+}
+
+/* Carta ampliada: só o rótulo "Ações" some; contagem fica na pedra atrás do zoom. */
+/* Zoom: box Ações (rótulo + número) permanece legível acima do backdrop. */
+body.preview-open #df-actions-label-pedestal {
+    display: block !important;
+    visibility: visible !important;
+    z-index: 99985 !important;
+    pointer-events: none !important;
+}
+
+body.preview-open #df-actions-count-pedestal:not([hidden]) {
+    display: block !important;
+    visibility: visible !important;
+    z-index: 99985 !important;
+    pointer-events: none !important;
+}
+
+body.df-hero-info-open #df-actions-count-pedestal,
+body.df-hero-info-open #df-actions-label-pedestal {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit body > #df-actions-label-pedestal[data-df-pedestal-sync="stage-cover"],
+html.df-mobile-desktop-fit body > #df-actions-count-pedestal[data-df-pedestal-sync="stage-cover"] {
+    position: fixed !important;
+    max-width: none;
+    min-width: 0;
+    z-index: 180;
+    left: auto;
+    top: auto;
+    width: auto;
+}
+
+.df-actions-pedestal-label,
+.df-actions-pedestal-num {
+    display: block;
+    width: 100%;
+    text-align: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #f7ead0;
+    -webkit-text-stroke: 0.11em #4a2818;
+    paint-order: stroke fill;
+    text-shadow:
+        0 0.06em 0 #3d2010,
+        0 0.12em 0.14em rgba(35, 16, 8, 0.45);
+    pointer-events: none;
+    user-select: none;
+}
+
+.df-actions-pedestal-label {
+    font-size: 0.38em;
+    letter-spacing: 0.02em;
+}
+
+.df-actions-pedestal-num {
+    font-size: 0.72em;
+    letter-spacing: -0.02em;
+    color: #ffe9a8;
+    -webkit-text-stroke: 0.10em #5c3018;
+}
+
+/* F11 — número maior na pedra circular */
+html.df-desktop-fullscreen #df-actions-count-pedestal .df-actions-pedestal-num {
+    font-size: 0.86em;
+}
+
+/* Desktop janela — número maior + pedra um pouco mais larga */
+html.df-desktop-windowed #df-actions-count-pedestal {
+    max-width: 62px;
+}
+
+html.df-desktop-windowed #df-actions-count-pedestal .df-actions-pedestal-num {
+    font-size: 0.82em;
+}
+
+/* Mobile — “Ações” e número bem mais à direita; número maior */
+html.df-arena-mobile #df-actions-count-pedestal {
+    max-width: 68px;
+}
+
+html.df-arena-mobile #df-actions-count-pedestal .df-actions-pedestal-num {
+    font-size: 0.90em;
+}

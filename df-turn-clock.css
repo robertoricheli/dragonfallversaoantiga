@@ -1,0 +1,416 @@
+/**
+ * Relógio de turno — desktop: círculo do campo + ponteiro/setor (SVG).
+ * Mobile: mount Pixi/DOM sem disco branco; segundos à direita.
+ */
+
+/* Temporário — relógio oculto; regra de 70s ativa em df-game-view (timerInterval). */
+html.df-turn-clock-ui-off #desktop-timer.df-arena-clock,
+html.df-turn-clock-ui-off #df-arena-clock-pixi-mount,
+html.df-turn-clock-ui-off .df-arena-clock-pixi-sec,
+html.df-turn-clock-ui-off #timer-display {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+#desktop-timer.df-arena-clock {
+    --df-clock-shell-size: 84px;
+    --df-clock-dial-ratio: 0.92;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    z-index: 139;
+    box-sizing: border-box;
+}
+
+#desktop-timer.df-arena-clock:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.df-arena-clock-shell {
+    position: relative;
+    width: var(--df-clock-shell-size);
+    height: var(--df-clock-shell-size);
+    flex-shrink: 0;
+    border-radius: 50%;
+    filter: drop-shadow(0 2px 5px rgba(35, 16, 8, 0.42));
+}
+
+.df-arena-clock-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.df-arena-clock-dial {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--df-clock-shell-size) * var(--df-clock-dial-ratio));
+    height: calc(var(--df-clock-shell-size) * var(--df-clock-dial-ratio));
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.df-arena-clock-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: clamp(0.72rem, calc(var(--df-clock-shell-size) * 0.22), 1.05rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #4a2818;
+    -webkit-text-stroke: 0.04em #f7ead0;
+    paint-order: stroke fill;
+    text-shadow:
+        0 0.06em 0 rgba(61, 32, 16, 0.35),
+        0 0.1em 0.12em rgba(35, 16, 8, 0.25);
+    min-width: 2ch;
+    text-align: center;
+    line-height: 1;
+    pointer-events: none;
+}
+
+#desktop-timer.df-arena-clock #timer-display.df-arena-clock-num.urgent {
+    color: #ff2a2a;
+    -webkit-text-stroke: 0.05em #5a0000;
+    animation: dfArenaClockNumUrgent 0.9s ease-in-out infinite;
+}
+
+#desktop-timer.df-arena-clock.is-urgent .df-arena-clock-wedge-path {
+    fill: url(#df-clock-wedge-urgent);
+}
+
+@keyframes dfArenaClockNumUrgent {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%      { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num.urgent {
+        animation: none !important;
+    }
+}
+
+/* ========== Mobile arena clock (Pixi mount) ========== */
+/* NÃO ocultar no modo numérico (html.df-clock-numeric) — lá o número precisa aparecer no mobile. */
+html:not(.df-clock-numeric).df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock,
+html:not(.df-clock-numeric).df-mobile-desktop-fit.df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock,
+html:not(.df-clock-numeric).df-mobile-arena-clock-live #desktop-timer.df-arena-clock {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html:not(.df-clock-numeric).df-mobile-arena-clock-live #timer-display,
+html:not(.df-clock-numeric).df-arena-mobile:has(#df-arena-clock-pixi-mount:not([hidden])) #timer-display {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ========================================================================
+   RELÓGIO NUMÉRICO (novo) — só o número, estilo "pedra" dourada, em TODAS
+   as versões. Sem disco branco, sem ponteiro/setor, sem mount Pixi.
+   O número é atualizado pelo timerInterval de df-game-view (#timer-display).
+   ===================================================================== */
+html.df-clock-numeric #df-arena-clock-pixi-mount {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+html.df-clock-numeric #desktop-timer.df-arena-clock .df-arena-clock-face,
+html.df-clock-numeric #desktop-timer.df-arena-clock .df-arena-clock-dial {
+    display: none !important;
+}
+
+html.df-clock-numeric body.preview-open #desktop-timer.df-arena-clock {
+    z-index: 99985 !important;
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+}
+
+html.df-clock-numeric body.df-hero-info-open #desktop-timer.df-arena-clock {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-clock-numeric body.preview-open #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    transform: none !important;
+    z-index: 1 !important;
+}
+
+html.df-clock-numeric body.preview-open #desktop-timer.df-arena-clock .df-arena-clock-face,
+html.df-clock-numeric body.preview-open #desktop-timer.df-arena-clock .df-arena-clock-dial {
+    display: none !important;
+}
+
+html.df-clock-numeric #desktop-timer.df-arena-clock {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+html.df-clock-numeric #desktop-timer.df-arena-clock .df-arena-clock-shell {
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+html.df-clock-numeric #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    z-index: 3;
+    display: block !important;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: clamp(33px, 3.9vw, 78px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #ffe9a8;
+    -webkit-text-stroke: 0.10em #5c3018;
+    paint-order: stroke fill;
+    text-shadow:
+        0 0.06em 0 #3d2010,
+        0 0.12em 0.14em rgba(35, 16, 8, 0.45);
+    min-width: 1.4ch;
+    text-align: left;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+html.df-clock-numeric #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num.urgent {
+    color: #ff2a2a;
+    -webkit-text-stroke: 0.10em #5a0000;
+    text-shadow:
+        0 0.05em 0 #3a0000,
+        0 0 0.55em rgba(255, 40, 40, 0.75);
+    animation: dfArenaClockNumUrgentNumeric 0.9s ease-in-out infinite;
+}
+
+@keyframes dfArenaClockNumUrgentNumeric {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
+}
+
+html.df-clock-numeric.df-desktop-fullscreen #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num,
+html.df-clock-numeric.df-arena-desktop-fullscreen #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    font-size: clamp(78px, 8.4vw, 174px) !important;
+}
+
+html.df-clock-numeric.df-desktop-windowed #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num,
+html.df-clock-numeric.df-arena-desktop-windowed #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    font-size: clamp(51px, 5.4vw, 120px) !important;
+}
+
+html.df-clock-numeric.df-mobile-desktop-fit:not(.df-arena-mobile) #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    font-size: clamp(63px, 6.9vw, 147px) !important;
+    transform: translateX(0.18em) !important;
+}
+
+html.df-clock-numeric.df-arena-mobile #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    font-size: clamp(36px, 6.6vw, 84px);
+    transform: translateX(0.26em) !important;
+}
+
+html.df-clock-numeric.df-mobile-desktop-fit.df-arena-mobile #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    font-size: clamp(39px, 6.9vw, 87px) !important;
+    transform: translateX(0.28em) !important;
+}
+
+html.df-clock-numeric.df-mobile-desktop-fit body > #desktop-timer.df-arena-clock[data-df-clock-numeric="actions-right"] {
+    position: fixed !important;
+    left: auto;
+    top: auto;
+    width: auto !important;
+    height: auto !important;
+    transform: translateX(0.22em);
+}
+
+/* Mobile: garantir que o número apareça (vence as regras de ocultar do Pixi). */
+html.df-clock-numeric.df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock:not([hidden]),
+html.df-clock-numeric.df-mobile-desktop-fit.df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+}
+
+html.df-clock-numeric.df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num,
+html.df-clock-numeric.df-mobile-desktop-fit.df-arena-mobile:has(#game.active) #desktop-timer.df-arena-clock #timer-display.df-arena-clock-num {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#df-arena-clock-pixi-mount {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.28em;
+    pointer-events: none;
+    z-index: 221;
+    width: auto !important;
+    height: auto !important;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+#df-arena-clock-pixi-mount:not([hidden]),
+#df-arena-clock-pixi-mount.df-arena-clock-pixi-mount--live {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.df-arena-clock-pixi-dial {
+    position: relative;
+    flex: 0 0 auto;
+    width: var(--df-clock-pixi-size, 56px);
+    height: var(--df-clock-pixi-size, 56px);
+    background: transparent !important;
+    overflow: visible;
+}
+
+#df-arena-clock-pixi-mount canvas,
+.df-arena-clock-dom-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+}
+
+.df-arena-clock-pixi-sec {
+    position: relative;
+    flex: 0 0 auto;
+    order: 2;
+    font-family: "Fredoka", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: clamp(0.78rem, calc(var(--df-clock-pixi-size, 56px) * 0.26), 1.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #4a2818;
+    -webkit-text-stroke: 0.04em #f7ead0;
+    paint-order: stroke fill;
+    text-shadow:
+        0 0.06em 0 rgba(61, 32, 16, 0.35),
+        0 0.1em 0.12em rgba(35, 16, 8, 0.25);
+    min-width: 2ch;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.df-arena-clock-pixi-sec.is-urgent {
+    color: #ff2a2a;
+    -webkit-text-stroke: 0.05em #5a0000;
+    animation: dfArenaClockNumUrgentPixi 0.9s ease-in-out infinite;
+}
+
+@keyframes dfArenaClockNumUrgentPixi {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
+}
+
+html.df-mobile-desktop-fit body > #df-arena-clock-pixi-mount[data-df-pedestal-sync="stage-cover"] {
+    position: fixed !important;
+    left: auto;
+    top: auto;
+}
+
+@media (pointer: coarse) {
+    #desktop-timer.df-arena-clock {
+        --df-clock-dial-ratio: 0.9;
+    }
+
+    #desktop-timer.df-arena-clock.df-arena-clock--pixi,
+    #desktop-timer.df-arena-clock[hidden].df-arena-clock--pixi {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    #desktop-timer.df-arena-clock--pixi-fallback .df-arena-clock-face {
+        display: none !important;
+    }
+
+    #desktop-timer.df-arena-clock--pixi-fallback .df-arena-clock-shell {
+        background: transparent !important;
+        box-shadow: none !important;
+        filter: none !important;
+    }
+
+    #desktop-timer.df-arena-clock--pixi-fallback #timer-display.df-arena-clock-num {
+        position: absolute;
+        left: calc(100% + 0.28em);
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+    }
+}
+
+/* MP: oponente sob IA do servidor */
+.df-peer-ai-banner {
+    position: fixed;
+    top: 0.65rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9200;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font: 600 0.78rem/1.2 system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    color: #1a1208;
+    background: linear-gradient(180deg, #f0c36a, #d4a017);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+}
+.df-peer-ai-banner[hidden] { display: none !important; }

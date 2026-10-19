@@ -1,0 +1,2382 @@
+.release-notes-scroll {
+            width: min(640px, 92vw);
+            max-height: 64vh;
+            overflow-y: auto;
+            background: var(--df-ih-panel-bg, rgba(12, 24, 48, 0.9));
+            border: 3px solid rgba(57, 186, 255, 0.6);
+            border-radius: 18px;
+            padding: 16px 20px;
+            box-shadow: 0 0 24px rgba(57, 186, 255, 0.28);
+            box-sizing: border-box;
+        }
+        .release-note-item { border-bottom: 1px solid rgba(57, 186, 255, 0.22); padding: 12px 0; }
+        .release-note-item:last-child { border-bottom: none; }
+        .release-note-item.release-note-latest {
+            background: linear-gradient(135deg, rgba(26, 58, 109, 0.55), rgba(12, 28, 56, 0.7));
+            border: 2px solid var(--df-ih-panel-border, #39baff);
+            border-radius: 12px;
+            padding: 14px 12px 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 22px rgba(57, 186, 255, 0.32);
+        }
+        .release-note-badge {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--df-ih-btn-warm-text, #143808);
+            background: var(--df-ih-btn-warm, linear-gradient(90deg, #7ae04a, #5ccf31));
+            box-shadow: 0 0 12px rgba(92, 207, 49, 0.4);
+        }
+        .release-note-version {
+            color: var(--df-ih-title, #e8f6ff); font-weight: 700; font-size: 1.05rem;
+            margin-bottom: 4px; letter-spacing: 1px;
+        }
+        .release-note-date {
+            color: var(--df-ih-text-muted, #9ab4d0); font-size: 0.8rem; margin-left: 8px; font-weight: 400;
+        }
+        .release-note-body { color: var(--df-ih-text, #f2f8ff); font-size: 0.92rem; line-height: 1.45; }
+        .release-note-body ul { margin: 4px 0 0 18px; padding: 0; }
+        .release-note-body li { margin: 3px 0; }
+
+        .card-list-tabs {
+            display: flex; gap: 10px; margin-bottom: 12px;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .card-tab {
+            background: #2a1a45; color: #e9d8ff;
+            border: 2px solid #5a3a8a; padding: 10px 18px;
+            border-radius: 8px; cursor: pointer; font-weight: 700;
+            letter-spacing: 1px; font-size: 0.95rem;
+            transition: transform .15s, background .15s, color .15s, box-shadow .15s;
+        }
+        .card-tab:hover { transform: translateY(-2px); }
+        #ai-mode-select .ai-mode-subtitle {
+            color: #c9b0e8; text-align: center; margin: 0 auto 18px;
+            max-width: 420px; font-size: 0.95rem; line-height: 1.4;
+        }
+        #ai-mode-select .menu-btn { min-width: min(420px, 92vw); }
+        .play-menu-hint {
+            color: #a89bd8; font-size: 0.82rem; text-align: center;
+            margin: -6px auto 12px; max-width: 420px; line-height: 1.35;
+        }
+        .mode-construction-note {
+            color: #7a6a9a; font-size: 0.65rem; text-align: center;
+            margin: -8px auto 14px; max-width: 420px; line-height: 1.4;
+            letter-spacing: 0.02em; opacity: 0.92;
+        }
+        #play-menu .mode-construction-note { margin-top: -10px; margin-bottom: 16px; }
+
+        #df-play-mode {
+            gap: 14px;
+        }
+
+        #df-play-mode .df-play-mode-hint {
+            color: #ffffff;
+            font-size: 1rem;
+            text-align: center;
+            margin: -6px 0 8px;
+            max-width: 420px;
+            line-height: 1.4;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.65);
+        }
+
+        #df-play-mode .mode-construction-note {
+            margin-top: 4px;
+            margin-bottom: 4px;
+            max-width: 420px;
+        }
+
+        #df-play-mode .menu-btn {
+            min-width: min(420px, 92vw);
+        }
+        .df-version-tag {
+            margin-top: 8px;
+            font-size: 0.68rem;
+            color: #8a9bb0;
+            text-align: center;
+            opacity: 0.88;
+            letter-spacing: 0.04em;
+        }
+        .df-version-tag.df-version-tag-live {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #cfe4ff;
+            opacity: 1;
+        }
+        .df-version-tag.df-version-tag-new {
+            color: var(--df-ih-accent-yellow, #ffe066);
+            text-shadow: 0 0 10px rgba(57, 186, 255, 0.55);
+            animation: dfVersionPulse 1.6s ease-in-out infinite;
+        }
+        .release-notes-version-live {
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            color: var(--df-ih-title, #e8f6ff) !important;
+            text-shadow: 0 0 14px rgba(57, 186, 255, 0.45);
+        }
+        #btn-main-notes.has-release-news {
+            border-color: var(--df-ih-panel-border, #39baff) !important;
+            box-shadow: 0 0 16px rgba(57, 186, 255, 0.42) !important;
+            color: var(--df-ih-title, #e8f6ff) !important;
+        }
+        @keyframes dfVersionPulse {
+            0%, 100% { opacity: 0.92; }
+            50%      { opacity: 1; text-shadow: 0 0 16px rgba(57, 186, 255, 0.75); }
+        }
+        #release-notes .df-version-tag {
+            margin: 0 auto 10px;
+            font-size: 0.7rem;
+        }
+        .card-tab.selected {
+            background: #5a3a8a; border-color: #ffd76b; color: #ffd76b;
+            box-shadow: 0 0 12px rgba(255, 215, 107, 0.45);
+        }
+        .card-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+            gap: 14px;
+            width: min(1180px, 96vw);
+            max-height: min(72vh, 820px);
+            overflow-y: auto;
+            padding: 16px;
+            background: rgba(20, 10, 28, 0.7);
+            border: 2px solid #5a3a8a;
+            border-radius: 12px;
+            box-sizing: border-box;
+            justify-items: center;
+            align-items: start;
+        }
+        @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+            .card-list-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
+                gap: 18px 20px;
+                padding: 20px 22px;
+            }
+        }
+        /* Fase 1 paisagem: bloco mobile vertical removido (era L137–145) */
+        .card-list-group {
+            grid-column: 1 / -1; color: #ffd76b; font-weight: 700;
+            letter-spacing: 2px; font-size: 0.92rem;
+            padding: 10px 4px 4px; border-bottom: 1px solid #3a2a5a;
+            margin: 4px 0 4px;
+        }
+        .card-list-item {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 220px;
+            transition: transform .15s, filter .15s;
+        }
+        .card-list-item:hover {
+            transform: translateY(-4px) scale(1.04);
+            filter: drop-shadow(0 0 12px #ffd76b);
+        }
+        /* Lista de cartas: NÃO usar .hcard (44×62 fixo) — host próprio com arte 5:7. */
+        #card-list .card-list-thumb,
+        #card-zoom-overlay .card-zoom-thumb {
+            display: block;
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
+            aspect-ratio: 5 / 7;
+            height: auto !important;
+            min-height: 0 !important;
+            flex-shrink: 1;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
+            background: #0a0f1c url("../verso.webp") center/cover no-repeat;
+            border: 2px solid transparent;
+            box-sizing: border-box;
+        }
+        #card-list .card-list-thumb.has-art::after,
+        #card-zoom-overlay .card-zoom-thumb.has-art::after {
+            display: none !important;
+        }
+        #card-list .card-list-thumb .card-list-face,
+        #card-zoom-overlay .card-zoom-thumb .card-list-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: inherit;
+            z-index: 1;
+        }
+        #card-list .card-list-thumb .card-list-face.card-list-face-fail,
+        #card-zoom-overlay .card-zoom-thumb .card-list-face.card-list-face-fail {
+            opacity: 0.35;
+        }
+        @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+            #card-list .card-list-item { max-width: 220px; }
+            #card-list .card-list-thumb { max-width: 220px; min-height: 280px; }
+        }
+        /* Fase 1 paisagem: bloco mobile vertical removido (era L208–215) */
+        .card-list-item .clib-name {
+            color: #e9d8ff; font-size: 0.72rem; text-align: center; line-height: 1.2;
+        }
+        #card-zoom-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
+            z-index: 1200; display: none;
+            align-items: center; justify-content: center;
+            flex-direction: column; padding: 20px; box-sizing: border-box;
+        }
+        #card-zoom-overlay.active { display: flex; }
+        #card-zoom-overlay > img {
+            max-width: min(420px, 92vw);
+            max-height: 62vh;
+            border-radius: 14px;
+        }
+        #card-zoom-overlay .card-zoom-thumb {
+            max-width: min(380px, 92vw);
+            width: min(340px, 92vw);
+            max-height: min(72vh, 560px);
+            flex-shrink: 0;
+        }
+        .card-zoom-detail {
+            color: #e9d8ff; background: rgba(20, 10, 28, 0.94);
+            border: 2px solid #5a3a8a; padding: 14px 18px;
+            border-radius: 10px; max-width: min(440px, 92vw);
+            margin-top: 14px; text-align: center; box-sizing: border-box;
+        }
+        .card-zoom-detail .czd-title {
+            color: #ffd76b; font-weight: 700; font-size: 1.05rem; margin-bottom: 4px;
+        }
+        .card-zoom-detail .czd-ability { color: #8fffae; font-size: 0.95rem; margin-bottom: 6px; }
+        .card-zoom-detail .czd-desc { color: #c9b0e8; font-size: 0.88rem; line-height: 1.4; }
+        .card-zoom-detail .czd-close {
+            margin-top: 10px; color: #ffd76b; font-size: 0.85rem; opacity: 0.85;
+        }
+
+        /* ========== Menu splash — viewport cheio (cover); gira com o stage em retrato ========== */
+        #df-menu-splash-layer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 25;
+            overflow: hidden;
+            background: #060308;
+            touch-action: manipulation;
+        }
+
+        html.df-mobile-desktop-fit.df-portrait-landscape #df-menu-splash-layer,
+        html.df-mobile-desktop-fit.df-portrait-landscape #df-hub-splash-layer {
+            inset: auto !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100dvh !important;
+            height: 100dvw !important;
+            transform: rotate(90deg) translateY(-100%) !important;
+            -webkit-transform: rotate(90deg) translateY(-100%) !important;
+            transform-origin: top left !important;
+            -webkit-transform-origin: top left !important;
+        }
+
+        body:has(#main.active.main-splash-screen):not(:has(#game.active)) #df-menu-splash-layer {
+            display: block;
+        }
+
+        body:has(#game.active) #df-menu-splash-layer {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        #df-menu-splash-layer .main-splash-bg {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            pointer-events: none;
+            user-select: none;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        #df-menu-splash-layer #btn-main-play.main-play-btn {
+            position: absolute;
+            left: 50%;
+            bottom: 5.5%;
+            width: 22%;
+            min-width: 132px;
+            max-width: 248px;
+            height: auto;
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: transparent;
+            overflow: visible;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            z-index: 2;
+            transform: translateX(-50%);
+            transform-origin: center center;
+            animation: mainPlayZoom 2.2s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        #df-menu-splash-layer .main-play-btn-art {
+            display: block;
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+            user-select: none;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        @keyframes mainPlayZoom {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50%      { transform: translateX(-50%) scale(1.05); }
+        }
+
+        #df-menu-splash-layer #btn-main-play.main-play-btn:hover,
+        #df-menu-splash-layer #btn-main-play.main-play-btn.selected {
+            animation: mainPlayZoom 2.2s ease-in-out infinite;
+        }
+
+        #df-menu-splash-layer #btn-main-play.main-play-btn:disabled,
+        #df-menu-splash-layer #btn-main-play.main-play-btn.is-loading {
+            animation: none;
+            opacity: 0.82;
+            cursor: wait;
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        /* Barra de carregamento — mesma âncora do botão JOGAR */
+        #df-menu-splash-layer .df-menu-load-bar {
+            display: none;
+            position: absolute;
+            left: 50%;
+            bottom: 5.5%;
+            width: 28%;
+            min-width: 160px;
+            max-width: 300px;
+            transform: translateX(-50%);
+            z-index: 3;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.35em;
+            pointer-events: none;
+        }
+
+        #df-menu-splash-layer .df-menu-load-bar.active {
+            display: flex;
+        }
+
+        #df-menu-splash-layer .df-menu-load-status {
+            margin: 0;
+            text-align: center;
+            font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+            font-size: clamp(0.58rem, 1.6vw, 0.78rem);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            line-height: 1.25;
+            color: rgba(255, 246, 230, 0.88);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+            min-height: 1.25em;
+        }
+
+        #df-menu-splash-layer .df-menu-load-label {
+            margin: 0;
+            text-align: center;
+            font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            font-size: clamp(0.72rem, 2.4vw, 1rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #fff8ef;
+            text-shadow:
+                0 0 8px rgba(255, 180, 90, 0.55),
+                0 2px 6px rgba(0, 0, 0, 0.85);
+        }
+
+        #df-menu-splash-layer .df-menu-load-track {
+            position: relative;
+            height: clamp(16px, 2.8vw, 20px);
+            border-radius: 999px;
+            border: 2px solid rgba(201, 162, 39, 0.92);
+            background: rgba(8, 6, 14, 0.62);
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+        }
+
+        #df-menu-splash-layer .df-menu-load-fill {
+            display: block;
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #3d8fd9 0%, #7b4fd4 48%, #e056a0 100%);
+            box-shadow: 0 0 10px rgba(120, 180, 255, 0.45);
+            transition: width 0.18s ease-out;
+        }
+
+        #df-menu-splash-layer .df-menu-load-pct {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+            font-size: clamp(0.62rem, 1.8vw, 0.78rem);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #fff8ef;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #df-menu-splash-layer .df-menu-load-fill {
+                transition: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #df-menu-splash-layer #btn-main-play.main-play-btn {
+                animation: none;
+            }
+        }
+
+        /* #main no canvas: só estado lógico + overlays leves */
+        .main-splash-screen {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: visible !important;
+            display: block !important;
+            background: transparent !important;
+            pointer-events: none !important;
+            touch-action: manipulation;
+        }
+
+        .main-splash-screen.active {
+            z-index: 1 !important;
+        }
+
+        .df-menu-fn-hidden {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .main-splash-screen .main-nav-hint,
+        .main-splash-screen #main-logo,
+        .main-splash-screen .main-menu-secondary {
+            display: none !important;
+        }
+
+        .main-splash-screen #df-build-tag {
+            position: fixed;
+            left: 10px;
+            bottom: 8px;
+            z-index: 30;
+            margin: 0;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(10, 6, 12, 0.55);
+            pointer-events: none;
+        }
+
+        html.df-mobile-desktop-fit .main-splash-screen #df-build-tag,
+        html.df-mobile-desktop-fit .main-splash-screen #offline-status {
+            position: absolute !important;
+        }
+
+        .main-splash-screen #offline-status {
+            position: fixed;
+            left: 50%;
+            bottom: 18%;
+            transform: translateX(-50%);
+            z-index: 30;
+            max-width: min(420px, 88vw);
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(24, 8, 8, 0.88);
+            border: 1px solid rgba(255, 120, 120, 0.45);
+            pointer-events: auto;
+        }
+
+        @media (min-width: 901px) {
+            body:has(#main.active.main-splash-screen) {
+                background: #060308 !important;
+            }
+            body:has(#main.active.main-splash-screen)::before {
+                display: none !important;
+            }
+            #main.main-splash-screen {
+                background: transparent !important;
+            }
+        }
+
+        /* ========== Hub Vila dos Cristais — camada viewport (após JOGAR) ========== */
+        #df-hub-splash-layer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 25;
+            overflow: hidden;
+            background: #060308;
+            touch-action: manipulation;
+        }
+
+        body:has(#play-menu.active):not(:has(#game.active)) #df-hub-splash-layer {
+            display: block;
+        }
+
+        body:has(#game.active) #df-hub-splash-layer {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Fundo hub: cover sem barras pretas (paridade 1.45.63). */
+        #df-hub-splash-layer .hub-splash-bg {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: block;
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            pointer-events: none;
+            user-select: none;
+            background: #060308;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translate(-50%, -50%) translateZ(0);
+            -webkit-transform: translate(-50%, -50%) translateZ(0);
+            z-index: 0;
+        }
+
+        #df-hub-splash-layer img.hub-splash-bg,
+        #df-hub-splash-layer video.hub-splash-bg {
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        /* Desktop (mouse): cover full-bleed. */
+        html:not(.df-touch-ui) #df-hub-splash-layer img.hub-splash-bg,
+        html:not(.df-touch-ui) #df-hub-splash-layer video.hub-splash-bg {
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            transform: translate(-50%, -50%) translateZ(0);
+            -webkit-transform: translate(-50%, -50%) translateZ(0);
+        }
+
+        html:not(.df-touch-ui) .df-profile-backdrop-video,
+        html:not(.df-touch-ui) .df-profile-backdrop-img {
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            transform: translate(-50%, -50%) translateZ(0);
+            -webkit-transform: translate(-50%, -50%) translateZ(0);
+        }
+
+        /* Mobile: imagem no host fixo — esconde cópias dentro de camadas rotacionadas. */
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) #df-hub-splash-layer {
+            background: transparent;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) #df-hub-splash-layer > .hub-splash-bg,
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-backdrop > .df-profile-backdrop-video,
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-backdrop > .df-profile-backdrop-img {
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-backdrop {
+            background: transparent;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-screen {
+            z-index: 2;
+        }
+
+        .df-mobile-bg-host {
+            display: none;
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 24;
+            background: #060308;
+        }
+
+        .df-mobile-bg-host.is-hub-visible,
+        .df-mobile-bg-host.is-profile-visible {
+            display: block;
+        }
+
+        .df-mobile-bg-host.is-profile-visible {
+            z-index: 100001;
+        }
+
+        body:has(#game.active) .df-mobile-bg-host {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .df-mobile-bg-video {
+            contain: strict;
+        }
+
+        .df-mobile-bg-poster,
+        .df-mobile-bg-video,
+        .df-mobile-bg-img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: block;
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            pointer-events: none;
+            -webkit-backface-visibility: visible;
+            backface-visibility: visible;
+            transform: translate(-50%, -50%) translateZ(0);
+            -webkit-transform: translate(-50%, -50%) translateZ(0);
+        }
+
+        .df-mobile-bg-poster {
+            z-index: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .df-mobile-bg-video,
+        .df-mobile-bg-img {
+            z-index: 1;
+        }
+
+        .df-mobile-bg-host.is-video-playing .df-mobile-bg-poster {
+            opacity: 0;
+        }
+
+        .df-mobile-bg-host.is-profile-visible::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: rgba(10, 8, 24, 0.28);
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui.df-portrait-landscape:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-mobile-bg-host {
+            inset: auto !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100dvh !important;
+            height: 100dvw !important;
+            transform: rotate(90deg) translateY(-100%) !important;
+            -webkit-transform: rotate(90deg) translateY(-100%) !important;
+            transform-origin: top left !important;
+            -webkit-transform-origin: top left !important;
+        }
+
+        @media (max-height: 540px) {
+            html.df-mobile-desktop-fit.df-touch-ui:not(.df-portrait-landscape):not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-mobile-bg-poster,
+            html.df-mobile-desktop-fit.df-touch-ui:not(.df-portrait-landscape):not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-mobile-bg-video {
+                width: 100%;
+                height: auto;
+                min-width: 0;
+                min-height: 100%;
+            }
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui.df-portrait-landscape:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-mobile-bg-poster,
+        html.df-mobile-desktop-fit.df-touch-ui.df-portrait-landscape:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-mobile-bg-video {
+            width: auto;
+            height: 100%;
+            min-width: 100%;
+            min-height: 0;
+        }
+
+        #df-hub-splash-layer .hub-video-strip {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            display: block;
+            width: min(100%, 3168px);
+            max-width: 100%;
+            height: auto;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        #df-hub-splash-layer .hub-video-strip.hidden {
+            display: none !important;
+        }
+
+        /* Perfil do herói — banner vertical CSS (mock retrato) */
+        #df-hub-splash-layer .hub-splash-btn-profile-wrap {
+            position: absolute;
+            left: 0.8%;
+            top: 1.2%;
+            width: min(20%, 168px);
+            z-index: 1;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-profile {
+            position: relative;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            transition: transform 0.15s ease;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-profile:hover,
+        #df-hub-splash-layer .hub-splash-btn-profile:active {
+            transform: scale(1.02);
+        }
+
+        #df-hub-splash-layer .df-hub-profile-widget {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-banner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            aspect-ratio: 3 / 4.15;
+            padding: 10% 9% 14%;
+            box-sizing: border-box;
+            border-radius: 18% / 12%;
+            /* Azul degradê (mesmo idioma visual dos botões Mercado / Arsenal). */
+            background:
+                radial-gradient(ellipse 78% 62% at 50% 36%, #6eb0ef 0%, #3a7fc8 38%, #1e4f96 72%, #0e2a58 100%);
+            border: 3px solid #c8d0dc;
+            box-shadow:
+                0 0 0 2px #1a3050,
+                0 0 0 4px rgba(200, 160, 80, 0.55),
+                0 8px 22px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-banner::before,
+        #df-hub-splash-layer .df-hub-profile-banner::after {
+            content: "";
+            position: absolute;
+            top: 46%;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: linear-gradient(135deg, #e8eef8, #8a94a8 55%, #5a6478);
+            box-shadow: 0 0 0 1.5px #2a3040, 0 1px 3px rgba(0, 0, 0, 0.45);
+            transform: translateY(-50%) rotate(45deg);
+            z-index: 2;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-banner::before { left: -5px; }
+        #df-hub-splash-layer .df-hub-profile-banner::after { right: -5px; }
+
+        #df-hub-splash-layer .df-hub-profile-avatar-slot {
+            position: relative;
+            z-index: 1;
+            width: 62%;
+            aspect-ratio: 1;
+            margin-top: 2%;
+            overflow: hidden;
+            border-radius: 12%;
+            border: 3px solid #c8d0dc;
+            background: #1a1028;
+            box-shadow:
+                0 0 0 2px #2a2038,
+                0 0 0 3px rgba(200, 160, 80, 0.4),
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 4px 12px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-avatar {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 18%;
+            pointer-events: none;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-name {
+            position: relative;
+            z-index: 3;
+            display: block;
+            width: 100%;
+            margin-top: 8%;
+            padding: 0 2px;
+            font-family: var(--df-player-name-font, "Baloo 2", "Fredoka", sans-serif);
+            font-size: clamp(0.95rem, 2.4vw, 1.55rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: 0.02em;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffd84a;
+            background: var(--df-player-name-fill, linear-gradient(180deg, #ffe95a 0%, #ffc428 42%, #f0a010 100%));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            filter: drop-shadow(0 0 1px #1a1040)
+                    drop-shadow(1px 0 0 #1a1040)
+                    drop-shadow(-1px 0 0 #1a1040)
+                    drop-shadow(0 1px 0 #1a1040)
+                    drop-shadow(0 -1px 0 #1a1040)
+                    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+            pointer-events: none;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.08em;
+            margin-top: auto;
+            margin-bottom: -2%;
+            min-width: 58%;
+            padding: 0.35em 0.85em 0.4em;
+            border-radius: 10px 10px 14px 14px;
+            background: linear-gradient(180deg, #2a3a68 0%, #152040 100%);
+            border: 2.5px solid #b8c0cc;
+            box-shadow:
+                0 0 0 1.5px rgba(200, 160, 80, 0.55),
+                0 3px 8px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            pointer-events: none;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level::before,
+        #df-hub-splash-layer .df-hub-profile-level::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 22%;
+            height: 70%;
+            background:
+                linear-gradient(180deg, rgba(200, 220, 255, 0.95), rgba(120, 150, 200, 0.55));
+            clip-path: polygon(0 45%, 55% 0, 100% 35%, 85% 100%, 15% 100%);
+            opacity: 0.9;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level::before {
+            left: -16%;
+            transform: translateY(-50%) scaleX(-1);
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level::after {
+            right: -16%;
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level-tag {
+            position: relative;
+            z-index: 1;
+            font-family: var(--df-player-name-font, "Baloo 2", "Fredoka", sans-serif);
+            font-size: clamp(0.42rem, 0.75vw, 0.58rem);
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+        }
+
+        #df-hub-splash-layer .df-hub-profile-level-num {
+            position: relative;
+            z-index: 1;
+            font-family: var(--df-player-name-font, "Baloo 2", "Fredoka", sans-serif);
+            font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+        }
+
+        @media (max-width: 900px), (pointer: coarse) {
+            #df-hub-splash-layer .hub-splash-btn-profile-wrap {
+                width: min(22%, 148px);
+            }
+        }
+
+        #df-hub-splash-layer .hub-splash-btn {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: transparent;
+            overflow: visible;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            z-index: 2;
+            transform-origin: center center;
+            transition: transform 0.15s ease;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn img {
+            display: block;
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-label {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            pointer-events: none;
+            font-family: "Cinzel", "Fredoka", serif;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #fff8e6;
+            text-shadow:
+                0 0 8px rgba(0, 0, 0, 0.85),
+                0 2px 4px rgba(0, 0, 0, 0.9),
+                0 0 2px #000;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-label-bottom {
+            bottom: 16%;
+            font-size: clamp(0.85rem, 1.55vw, 1.35rem);
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-label-center {
+            top: 61.5%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(1.15rem, 2.15vw, 1.85rem);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.05;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-sub {
+            display: block;
+            position: absolute;
+            left: 50%;
+            top: calc(100% + 0.55em);
+            transform: translateX(-50%);
+            font-family: "Fredoka", "Cinzel", sans-serif;
+            font-size: clamp(0.48rem, 0.92vw, 0.78rem);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: #6b3a1c;
+            text-shadow:
+                0 0 3px rgba(255, 236, 200, 0.55),
+                0 1px 1px rgba(255, 248, 230, 0.4);
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        /* Empurra o subtítulo um pouco mais para baixo (pedido do autor) */
+        #df-hub-splash-layer .hub-splash-btn-jogar .hub-splash-btn-sub {
+            top: calc(100% + 2.65em);
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-arsenal .hub-splash-btn-label {
+            left: 51.8%;
+            bottom: 18.5%;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn:hover,
+        #df-hub-splash-layer .hub-splash-btn:active {
+            transform: scale(1.03);
+        }
+
+        /* Hub inferior: Mercado | Jogar | Arsenal — um pouco mais à direita */
+        #df-hub-splash-layer .hub-splash-btn-mercado {
+            left: 16.5%;
+            bottom: 1.8%;
+            width: 23%;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-jogar {
+            left: 40.5%;
+            bottom: 1.8%;
+            width: 23%;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-arsenal {
+            left: 66%;
+            bottom: 1.8%;
+            width: 19.5%;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-opcoes {
+            left: 86%;
+            top: 4%;
+            width: 10.4%;
+        }
+
+        #df-hub-splash-layer .hub-splash-btn-notas {
+            left: 87%;
+            top: 27.2%;
+            width: 9.8%;
+        }
+
+        /* Desktop tela cheia (F11): botões utilitários mais altos/direita */
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-bg {
+            object-position: 50% center;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn-opcoes {
+            left: 89%;
+            top: 1.2%;
+            width: 9.6%;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn-notas {
+            left: 90%;
+            top: 20.2%;
+            width: 9.2%;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn-nav.hub-splash-btn-mercado {
+            left: 16.5%;
+            width: 23%;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn-nav.hub-splash-btn-jogar {
+            left: 40.5%;
+            width: 23%;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn-nav.hub-splash-btn-arsenal {
+            left: 66%;
+            width: 19.5%;
+        }
+
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn:hover,
+        html.df-desktop-fullscreen #df-hub-splash-layer .hub-splash-btn:active {
+            transform: scale(1.03);
+        }
+
+        #opcoes .opcoes-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            width: 90%;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* #play-menu: só estado lógico — UI textual oculta */
+        #play-menu.play-menu-hub-logic {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: visible !important;
+            display: block !important;
+            background: transparent !important;
+            pointer-events: none !important;
+        }
+
+        #play-menu.play-menu-hub-logic > * {
+            display: none !important;
+        }
+
+        #play-menu.play-menu-hub-logic.active {
+            z-index: 1 !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #df-hub-splash-layer .hub-splash-btn {
+                transition: none;
+            }
+        }
+
+        /* ========== Login / Registro / Perfil ========== */
+        .df-auth-layer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(4, 6, 12, 0.92);
+            backdrop-filter: blur(8px);
+        }
+
+        .df-auth-layer.active {
+            display: flex;
+        }
+
+        .df-auth-panel {
+            width: min(400px, 92vw);
+            padding: 28px 24px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 200, 100, 0.28);
+            background: linear-gradient(165deg, #1a1428 0%, #0d0a14 100%);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+        }
+
+        .df-auth-gate {
+            text-align: center;
+        }
+
+        .df-auth-title {
+            margin: 0 0 8px;
+            font-family: "Fredoka", sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffd86b;
+            text-align: center;
+        }
+
+        .df-auth-sub {
+            margin: 0 0 20px;
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.72);
+            text-align: center;
+        }
+
+        .df-auth-field {
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .df-auth-field span {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .df-auth-field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 200, 100, 0.25);
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .df-auth-password-wrap {
+            position: relative;
+        }
+
+        .df-auth-password-wrap input {
+            padding-right: 40px;
+        }
+
+        .df-auth-password-toggle {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-auth-password-toggle:hover,
+        .df-auth-password-toggle:focus-visible {
+            color: rgba(255, 220, 140, 0.9);
+            outline: none;
+        }
+
+        .df-auth-eye-icon {
+            display: block;
+        }
+
+        .df-auth-eye-closed {
+            display: none;
+        }
+
+        .df-auth-password-toggle.visible .df-auth-eye-open {
+            display: none;
+        }
+
+        .df-auth-password-toggle.visible .df-auth-eye-closed {
+            display: block;
+        }
+
+        .df-auth-btn {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 200, 100, 0.35);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffe9c8;
+            font-family: "Fredoka", sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-auth-btn-primary {
+            background: linear-gradient(180deg, #5a3a8a, #3d2860);
+            border-color: #ffd76b;
+            color: #ffd76b;
+        }
+
+        .df-auth-btn-danger {
+            border-color: rgba(255, 120, 100, 0.5);
+            color: #ffaaa0;
+        }
+
+        .df-auth-forgot {
+            display: block;
+            margin: 4px 0 12px;
+            font-size: 0.82rem;
+            color: #a8c8ff;
+            text-align: center;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .df-auth-back-link {
+            display: block;
+            margin: 0 0 12px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .df-auth-toast {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 18%;
+            transform: translateX(-50%);
+            z-index: 100001;
+            padding: 14px 22px;
+            border-radius: 12px;
+            border: 1px solid #ffd76b;
+            background: rgba(20, 12, 32, 0.95);
+            color: #ffd86b;
+            font-family: "Fredoka", sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+            pointer-events: none;
+        }
+
+        .df-auth-toast.active {
+            display: block;
+        }
+
+        .df-auth-banner {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 12%;
+            transform: translateX(-50%);
+            z-index: 100001;
+            width: min(480px, 92vw);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 2px solid #6ab4ff;
+            background: linear-gradient(180deg, #1a2848, #0d1428);
+            color: #d8ecff;
+            font-size: 0.92rem;
+            text-align: center;
+            line-height: 1.45;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        .df-auth-banner.active {
+            display: block;
+        }
+
+        /* ========== Perfil do jogador (moldura PNG — referência visual) ========== */
+        .df-profile-page {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100002;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        .df-profile-page.active {
+            display: block;
+        }
+
+        html.df-profile-open,
+        html.df-profile-open body {
+            overflow: hidden !important;
+            overscroll-behavior: none;
+            touch-action: none;
+        }
+
+        .df-profile-backdrop {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background: #0a0818;
+        }
+
+        .df-profile-backdrop-video,
+        .df-profile-backdrop-img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: block;
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            pointer-events: none;
+            filter: blur(6px) brightness(0.55);
+            transform: translate(-50%, -50%) scale(1.04) translateZ(0);
+            -webkit-transform: translate(-50%, -50%) scale(1.04) translateZ(0);
+        }
+
+        .df-profile-screen {
+            display: none;
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        .df-profile-screen.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        .df-profile-layout {
+            position: relative;
+            width: min(92vw, 880px);
+            margin: auto;
+            transform: scale(0.93);
+            transform-origin: center center;
+        }
+
+        .df-profile-corner-btn {
+            position: absolute;
+            z-index: 4;
+            display: block;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            width: clamp(44px, 7.5vw, 64px);
+            height: clamp(44px, 7.5vw, 64px);
+            min-width: 44px;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-corner-btn img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .df-profile-corner-gear {
+            top: 1.5%;
+            left: 4%;
+        }
+
+        .df-profile-corner-close {
+            top: 1.5%;
+            right: 3.5%;
+            z-index: 6;
+            /* Fallback X se a PNG atrasar/falhar */
+            color: #ffecc8;
+            font-size: clamp(28px, 5vw, 40px);
+            line-height: 1;
+            font-weight: 800;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+        }
+
+        .df-profile-corner-close::before {
+            content: "×";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .df-profile-corner-spacer {
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .df-profile-moldura {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1584 / 672;
+            overflow: visible;
+        }
+
+        .df-profile-moldura-bg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .df-profile-moldura-inner {
+            position: absolute;
+            inset: 11% 5% 7% 5%;
+            display: grid;
+            grid-template-columns: 32% 1fr;
+            gap: 2%;
+            align-items: center;
+        }
+
+        .df-profile-hero-col {
+            position: relative;
+            min-width: 0;
+            padding-left: 4%;
+            padding-top: 3.5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .df-profile-hero-stack {
+            position: relative;
+            width: 112%;
+            max-width: 282px;
+            margin-left: 5%;
+            margin-right: 0;
+            aspect-ratio: 1;
+            overflow: visible;
+        }
+
+        .df-profile-hero-frame-btn,
+        .df-profile-hero-portrait-btn {
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-hero-frame-btn {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+        }
+
+        .df-profile-hero-frame-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .df-profile-hero-portrait-btn {
+            position: absolute;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            width: 77.5%;
+            height: 77.5%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .df-profile-hero-portrait {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        .df-profile-swap-avatar-btn {
+            position: absolute;
+            z-index: 6;
+            right: -1%;
+            bottom: 7%;
+            width: 24%;
+            height: 24%;
+            min-width: 36px;
+            min-height: 36px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-swap-avatar-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .df-profile-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+            padding-top: 3%;
+            margin-left: -2%;
+            padding-right: 1%;
+            align-items: flex-start;
+        }
+
+        .df-profile-info-col .df-profile-name-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 83%;
+            margin: -5px 0 0 2.5%;
+            height: clamp(50px, 13.2vw, 72px);
+            max-height: 72px;
+        }
+
+        .df-profile-name-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            pointer-events: none;
+        }
+
+        .df-profile-name-text {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+            margin: 0;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.68rem, 2.1vw, 0.95rem);
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            pointer-events: none;
+        }
+
+        .df-profile-name-input {
+            position: absolute;
+            z-index: 1;
+            left: 14px;
+            right: 14px;
+            top: 50%;
+            width: auto;
+            transform: translateY(-50%);
+            margin: 0;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 200, 100, 0.45);
+            background: rgba(0, 0, 0, 0.45);
+            color: #fff;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.65rem, 2vw, 0.88rem);
+            text-align: center;
+        }
+
+        .df-profile-name-pencil {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            width: clamp(22px, 6vw, 30px);
+            height: clamp(22px, 6vw, 30px);
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            opacity: 1;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-name-pencil img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        .df-profile-name-pencil.locked {
+            cursor: default;
+            pointer-events: none;
+            filter: brightness(0.38) saturate(0.5);
+        }
+
+        .df-profile-name-pencil.locked img {
+            opacity: 1;
+        }
+
+        .df-profile-info-col .df-profile-xp-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: 8px;
+            width: 83%;
+            margin-left: 2.5%;
+            margin-right: 0;
+            padding-right: 0;
+            box-sizing: border-box;
+        }
+
+        .df-profile-level-label {
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            font-weight: 700;
+            color: #e8f4ff;
+            white-space: nowrap;
+        }
+
+        .df-profile-info-col .df-profile-xp-track {
+            position: relative;
+            height: clamp(28px, 5.5vw, 38px);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.22);
+            background: rgba(8, 12, 28, 0.75);
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+        }
+
+        .df-profile-xp-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0%;
+            background: linear-gradient(90deg, #ff6ec7 0%, #7b8cff 55%, #5ee7ff 100%);
+            transition: width 0.45s ease;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .df-profile-xp-text {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.68rem, 2vw, 0.88rem);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+        }
+
+        .df-profile-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            column-gap: 0;
+            margin-top: auto;
+            padding-top: 10px;
+            margin-left: 3%;
+            width: 83%;
+            max-width: 83%;
+        }
+
+        .df-profile-action-btn {
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-action-btn img {
+            display: block;
+            width: 100%;
+            height: clamp(54px, 12.2vw, 66px);
+            object-fit: contain;
+            object-position: center;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        .df-profile-action-btn-disabled,
+        .df-profile-action-btn:disabled {
+            opacity: 1;
+            cursor: not-allowed;
+            filter: none;
+        }
+
+        .df-profile-action-btn-disabled img,
+        .df-profile-action-btn:disabled img {
+            opacity: 1;
+        }
+
+        .df-profile-moldura-menu,
+        .df-profile-moldura-form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            gap: 12px;
+            grid-column: 1 / -1;
+            padding: 4% 8%;
+        }
+
+        #df-profile-password .df-profile-moldura-inner.df-profile-moldura-form {
+            justify-content: flex-start;
+            padding: 1.5% 10% 5%;
+            gap: 10px;
+        }
+
+        #df-profile-password .df-profile-menu-title {
+            margin-top: 2px;
+        }
+
+        .df-profile-menu-title {
+            margin: 0;
+            text-align: center;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            font-weight: 700;
+            color: #ffd86b;
+        }
+
+        .df-profile-menu-btn {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(120, 180, 255, 0.45);
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(40, 90, 180, 0.85), rgba(20, 50, 120, 0.9));
+            color: #fff;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+            font-weight: 700;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .df-profile-menu-btn-danger {
+            border-color: rgba(255, 120, 100, 0.5);
+            background: linear-gradient(180deg, rgba(160, 50, 40, 0.85), rgba(100, 25, 20, 0.92));
+            color: #ffc8c0;
+        }
+
+        .df-profile-logout-confirm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            margin-top: 4px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 215, 120, 0.35);
+            box-sizing: border-box;
+        }
+
+        .df-profile-logout-confirm[hidden] {
+            display: none !important;
+        }
+
+        .df-profile-logout-text {
+            margin: 0;
+            color: #ffd76b;
+            text-align: center;
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.9rem, 2.6vw, 1.05rem);
+            line-height: 1.45;
+        }
+
+        .df-profile-logout-btns {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .df-profile-logout-btns .df-profile-menu-btn {
+            flex: 1;
+            padding: 12px 14px;
+        }
+
+        .df-profile-form-back {
+            align-self: flex-start;
+            padding: 6px 10px;
+            border: none;
+            background: transparent;
+            color: #ffe9c8;
+            font-family: "Fredoka", sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .df-profile-decks-hint {
+            margin: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: clamp(0.85rem, 2.4vw, 1rem);
+            line-height: 1.45;
+        }
+
+        .df-profile-avatar-picker {
+            position: fixed;
+            inset: 0;
+            z-index: 100010;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.72);
+            box-sizing: border-box;
+        }
+
+        .df-profile-avatar-picker[hidden] {
+            display: none !important;
+        }
+
+        .df-profile-avatar-picker-panel {
+            width: min(420px, 94vw);
+            max-height: min(80vh, 520px);
+            padding: 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 200, 100, 0.35);
+            background: rgba(12, 10, 24, 0.96);
+            overflow: auto;
+        }
+
+        .df-profile-picker-label {
+            margin: 0 0 12px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .df-profile-picker-close {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+            border: 1px solid rgba(255, 200, 100, 0.35);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffe9c8;
+            font-family: "Fredoka", sans-serif;
+            cursor: pointer;
+        }
+
+        .df-profile-avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+            gap: 8px;
+        }
+
+        .df-profile-avatar-opt {
+            padding: 4px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+
+        .df-profile-avatar-opt.selected {
+            border-color: #ffd76b;
+            box-shadow: 0 0 12px rgba(255, 215, 107, 0.45);
+        }
+
+        .df-profile-avatar-opt img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+            background: rgba(20, 16, 36, 0.9);
+        }
+
+        .df-profile-bg-picker {
+            position: fixed;
+            inset: 0;
+            z-index: 100010;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.72);
+            box-sizing: border-box;
+        }
+
+        .df-profile-bg-picker[hidden] {
+            display: none !important;
+        }
+
+        .df-profile-bg-picker-panel {
+            width: min(560px, 96vw);
+            max-height: min(84vh, 620px);
+            padding: 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 200, 100, 0.35);
+            background: rgba(12, 10, 24, 0.96);
+            overflow: auto;
+        }
+
+        .df-profile-bg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .df-profile-bg-opt {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            padding: 8px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.28);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .df-profile-bg-opt.selected {
+            border-color: #ffd76b;
+            box-shadow: 0 0 12px rgba(255, 215, 107, 0.45);
+        }
+
+        .df-profile-bg-thumb-wrap {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(20, 16, 36, 0.9);
+        }
+
+        .df-profile-bg-thumb-wrap img,
+        .df-profile-bg-thumb-wrap video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            pointer-events: none;
+            background: #1a1428;
+        }
+
+        .df-profile-bg-name {
+            font-family: "Fredoka", sans-serif;
+            font-size: clamp(0.62rem, 2.4vw, 0.78rem);
+            font-weight: 600;
+            line-height: 1.2;
+            color: #ffe9c8;
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 640px) {
+            .df-profile-moldura-inner {
+                grid-template-columns: 1fr;
+                inset: 12% 5% 6% 5%;
+                gap: 10px;
+            }
+
+            .df-profile-hero-col {
+                max-width: 200px;
+                margin: 0 auto;
+                padding-left: 0;
+            }
+
+            .df-profile-hero-stack {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .df-profile-info-col {
+                padding-top: 0;
+                margin-left: 0;
+            }
+
+            .df-profile-actions {
+                grid-template-columns: 1fr;
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+
+        /* Mobile (modo celular do jogo): perfil menor e mais centralizado */
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-screen.active {
+            padding: 8px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-layout {
+            width: min(82vw, 700px);
+            transform: scale(0.78);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-corner-btn {
+            width: clamp(38px, 11vw, 52px);
+            height: clamp(38px, 11vw, 52px);
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-corner-gear {
+            top: 2%;
+            left: 4%;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-corner-close {
+            top: 2%;
+            right: 3.5%;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-swap-avatar-btn {
+            right: -13.5%;
+            bottom: -9.5%;
+            z-index: 8;
+        }
+
+        /* Perfil — mobile (modo celular) */
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-hero-col {
+            max-width: none;
+            padding-left: 5.5%;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-hero-stack {
+            width: 218%;
+            max-width: 100%;
+            margin-left: 53%;
+            margin-top: -11.5%;
+            transform: scale(2.04);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-hero-frame-img {
+            transform: scale(1.35, 1.39);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-hero-portrait-btn {
+            width: 93%;
+            height: 94%;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-hero-portrait {
+            transform: scaleY(1.05);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-swap-avatar-btn {
+            width: 25%;
+            height: 25%;
+            min-width: 40px;
+            min-height: 40px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-info-col {
+            padding-top: 0;
+            margin-top: -1%;
+            gap: 6px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-info-col .df-profile-name-bar {
+            width: 62%;
+            margin-left: 28.5%;
+            margin-top: -10px;
+            height: clamp(52px, 13.6vw, 74px);
+            max-height: 74px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-info-col .df-profile-xp-row {
+            width: 68%;
+            margin-left: 21%;
+            margin-top: -4px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-info-col .df-profile-xp-track {
+            height: clamp(30px, 6vw, 40px);
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-name-text {
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            text-align: center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-name-input {
+            left: 12px;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-actions {
+            width: 65%;
+            max-width: 65%;
+            margin-left: 25.5%;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-action-btn + .df-profile-action-btn {
+            margin-left: 6px;
+        }
+
+        html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-action-btn img {
+            height: clamp(56px, 12.8vw, 66px);
+        }
+
+        @media (max-width: 640px) {
+            html.df-mobile-desktop-fit.df-touch-ui:not(.df-desktop-windowed):not(.df-desktop-fullscreen) .df-profile-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Desktop (janela + tela cheia) — df-desktop-windowed / df-desktop-fullscreen */
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-layout {
+            width: min(92vw, 920px);
+            transform: scale(0.96);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-corner-gear {
+            left: 4.5%;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-corner-close {
+            right: 4%;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-swap-avatar-btn {
+            right: -2.5%;
+            bottom: -1.5%;
+            z-index: 8;
+            width: 25%;
+            height: 25%;
+            min-width: 41px;
+            min-height: 41px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-hero-col {
+            padding-left: 14%;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-hero-stack {
+            width: 204%;
+            max-width: 500px;
+            margin-left: 38%;
+            margin-top: -11.5%;
+            transform: scale(1.82);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-hero-frame-img {
+            transform: scale(1.22, 1.26);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-hero-portrait-btn {
+            width: 87%;
+            height: 88%;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-hero-portrait {
+            transform: scaleY(1.05);
+            transform-origin: center center;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-info-col {
+            padding-top: 1%;
+            gap: 6px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-info-col .df-profile-name-bar {
+            width: 71%;
+            margin-left: 21.4%;
+            margin-top: -22px;
+            height: clamp(54px, 14vw, 76px);
+            max-height: 76px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-info-col .df-profile-xp-row {
+            width: 75%;
+            margin-left: 16.4%;
+            margin-top: -11px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-info-col .df-profile-xp-track {
+            height: clamp(32px, 6.2vw, 44px);
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-actions {
+            width: 78%;
+            max-width: 78%;
+            margin-left: 20.2%;
+            margin-top: -11px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-action-btn + .df-profile-action-btn {
+            margin-left: -22px;
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) .df-profile-action-btn img {
+            height: clamp(60px, 13.4vw, 72px);
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) #btn-profile-edit-deck img {
+            height: clamp(63px, 13.85vw, 75px);
+        }
+
+        html.df-mobile-desktop-fit:is(.df-desktop-windowed, .df-desktop-fullscreen) #btn-profile-change-bg {
+            transform: translateX(-4px);
+        }
+
+        html.df-mobile-desktop-fit.df-portrait-landscape .df-profile-page {
+            inset: auto !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100dvh !important;
+            height: 100dvw !important;
+            transform: rotate(90deg) translateY(-100%) !important;
+            transform-origin: top left !important;
+        }
+
+        html.df-mobile-desktop-fit.df-portrait-landscape .df-auth-layer {
+            inset: auto !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100dvh !important;
+            height: 100dvw !important;
+            transform: rotate(90deg) translateY(-100%) !important;
+            transform-origin: top left !important;
+        }

@@ -1,0 +1,334 @@
+/**
+ * Dragonfall — Opção A: canvas único 1280×720 (#df-scale-root) dentro de #df-rotate-stage.
+ * Desktop real: wrappers transparentes (display:contents). Celular/tablet: escala letterbox no stage.
+ * Combate desktop forçado via seletores html.df-mobile-desktop-fit (não só @media 901px).
+ */
+#df-rotate-stage {
+    display: contents;
+}
+
+#df-scale-root {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+}
+
+html:not(.df-mobile-desktop-fit) #df-rotate-stage,
+html:not(.df-mobile-desktop-fit) #df-scale-root {
+    display: contents;
+}
+
+/* ========== Viewport física: centralizar canvas escalado ========== */
+html.df-mobile-desktop-fit {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    background: #0a0608 !important;
+}
+
+html.df-mobile-desktop-fit body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #0a0608 !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit #df-rotate-stage {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+}
+
+html.df-mobile-desktop-fit.df-desktop-canvas #df-scale-root {
+    position: relative !important;
+    width: 1280px !important;
+    height: 720px !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+    background: #0a0608 !important;
+    transform: scale(var(--df-fit-scale, 1)) !important;
+    -webkit-transform: scale(var(--df-fit-scale, 1)) !important;
+    transform-origin: center center !important;
+    -webkit-transform-origin: center center !important;
+}
+
+html.df-mobile-desktop-fit body::before,
+html.df-mobile-desktop-fit body::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* ========== Ocultar barras legado (nós reparentados pro HUD desktop) ========== */
+html.df-mobile-desktop-fit #top-bar,
+html.df-mobile-desktop-fit #bottom-bar {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ========== Menus dentro do canvas (não viewport 100dvh) ========== */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #desktop-logo,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #desktop-left-hud,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #desktop-right-hud,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #desktop-turn-indicator,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #desktop-timer {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Telas ILUSTRADAS ficam fora do gradiente: com `background` shorthand este
+   bloco vencia a arte por especificidade (2 ids) contra `#hero-select.screen`
+   (1 id) e só era salvo pelo estilo inline assíncrono de dfSyncLetterboxBg.
+   Quando o inline atrasava — ou não era aplicado — a seleção de herói aparecia
+   com o gradiente azul em vez de DESOLAÇÃO. Mesma exclusão que
+   df-canvas-shield.css já faz. */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > .screen.active {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    touch-action: manipulation !important;
+    box-sizing: border-box !important;
+    padding: 24px 16px !important;
+    z-index: 20 !important;
+}
+
+/* Gradiente só nas telas SEM arte própria. */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > .screen.active:not(#hero-select):not(#df-ranked-hero-select):not(#df-training-setup):not(#df-ranked-setup):not(#df-arsenal):not(#df-play-mode):not(#online-lobby):not(#main):not(#play-menu) {
+    background: var(--df-ih-screen-bg, radial-gradient(ellipse 90% 70% at 50% 18%, rgba(90, 140, 180, 0.28) 0%, transparent 55%), linear-gradient(165deg, #2a3a58 0%, #3a2848 48%, #1a1428 100%)) !important;
+}
+
+/* Splash / hub-logic / telas ilustradas: sem gradiente opaco por cima da arte.
+   Hero/treino NÃO ficam transparentes — pintam DESOLAÇÃO / A GUERRA na própria
+   tela (evita preto se data-df-menu-bg atrasar ou a arte do stage falhar). */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #main.screen.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #play-menu.screen.active,
+html.df-mobile-desktop-fit[data-df-menu-bg]:not(:has(#game.active)) #df-scale-root > #df-play-mode.active,
+html.df-mobile-desktop-fit[data-df-menu-bg]:not(:has(#game.active)) #df-scale-root > #df-arsenal.active {
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #hero-select.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #hero-select.active {
+    background-color: #0a0608 !important;
+    /* image-set com PNG: o pacote slim publica só o WebP, mas builds que
+       mantêm o PNG continuam pintando o fundo. */
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #df-training-setup.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-training-setup.active {
+    background-color: #0a0608 !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #main.main-splash-screen {
+    gap: 0 !important;
+    touch-action: manipulation !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #main:not(.main-splash-screen) {
+    gap: 24px !important;
+    touch-action: manipulation !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #main-logo {
+    display: block !important;
+    width: min(480px, 70%) !important;
+    max-height: 280px !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #btn-main-offline,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #offline-status,
+html.df-mobile-desktop-fit:not(:has(#game.active)) .main-nav-hint {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) .main-menu-actions {
+    width: 100% !important;
+    max-width: 280px !important;
+    gap: 10px !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) .menu-btn {
+    min-height: 44px !important;
+    touch-action: manipulation;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) .hero-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(140px, 1fr)) !important;
+    gap: 14px !important;
+    width: min(92%, 900px) !important;
+    max-width: 900px !important;
+    align-content: start !important;
+    grid-auto-rows: max-content !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+}
+
+/* ========== Combate: tokens desktop dentro do canvas ========== */
+html.df-mobile-desktop-fit.df-desktop-universal {
+    --df-m-scale: 1 !important;
+    --df-hand-card-w: 80px;
+    --df-hand-card-h: 112px;
+    --df-field-card-w: 90px;
+    --df-field-card-h: 126px;
+    --df-field-card-gap: 10px;
+    --df-field-tap-margin: calc((var(--df-field-card-h) - var(--df-field-card-w)) / 2);
+    --df-field-x-bias: 56px;
+    --df-player-field-y-nudge: 0px;
+    /* Pedido do autor: campo do jogador principal um pouquinho mais para baixo. */
+    --df-player-field-y-bias: 26px;
+    --df-hand-nudge-y: 10px;
+    --df-player-hand-y-nudge: 14px;
+    --df-player-field-hand-gap: 12px;
+    --df-ai-field-y-nudge: 0px;
+    /* Pedido do autor: campo da IA um pouquinho mais para cima. */
+    --df-ai-field-y-bias: 0px;
+    --df-ai-field-hand-gap: 12px;
+    --df-ai-hand-nudge-y: -10px;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active {
+    display: flex !important;
+    flex-direction: column !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    z-index: 5 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-scale-root {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    transform: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, var(--df-d-ai-fr, 0.38fr)) minmax(0, var(--df-d-player-fr, 0.62fr)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 20px 300px 30px 180px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
+    height: 100% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-0 {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    align-self: end !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active .quadrant > .quadrant-header {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #desktop-logo,
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #desktop-left-hud,
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #desktop-right-hud {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas:has(#game.active) #desktop-turn-indicator {
+    display: block !important;
+    visibility: visible !important;
+}
+
+html.df-mobile-desktop-fit #game.active {
+    height: 100% !important;
+    max-height: none !important;
+    width: 100% !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active),
+html.df-mobile-desktop-fit:has(#game.active) body {
+    height: 100% !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+/* Partículas ambientais cobrem o canvas */
+html.df-mobile-desktop-fit #fx-particles {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+}
+
+/* Toque confortável nos botões do HUD/menu */
+html.df-mobile-desktop-fit .menu-btn,
+html.df-mobile-desktop-fit #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit #desktop-right-hud #pass-turn,
+html.df-mobile-desktop-fit #desktop-right-hud #deck-pile,
+html.df-mobile-desktop-fit #desktop-right-hud #discard-pile {
+    touch-action: manipulation;
+    min-height: 44px !important;
+}
+
+/* Retrato legado sem canvas fit */
+        /* Fase 1 paisagem: bloco mobile vertical removido (era L304–308) */

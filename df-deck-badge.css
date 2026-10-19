@@ -1,0 +1,209 @@
+/**
+ * Indicador de baralho — moldura PARA-CARTA + verso pequeno + contagem abaixo.
+ * Canto inferior direito, acima do HUB do herói principal.
+ */
+#df-deck-badge.df-deck-badge {
+    --df-deck-badge-size: 86px;
+    --df-deck-verso-ratio: 0.32;
+    --df-deck-verso-y: -8%;
+    position: absolute;
+    right: -20px;
+    bottom: 100%;
+    margin-bottom: 66px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: auto;
+    height: auto;
+    pointer-events: auto;
+    z-index: 205;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: default;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#df-deck-badge.df-deck-badge:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+#df-deck-badge.df-deck-badge:focus-visible {
+    outline: 2px solid rgba(255, 210, 106, 0.85);
+    outline-offset: 3px;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-can-buy {
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px rgba(255, 200, 90, 0.35));
+    animation: dfDeckBadgeBuyPulse 2.2s ease-in-out infinite;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-can-buy:hover {
+    filter: drop-shadow(0 0 16px rgba(255, 215, 120, 0.55));
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-can-buy:active {
+    filter: drop-shadow(0 0 10px rgba(255, 190, 80, 0.45));
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-hand-full,
+#df-deck-badge.df-deck-badge.df-deck-badge-disabled:not(.df-deck-badge-can-buy) {
+    opacity: 1 !important;
+    filter: brightness(0.48) saturate(0.75);
+    cursor: not-allowed !important;
+    animation: none !important;
+}
+
+/* Só visível durante combate ativo */
+body:not(:has(#game.active)) #df-deck-badge.df-deck-badge {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+@keyframes dfDeckBadgeBuyPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 200, 90, 0.28)); }
+    50% { filter: drop-shadow(0 0 14px rgba(255, 215, 120, 0.52)); }
+}
+
+.df-deck-badge-frame-wrap {
+    position: relative;
+    width: var(--df-deck-badge-size);
+    height: var(--df-deck-badge-size);
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.df-deck-badge-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+}
+
+.df-deck-badge-inner {
+    position: absolute;
+    left: calc(50% + var(--df-deck-verso-x, 0%));
+    top: calc(50% + var(--df-deck-verso-y, 0%));
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: calc(var(--df-deck-badge-size) * var(--df-deck-verso-ratio));
+}
+
+.df-deck-badge-verso {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+}
+
+.df-deck-badge-count {
+    font-size: clamp(0.75rem, 2.4vw, 0.95rem);
+    font-weight: 900;
+    color: #ffe8b8;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    line-height: 1;
+    min-width: 1.5ch;
+    text-align: center;
+    margin-top: -26px;
+    position: relative;
+    z-index: 2;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-opponent {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-opponent .df-deck-badge-count {
+    filter: brightness(0.92);
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor.df-deck-badge-ai-anchor .df-deck-badge-count {
+    margin-top: -8px;
+}
+
+/* Moldura PARA-CARTA removida no combate — contagem do baralho só no pedestal da arte. */
+body:has(#game.active) #df-deck-badge.df-deck-badge,
+body:has(#game.active) #df-deck-badge-ai.df-deck-badge-opponent {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+body:not(:has(#game.active)) #df-deck-badge-ai.df-deck-badge-opponent {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Ancorado no círculo laranja do pedestal (mobile + desktop janela). */
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor {
+    position: fixed !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin-bottom: 0 !important;
+    --df-deck-badge-arena-x-bias: 10px;
+    --df-deck-badge-arena-y-bias: 40px;
+    z-index: 214 !important;
+    pointer-events: auto !important;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor .df-deck-badge-count {
+    margin-top: -6px;
+}
+
+/* Desktop janela: centrado no círculo laranja do pedestal direito. */
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor.df-deck-badge-desktop-windowed {
+    --df-deck-verso-ratio: 0.285;
+    --df-deck-verso-x: 1%;
+    --df-deck-verso-y: -5%;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor.df-deck-badge-desktop-windowed .df-deck-badge-count {
+    margin-top: -14px;
+    font-size: clamp(0.84rem, 1.18vw, 1rem);
+}
+
+/* Desktop F11: menor e centrado no círculo laranja do pedestal. */
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor.df-deck-badge-desktop-fullscreen {
+    --df-deck-verso-ratio: 0.285;
+    --df-deck-verso-x: 1.5%;
+    --df-deck-verso-y: -5.5%;
+}
+
+#df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor.df-deck-badge-desktop-fullscreen .df-deck-badge-count {
+    margin-top: -20px;
+    font-size: 1.24rem;
+}
+
+/* Mobile: círculo laranja do pedestal — calibração fina (JS define bias por plataforma). */
+@media (pointer: coarse) {
+    #df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor:not(.df-deck-badge-desktop-windowed) {
+        --df-deck-verso-y: -6%;
+        --df-deck-verso-x: 2%;
+    }
+
+    #df-deck-badge.df-deck-badge.df-deck-badge-arena-anchor:not(.df-deck-badge-desktop-windowed) .df-deck-badge-count {
+        margin-top: -3px;
+        font-size: clamp(0.68rem, 2.1vw, 0.88rem);
+    }
+}
+
+html:has(#game.active) #desktop-right-hud {
+    overflow: visible !important;
+}

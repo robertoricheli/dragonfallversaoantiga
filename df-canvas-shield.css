@@ -1,0 +1,3161 @@
+/**
+ * Canvas único 1280×720 — neutraliza mobile legado e viewport-fixed dentro do fit.
+ * Tudo em #df-scale-root: position absolute (nunca fixed no viewport).
+ */
+/* Canvas escalado acima dos pedestais fixos no body — VFX, menus e vitória cobrem HUD lateral. */
+html.df-mobile-desktop-fit #df-scale-root {
+    z-index: 250 !important;
+    isolation: isolate;
+}
+
+html.df-mobile-desktop-fit {
+    /* Campo do jogador: flex vertical centra cartas entre rachadura e mão (bias legado desktop). */
+    /* Pedido do autor: campo do jogador principal um pouquinho mais para baixo. */
+    --df-player-field-y-bias: 10px;
+    /* Campo IA: entre a mão (topo) e a rachadura — levemente acima da fissura. */
+    /* Pedido do autor: campo da IA um pouquinho mais para cima. */
+    --df-ai-field-y-bias: -24px;
+    /* Campeões/campo: deslocamento horizontal (mãos usam --df-hand-pan-x). */
+    --df-field-x-bias: 56px;
+    --df-ai-field-hand-gap: 36px;
+    --df-player-field-hand-gap: 10px;
+    /* Mão do jogador: sobe — cartas do leque não cortam na borda inferior. */
+    --df-player-hand-y-nudge: -36px;
+}
+
+html.df-mobile-desktop-fit #desktop-logo,
+html.df-mobile-desktop-fit #desktop-left-hud,
+html.df-mobile-desktop-fit #desktop-right-hud,
+html.df-mobile-desktop-fit #desktop-turn-indicator,
+html.df-mobile-desktop-fit #desktop-timer {
+    position: absolute !important;
+}
+
+html.df-mobile-desktop-fit #top-bar,
+html.df-mobile-desktop-fit #bottom-bar {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit #df-scale-root {
+    position: relative !important;
+    overflow: hidden !important;
+    background: #0a0608 !important;
+}
+
+html.df-mobile-desktop-fit #df-scale-root .battle-fly,
+html.df-mobile-desktop-fit #df-scale-root .combat-snap-ghost,
+html.df-mobile-desktop-fit #df-scale-root .df-vfx-overlay,
+html.df-mobile-desktop-fit #df-scale-root .df-sprite-vfx-layer,
+html.df-mobile-desktop-fit #df-scale-root .df-pixi-vfx-canvas {
+    position: absolute !important;
+    background: transparent !important;
+}
+
+/* Compra/saque — verso visível no canvas (não herdar transparent do bloco acima). */
+html.df-mobile-desktop-fit #df-scale-root .draw-fly {
+    position: absolute !important;
+    background: #0a0f1c url("../verso.webp") center/cover no-repeat !important;
+    background-size: cover !important;
+}
+
+html.df-mobile-desktop-fit #df-scale-root .draw-fly-burst {
+    position: absolute !important;
+}
+
+/* Telas e menus — absolute dentro do canvas (anula .screen { position:fixed }) */
+html.df-mobile-desktop-fit #df-scale-root > .screen,
+html.df-mobile-desktop-fit #df-scale-root > .screen.active,
+html.df-mobile-desktop-fit #df-scale-root > #main,
+html.df-mobile-desktop-fit #df-scale-root > #play-menu,
+html.df-mobile-desktop-fit #df-scale-root > #ai-mode-select,
+html.df-mobile-desktop-fit #df-scale-root > #hero-select,
+html.df-mobile-desktop-fit #df-scale-root > #objective-select,
+html.df-mobile-desktop-fit #df-scale-root > #opcoes,
+html.df-mobile-desktop-fit #df-scale-root > #release-notes,
+html.df-mobile-desktop-fit #df-scale-root > #card-list,
+html.df-mobile-desktop-fit #df-scale-root > #df-arsenal,
+html.df-mobile-desktop-fit #df-scale-root > #df-training-setup,
+html.df-mobile-desktop-fit #df-scale-root > #story-screen,
+html.df-mobile-desktop-fit #df-scale-root > #mode {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    box-sizing: border-box !important;
+}
+
+/* NÃO usar shorthand `background` aqui em telas ilustradas (herói/treino/arsenal/play):
+   isso apagava background-image (DESOLAÇÃO etc.) no desktop tela cheia. */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > .screen.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    z-index: 20 !important;
+}
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > .screen.active:not(#hero-select):not(#df-ranked-hero-select):not(#df-training-setup):not(#df-ranked-setup):not(#df-arsenal):not(#df-play-mode):not(#online-lobby) {
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #hero-select.active,
+html.df-mobile-desktop-fit.df-desktop-fullscreen:not(:has(#game.active)) #df-scale-root > #hero-select.active,
+html.df-desktop-fullscreen:not(:has(#game.active)) #hero-select.active,
+html.df-desktop-fullscreen[data-df-menu-bg="hero"] #hero-select.active,
+html.df-desktop-fullscreen[data-df-menu-bg="hero"] #df-rotate-stage,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #online-lobby.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #online-lobby.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #df-scale-root > #online-lobby.active,
+html.df-mobile-desktop-fit[data-df-menu-bg="hero"]:not(:has(#game.active)) #df-rotate-stage,
+html.df-mobile-desktop-fit:has(#online-lobby.active):not(:has(#game.active)) #df-rotate-stage {
+    background-color: #0a0608 !important;
+    background-image: image-set(
+        url("../bg/DESOLA%C3%87%C3%83O.webp") type("image/webp"),
+        url("../bg/DESOLA%C3%87%C3%83O.png") type("image/png")
+    ) !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+html.df-mobile-desktop-fit,
+html.df-mobile-desktop-fit body {
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit #df-rotate-stage {
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#hero-select.active)) #df-scale-root {
+    overflow: hidden !important;
+}
+
+/* #game oculto até combate — evita arena vazando nos menus */
+html.df-mobile-desktop-fit #df-scale-root > #game:not(.active) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit #df-scale-root > #game.active {
+    display: flex !important;
+    flex-direction: column !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    z-index: 10 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active),
+html.df-mobile-desktop-fit:has(#game.active) body {
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit #desktop-scale-root {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    transform: none !important;
+    position: relative !important;
+}
+
+html.df-mobile-desktop-fit #game-grid,
+html.df-mobile-desktop-fit #game.active #game-grid {
+    display: grid !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    background-attachment: scroll !important;
+}
+
+html.df-mobile-desktop-fit #game-grid.mode-2,
+html.df-mobile-desktop-fit #game.active #game-grid.mode-2 {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, var(--df-d-ai-fr, 0.38fr)) minmax(0, var(--df-d-player-fr, 0.62fr)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 20px 300px 30px 180px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit .quadrant > .quadrant-header {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit .quadrant-field {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    grid-template-columns: unset !important;
+    grid-auto-rows: unset !important;
+    gap: var(--df-field-card-gap, 10px) !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit .quadrant-field .ccard.field-present-landscape {
+    transform: none !important;
+    rotate: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+html.df-mobile-desktop-fit #quadrant-0 .quadrant-hand,
+html.df-mobile-desktop-fit .ai-quadrant .quadrant-hand {
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit .player-quadrant,
+html.df-mobile-desktop-fit .ai-quadrant,
+html.df-mobile-desktop-fit .quadrant {
+    padding: 0 !important;
+    gap: 4px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    outline: none !important;
+}
+
+/* Campo e mão — sem painel translúcido arredondado (desktop janela + tela cheia). */
+html.df-mobile-desktop-fit .quadrant-field,
+html.df-mobile-desktop-fit .quadrant-hand,
+html.df-mobile-desktop-fit #quadrant-0 .quadrant-hand,
+html.df-mobile-desktop-fit .ai-quadrant .quadrant-hand {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    outline: none !important;
+}
+
+html.df-mobile-desktop-fit #game-grid.mode-2 .quadrant.active-turn,
+html.df-mobile-desktop-fit #game-grid.mode-2 .quadrant.player-quadrant.active-turn,
+html.df-mobile-desktop-fit #game-grid.mode-2 .quadrant.ai-quadrant.active-turn {
+    box-shadow: none !important;
+    border: none !important;
+    animation: none !important;
+}
+
+/* HUDs — absolute no canvas (anula fixed do desktop @media 901px) */
+html.df-mobile-desktop-fit #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit #df-scale-root #desktop-turn-indicator,
+html.df-mobile-desktop-fit #df-scale-root #desktop-timer {
+    position: absolute !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root #desktop-turn-indicator {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-logo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    visibility: visible !important;
+    top: 12px !important;
+    left: 14px !important;
+    right: auto !important;
+    width: 168px !important;
+    max-width: 168px !important;
+    height: 56px !important;
+    padding: 4px 10px 4px 8px !important;
+    box-sizing: border-box !important;
+    border-radius: 14px !important;
+    z-index: 140 !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 220, 150, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.88) 0%, rgba(28, 14, 8, 0.92) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.65),
+        0 0 18px rgba(240, 180, 80, 0.18),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3) !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-logo img {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    height: 100% !important;
+    max-width: calc(100% - 36px) !important;
+    max-height: 48px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-left-hud {
+    display: flex !important;
+    visibility: visible !important;
+    top: auto !important;
+    bottom: 4px !important;
+    left: 12px !important;
+    z-index: 200 !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-right-hud {
+    display: flex !important;
+    visibility: visible !important;
+    top: auto !important;
+    right: 6px !important;
+    left: auto !important;
+    bottom: 4px !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 200 !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-turn-indicator {
+    display: block !important;
+    visibility: visible !important;
+    top: 14px !important;
+    right: 12px !important;
+    z-index: 130 !important;
+}
+
+html.df-mobile-desktop-fit #df-scale-root #fx-particles {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+}
+
+/* Overlays/modais — absolute no canvas (anula fixed legado dentro do fit) */
+html.df-mobile-desktop-fit #df-scale-root .overlay,
+html.df-mobile-desktop-fit #df-scale-root .df-update-overlay,
+html.df-mobile-desktop-fit #df-scale-root #card-zoom-overlay,
+html.df-mobile-desktop-fit #df-scale-root #hero-info-overlay,
+html.df-mobile-desktop-fit #df-scale-root #menu-overlay,
+html.df-mobile-desktop-fit #df-scale-root #detail-overlay,
+html.df-mobile-desktop-fit #df-scale-root #discard-overlay,
+html.df-mobile-desktop-fit #df-scale-root #necromancia-overlay,
+html.df-mobile-desktop-fit #df-scale-root #win-overlay,
+html.df-mobile-desktop-fit #df-scale-root #block-overlay,
+html.df-mobile-desktop-fit #df-scale-root #howto-overlay,
+html.df-mobile-desktop-fit #df-scale-root #game,
+html.df-mobile-desktop-fit #df-scale-root #preview-backdrop,
+html.df-mobile-desktop-fit #df-scale-root #talent-spotlight-layer {
+    position: absolute !important;
+}
+
+/* Necromancia no body (acima do Pixi) — fixed fullscreen também no fit mobile */
+html.df-mobile-desktop-fit #necromancia-overlay.overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 100110 !important;
+    background: rgba(0, 0, 0, 0.82);
+}
+
+/* Talento em uso — acima do hub do herói da IA (jogador e IA) */
+html.df-mobile-desktop-fit.df-combat-canvas #talent-spotlight-layer.talent-spotlight-above-hud {
+    z-index: 235 !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #talent-spotlight-layer.talent-spotlight-above-hud {
+    position: absolute !important;
+    z-index: 235 !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #talent-spotlight-layer .ccard.talent-in-play {
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #talent-spotlight-layer.talent-spotlight-touch-hud {
+    margin-bottom: 0 !important;
+}
+
+/* Mobile: layer no body (fixed) — acima dos hubs (z 205), carta inteira visível */
+html.df-mobile-desktop-fit.df-combat-canvas body > #talent-spotlight-layer.talent-spotlight-touch-hud {
+    position: fixed !important;
+    z-index: 230 !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas body > #talent-spotlight-layer.talent-spotlight-touch-hud .ccard.talent-in-play {
+    overflow: visible !important;
+    width: var(--df-hub-spotlight-card-w, 68px) !important;
+    height: var(--df-hub-spotlight-card-h, 95px) !important;
+    outline-width: 2px !important;
+    outline-offset: 1px !important;
+    animation: df-hub-spotlight-pulse 1s ease-in-out infinite !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #talent-spotlight-layer.talent-spotlight-touch-hud .ccard.talent-in-play {
+    width: var(--df-hub-spotlight-card-w, 68px) !important;
+    height: var(--df-hub-spotlight-card-h, 95px) !important;
+    outline-width: 2px !important;
+    outline-offset: 1px !important;
+    animation: df-hub-spotlight-pulse 1s ease-in-out infinite !important;
+}
+
+@keyframes df-hub-spotlight-pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50%      { transform: scale(1.02); filter: brightness(1.1); }
+}
+
+/* Fim de jogo mobile — acima do HUD, sem backdrop preto, botões clicáveis */
+html.df-mobile-desktop-fit #df-scale-root #win-overlay.overlay.active {
+    z-index: 100060 !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+    pointer-events: auto !important;
+}
+html.df-mobile-desktop-fit #win-overlay #win-card {
+    max-height: min(92%, 680px);
+}
+html.df-mobile-desktop-fit #win-overlay #win-actions {
+    flex-shrink: 0;
+    margin-top: 16px;
+}
+
+/* ========== E1 — anula vazamento @media (min-width:901px) no canvas fit ==========
+   Sem isso: #game.active usa 100dvh + bg fixed no viewport (combate desformatado). */
+html.df-mobile-desktop-fit #df-scale-root > #game.active {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    perspective: none !important;
+    padding: 0 !important;
+    z-index: 10 !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit #game.active #desktop-scale-root {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    transform: none !important;
+}
+
+html.df-mobile-desktop-fit #game.active #game-grid.mode-2 {
+    flex: 1 1 auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, var(--df-d-ai-fr, 0.38fr)) minmax(0, var(--df-d-player-fr, 0.62fr)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 20px 300px 30px 180px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit #game.active .quadrant > .quadrant-header {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit #desktop-right-hud #deck-pile,
+html.df-mobile-desktop-fit #desktop-right-hud #deck-pile-ai,
+html.df-mobile-desktop-fit #desktop-right-hud #discard-pile,
+html.df-mobile-desktop-fit #desktop-right-hud #discard-pile-ai,
+html.df-mobile-desktop-fit #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit #desktop-right-hud #pass-turn {
+    position: relative !important;
+}
+
+/* ========== COMBATE: anula @media (max-width:900px) e (pointer:coarse) ==========
+   CSS @media usa viewport real — no celular vaza layout mobile mesmo com fit ativo. */
+html.df-mobile-desktop-fit.df-combat-canvas,
+html.df-mobile-desktop-fit.df-combat-canvas body {
+    height: 100% !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #game,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #game.active {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    max-width: none !important;
+    perspective: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid,
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 20px 300px 30px 180px !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, var(--df-d-ai-fr, 0.38fr)) minmax(0, var(--df-d-player-fr, 0.62fr)) !important;
+    row-gap: 4px !important;
+    column-gap: 0 !important;
+    padding: 20px 300px 30px 180px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    align-content: stretch !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    align-self: stretch !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-0 {
+    grid-row: 2 !important;
+    grid-column: 1 !important;
+    align-self: end !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant {
+    flex-direction: column-reverse !important;
+    justify-content: space-between !important;
+    gap: var(--df-ai-field-hand-gap, 12px) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand {
+    flex: 0 0 auto !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: 28 !important;
+    height: var(--df-ai-hand-visible-h, 48px) !important;
+    min-height: var(--df-ai-hand-visible-h, 48px) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 8px !important;
+    transform: translateX(var(--df-hand-pan-x, 0))
+        translateY(calc(-1 * var(--df-ai-hand-lift, 40px))) !important;
+    transform-origin: center top !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant {
+    padding-top: 0 !important;
+    gap: var(--df-ai-field-hand-gap, 8px) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-field {
+    flex: 0 0 auto !important;
+    min-height: calc(var(--df-field-card-h, 126px) + 16px) !important;
+    align-content: end !important;
+    align-items: end !important;
+    justify-content: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    padding-top: 2px !important;
+    padding-bottom: 4px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .player-quadrant {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: var(--df-player-field-hand-gap, 12px) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .player-quadrant .quadrant-field {
+    flex: 1 1 0 !important;
+    min-height: calc(var(--df-field-card-h, 126px) + 16px) !important;
+    align-content: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 4px !important;
+    padding-bottom: 2px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .quadrant-field {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    align-content: center !important;
+    grid-template-columns: unset !important;
+    grid-template-rows: unset !important;
+    grid-auto-flow: unset !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex: 1 1 auto !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ccard {
+    width: var(--df-field-card-w, 90px) !important;
+    height: var(--df-field-card-h, 126px) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas {
+    --df-field-card-w: 97px;
+    --df-field-card-h: 136px;
+    --df-field-tap-margin: 19.5px;
+    --df-hand-card-w: 122px;
+    --df-hand-card-h: 170px;
+    --df-hub-spotlight-card-w: 68px;
+    --df-hub-spotlight-card-h: 95px;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .hcard {
+    width: var(--df-hand-card-w, 90px) !important;
+    height: var(--df-hand-card-h, 125px) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand,
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand {
+    max-height: none !important;
+    max-width: none !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand {
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand {
+    padding: 0 8px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand {
+    flex: 0 0 auto !important;
+    margin-top: 0 !important;
+    min-height: 188px !important;
+    transform: translateX(var(--df-hand-pan-x, 0))
+        translateY(var(--df-player-hand-y-nudge, -28px)) !important;
+    transform-origin: center bottom !important;
+    align-items: flex-end !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .quadrant > .quadrant-header {
+    display: none !important;
+}
+
+/* ========== MENU: anula #main mobile @media (fixed/100dvh) — só quando menu ativo ========== */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #main.active.main-splash-screen {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    padding: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #main.active:not(.main-splash-screen) {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 24px 16px !important;
+    background: #0a0608 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    z-index: 20 !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #main-logo {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Combate: oculta telas de menu — evita #main e HUDs flutuando no viewport */
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root > .screen:not(#game) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-turn-indicator,
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-timer,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-logo,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-left-hud,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-right-hud,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-turn-indicator,
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-timer {
+    position: absolute !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-logo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    visibility: visible !important;
+    top: 12px !important;
+    left: 14px !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 168px !important;
+    height: 56px !important;
+    max-width: 168px !important;
+    padding: 4px 10px 4px 8px !important;
+    box-sizing: border-box !important;
+    border-radius: 14px !important;
+    z-index: 140 !important;
+    transform: none !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 220, 150, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.88) 0%, rgba(28, 14, 8, 0.92) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.65),
+        0 0 18px rgba(240, 180, 80, 0.18),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3) !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-left-hud {
+    display: flex !important;
+    visibility: visible !important;
+    top: auto !important;
+    left: 12px !important;
+    right: auto !important;
+    bottom: 4px !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    align-items: flex-start !important;
+    max-height: none !important;
+    z-index: 200 !important;
+    transform: none !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-right-hud {
+    display: flex !important;
+    visibility: visible !important;
+    top: auto !important;
+    right: 6px !important;
+    left: auto !important;
+    bottom: 4px !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 200 !important;
+    transform: none !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-turn-indicator {
+    display: block !important;
+    visibility: visible !important;
+    top: 14px !important;
+    right: 18px !important;
+    left: auto !important;
+    bottom: auto !important;
+    z-index: 130 !important;
+    transform: none !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root > #game.active {
+    position: absolute !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    transform: none !important;
+    perspective: none !important;
+    overflow: hidden !important;
+    z-index: 10 !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game #fx-particles {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+html.df-mobile-desktop-fit:has(#game.active) #game #desktop-scale-root {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: 12px !important;
+    left: 14px !important;
+    right: auto !important;
+    width: 218px !important;
+    max-width: 218px !important;
+    height: 68px !important;
+    padding: 6px 14px 6px 12px !important;
+    box-sizing: border-box !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    z-index: 140 !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 220, 150, 0.25) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.88) 0%, rgba(28, 14, 8, 0.92) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.65),
+        0 0 18px rgba(240, 180, 80, 0.18),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo img {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    height: 100% !important;
+    max-width: calc(100% - 36px) !important;
+    max-height: 54px !important;
+    object-fit: contain !important;
+    display: block !important;
+    pointer-events: none !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo .desktop-menu-bars {
+    flex-shrink: 0 !important;
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    color: #f2d6aa !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85) !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-left-hud {
+    display: flex !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: auto !important;
+    bottom: 4px !important;
+    left: 12px !important;
+    z-index: 200 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-turn-indicator {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: 14px !important;
+    right: 12px !important;
+    z-index: 210 !important;
+    pointer-events: none !important;
+    transform: translateX(var(--df-mobile-turn-dock-tx, 0px)) !important;
+}
+
+/* Pill turno — «Seu turno» / «Vez do adversário» + ações. */
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-frame {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 10px 18px 10px 10px !important;
+    border-radius: 999px !important;
+    background:
+        linear-gradient(180deg, rgba(255, 220, 150, 0.12) 0%, transparent 40%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.92) 0%, rgba(28, 14, 8, 0.92) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(240, 180, 80, 0.22),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3) !important;
+    min-width: 260px !important;
+    box-sizing: border-box !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-you .dti-frame {
+    border-color: rgba(120, 240, 130, 0.85) !important;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.75),
+        0 0 26px rgba(80, 240, 130, 0.45),
+        inset 0 1px 0 rgba(220, 255, 230, 0.35) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-enemy .dti-frame {
+    border-color: rgba(255, 130, 110, 0.85) !important;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.75),
+        0 0 26px rgba(255, 100, 80, 0.45),
+        inset 0 1px 0 rgba(255, 220, 210, 0.35) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-portrait {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-color: #1a0c14 !important;
+    border: 2px solid rgba(255, 220, 150, 0.7) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7) !important;
+    flex-shrink: 0 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-text {
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: 1.1 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-name {
+    font-size: 1.05rem !important;
+    font-weight: 900 !important;
+    color: #ffe6a4 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85) !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-you .dti-name {
+    color: #c8ffd2 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-enemy .dti-name {
+    color: #ffd0c8 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions-label {
+    font-size: 0.58rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.5px !important;
+    color: rgba(255, 220, 150, 0.7) !important;
+    text-transform: uppercase !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions-num {
+    font-size: 1.72rem !important;
+    font-weight: 900 !important;
+    color: #fff8e8 !important;
+    text-shadow:
+        0 0 14px rgba(255, 230, 160, 0.78),
+        0 2px 6px rgba(0, 0, 0, 0.95),
+        0 0 2px rgba(0, 0, 0, 1) !important;
+    font-variant-numeric: tabular-nums !important;
+    line-height: 1 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-you .dti-actions-num {
+    color: #eafff0 !important;
+    text-shadow:
+        0 0 16px rgba(140, 255, 170, 0.88),
+        0 2px 6px rgba(0, 0, 0, 0.95),
+        0 0 2px rgba(0, 0, 0, 1) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator.is-enemy .dti-actions-num {
+    color: #ffece8 !important;
+    text-shadow:
+        0 0 16px rgba(255, 150, 130, 0.88),
+        0 2px 6px rgba(0, 0, 0, 0.95),
+        0 0 2px rgba(0, 0, 0, 1) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active .quadrant > .quadrant-header {
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-left-hud {
+    display: flex !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: auto !important;
+    bottom: 14px !important;
+    left: 6px !important;
+    right: auto !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    height: auto !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    row-gap: 0 !important;
+    padding: 0 !important;
+    z-index: 200 !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-right-hud {
+    display: flex !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: auto !important;
+    bottom: 14px !important;
+    right: 6px !important;
+    left: auto !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    min-width: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+    gap: 0 !important;
+    z-index: 200 !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-left-hud .dlh-hero-panel:not(:has(.dlhp-stack)) {
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .dlh-hero-panel:not(:has(.dlhp-stack)) {
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-deck-badge.df-deck-badge {
+    --df-deck-badge-size: 94px;
+    right: -22px !important;
+    margin-bottom: 72px !important;
+    z-index: 206 !important;
+}
+
+/* Mobile (toque) / janela: posição vem do JS (círculo amarelo do pedestal). */
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit.df-combat-canvas #df-deck-badge.df-deck-badge:not(.df-deck-badge-arena-anchor) {
+        right: -30px !important;
+        margin-bottom: 88px !important;
+    }
+}
+
+html.df-desktop-windowed #df-deck-badge.df-deck-badge:not(.df-deck-badge-arena-anchor) {
+    right: -30px;
+    margin-bottom: 76px;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root {
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-portrait-landscape:not(:has(#game.active)) #df-scale-root > .screen.active {
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-scale-root > #hero-select.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
+    padding: 16px 16px 20px !important;
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+    z-index: 20 !important;
+}
+
+html.df-mobile-desktop-fit.df-touch-ui:not(:has(#game.active)) #hero-select.active,
+html.df-mobile-desktop-fit:has(#hero-select.active) #hero-select.active {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    padding: 16px 16px 20px !important;
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.df-mobile-desktop-fit.df-touch-ui:not(:has(#game.active)) #hero-select.active .hero-grid,
+html.df-mobile-desktop-fit:has(#hero-select.active) #hero-select.active .hero-grid {
+    flex: 1 1 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: min(92%, 900px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: none !important;
+    align-content: start !important;
+    grid-auto-rows: max-content !important;
+    will-change: scroll-position;
+}
+
+html.df-mobile-desktop-fit #hero-select.active .hero-grid.df-hero-grid-touch-axis {
+    touch-action: none !important;
+    -webkit-overflow-scrolling: auto !important;
+}
+
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit:not(:has(#game.active)) #hero-select.active .hero-grid:not(.df-hero-grid-touch-axis) {
+        overflow-y: auto !important;
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+html.df-mobile-desktop-fit.df-touch-ui:not(:has(#game.active)) #hero-select.active .hero-grid::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+html.df-mobile-desktop-fit #hero-select.active .hero-grid {
+    pointer-events: auto !important;
+    contain: layout style paint;
+}
+
+html.df-mobile-desktop-fit #hero-select.active .hero-card,
+html.df-mobile-desktop-fit #hero-select.active .menu-btn {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html.df-mobile-desktop-fit #hero-select.active .hero-card {
+    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
+}
+
+/* Mobile retrato: HUD dentro do canvas girado — sem dock no viewport */
+html.df-mobile-desktop-fit.df-portrait-landscape.df-hud-dock-viewport #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit.df-portrait-landscape.df-hud-dock-viewport #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit.df-portrait-landscape.df-hud-dock-viewport #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-portrait-landscape.df-hud-dock-viewport #df-scale-root #desktop-turn-indicator {
+    transform: none !important;
+}
+
+/* Mobile: menu + hubs encostados na borda esquerda da tela (dentro do canvas) */
+html.df-mobile-desktop-fit.df-hud-dock-viewport.df-combat-canvas #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit.df-hud-dock-viewport.df-combat-canvas #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #game > #desktop-logo,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #game > #desktop-left-hud {
+    left: 6px !important;
+    right: auto !important;
+    transform: translateX(var(--df-mobile-hud-dock-tx, 0px)) !important;
+}
+
+/* Mobile: hub do jogador encostado na borda direita/inferior (letterbox) */
+html.df-mobile-desktop-fit.df-hud-dock-viewport.df-combat-canvas #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-hud-dock-viewport:has(#game.active) #game > #desktop-right-hud {
+    right: 6px !important;
+    left: auto !important;
+    bottom: 4px !important;
+    transform: translate(var(--df-mobile-right-hud-dock-tx, 0px), var(--df-mobile-right-hud-dock-ty, 0px)) !important;
+    z-index: 205 !important;
+}
+
+/* Desktop (mouse): hubs dentro do canvas — folga inferior para não cortar em F11 */
+@media (hover: hover) and (pointer: fine) {
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-left-hud,
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-right-hud,
+    html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-left-hud,
+    html.df-mobile-desktop-fit:has(#game.active) #df-scale-root #desktop-right-hud,
+    html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-left-hud,
+    html.df-mobile-desktop-fit:has(#game.active) #game > #desktop-right-hud {
+        bottom: 0 !important;
+        transform: none !important;
+    }
+
+    /* Desktop F11/tela cheia: hubs e mão mais baixos (menos espaço morto). */
+    html.df-desktop-fullscreen.df-combat-canvas {
+        --df-player-hand-y-nudge: 10px;
+        --df-ai-hand-lift: 18px;
+        --df-ai-hand-f11-extra: 0px;
+        --df-hero-hub-max-w: 300px;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas .ai-quadrant .quadrant-hand {
+        transform: translateX(var(--df-hand-pan-x, 0))
+            translateY(calc(-1 * (var(--df-ai-hand-lift, 18px) + var(--df-ai-hand-f11-extra, 0px) + var(--df-ai-hand-f11-gap, 0px)))) !important;
+        transform-origin: center top !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #quadrant-0 .quadrant-hand {
+        transform: translateX(var(--df-hand-pan-x, 0))
+            translateY(var(--df-player-hand-y-nudge, 10px)) !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .player-quadrant {
+        padding-bottom: 0 !important;
+        justify-content: flex-end !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root #desktop-logo,
+    html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-logo {
+        top: 48px !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root #desktop-turn-indicator,
+    html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-turn-indicator {
+        top: 52px !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root #desktop-left-hud,
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root #desktop-right-hud,
+    html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-left-hud,
+    html.df-desktop-fullscreen.df-combat-canvas:has(#game.active) #df-scale-root #desktop-right-hud {
+        bottom: 4px !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 {
+        grid-template-rows: minmax(0, var(--df-d-ai-fr, 0.38fr)) minmax(0, var(--df-d-player-fr, 0.62fr)) !important;
+        align-content: stretch !important;
+        position: relative !important;
+        padding: 0 300px 8px 180px !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid {
+        padding: 0 300px 8px 180px !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 {
+        align-self: stretch !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant {
+        flex-direction: column-reverse !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        gap: var(--df-ai-field-hand-gap, 8px) !important;
+        overflow: visible !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1 .quadrant-hand {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: auto !important;
+        align-items: flex-end !important;
+        min-height: var(--df-ai-hand-visible-h, 48px) !important;
+    }
+
+    /* F11: mãos nas bordas — não cortar cartas (posição mantida, overflow liberado). */
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root,
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root > #game.active,
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root > #game.active #desktop-scale-root,
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #desktop-scale-root {
+        overflow: visible !important;
+    }
+
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-0,
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1,
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant,
+    html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .player-quadrant,
+    html.df-desktop-fullscreen.df-combat-canvas #quadrant-0 .quadrant-hand,
+    html.df-desktop-fullscreen.df-combat-canvas .ai-quadrant .quadrant-hand,
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root .hand-wrap,
+    html.df-desktop-fullscreen.df-combat-canvas #df-scale-root .hand-wrap.ai-hand-wrap {
+        overflow: visible !important;
+    }
+}
+
+/* E2 — alinhamento horizontal na linha central da arena (padding assimétrico do grid) */
+html.df-mobile-desktop-fit #quadrant-0 .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px)))
+        translateY(calc(var(--df-player-field-y-nudge, 0) + var(--df-player-field-y-bias, 4px))) !important;
+}
+
+html.df-mobile-desktop-fit .ai-quadrant .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px)))
+        translateY(calc(var(--df-ai-field-y-nudge, 0px) + var(--df-ai-field-y-bias, -18px))) !important;
+}
+
+/* Vence df-game-board.css (#game-grid…) — campo IA entre mão e rachadura */
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px)))
+        translateY(calc(var(--df-ai-field-y-nudge, 0px) + var(--df-ai-field-y-bias, -18px))) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand .ai-back,
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 .ai-quadrant .quadrant-hand .ai-back {
+    width: 70px !important;
+    height: 97px !important;
+    border-radius: 7px !important;
+    border-width: 2px !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 > #quadrant-1 {
+    overflow: hidden !important;
+}
+
+/* MP: overflow hidden no campo adversário recortava o campeão da ponta
+   direita — clique/Bola de Fogo/ataque não acertavam. */
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #game-grid.mode-2 > #quadrant-1,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #game.active #game-grid.mode-2 > #quadrant-1 {
+    overflow: visible !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode .ai-quadrant .quadrant-field,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #game-grid.mode-2 .ai-quadrant .quadrant-field {
+    overflow: visible !important;
+}
+/* Durante mira/ataque: HUD direita não engole o clique no campeão da ponta. */
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-targeting #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-targeting #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-field-drag #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-field-drag #df-scale-root #desktop-right-hud {
+    pointer-events: none !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-targeting #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-targeting #desktop-right-hud #pass-turn,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-field-drag #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode.df-mp-field-drag #desktop-right-hud #pass-turn {
+    pointer-events: auto !important;
+}
+/* Jogo normal (MP): a caixa vazia do HUD direito ficava por cima da ponta do
+   leque e engolia o toque na carta mais à direita da mão. Só o container perde
+   pointer-events — os botões dentro dele continuam clicáveis. */
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #df-scale-root #desktop-right-hud {
+    pointer-events: none !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #desktop-right-hud #pass-turn,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #desktop-right-hud button,
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode #df-scale-root #desktop-right-hud button {
+    pointer-events: auto !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas body.df-pvp-mode .ai-quadrant .quadrant-field > .ccard {
+    pointer-events: auto !important;
+    z-index: 6 !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas #df-scale-root {
+    overflow: visible !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas.df-mobile-desktop-fit:has(#game.active) #game,
+html.df-desktop-fullscreen.df-combat-canvas.df-mobile-desktop-fit #df-scale-root > #game.active {
+    overflow: visible !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas #game-grid.mode-2 > #quadrant-1 {
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit body:not(.preview-open) #preview-card-inner,
+html.df-mobile-desktop-fit body:not(.preview-open) #df-scale-root #preview-card-inner {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+html.df-mobile-desktop-fit #preview-card-inner:not(.preview-zoomed),
+html.df-mobile-desktop-fit #df-scale-root #preview-card-inner:not(.preview-zoomed) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit #preview-backdrop,
+html.df-mobile-desktop-fit #df-scale-root #preview-backdrop,
+html.df-mobile-desktop-fit body.preview-open #preview-backdrop:not(.preview-backdrop-clear),
+html.df-mobile-desktop-fit body.preview-open #df-scale-root #preview-backdrop:not(.preview-backdrop-clear) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    opacity: 0 !important;
+}
+
+/* Zoom mobile/fit: catcher transparente em tela cheia (fecha ao clicar fora). */
+html.df-mobile-desktop-fit body.preview-open #preview-backdrop.preview-backdrop-clear,
+html.df-mobile-desktop-fit body.preview-open > #preview-backdrop.preview-backdrop-clear {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    z-index: 99980 !important;
+}
+
+/* Zoom mobile/touch: mesmo porte do desktop (não miniaturizar). */
+@media (hover: none), (pointer: coarse) {
+    html.df-mobile-desktop-fit #preview-card-inner.preview-zoomed,
+    html.df-mobile-desktop-fit #df-scale-root #preview-card-inner.preview-zoomed,
+    html.df-mobile #preview-card-inner.preview-zoomed,
+    body.preview-open > #preview-card-inner.preview-zoomed {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) rotate(0deg) !important;
+        width: min(70vw, 60vh, 520px) !important;
+        max-width: min(520px, 88vw) !important;
+        max-height: min(88vh, 720px) !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+        display: block !important;
+    }
+}
+
+/* ========== HUD herói — layout horizontal (retrato na extremidade, stats ao centro) ========== */
+html.df-mobile-desktop-fit.df-combat-canvas {
+    --df-hero-hub-max-w: 272px;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel:not(:has(.dlhp-stack)) {
+    pointer-events: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 7px !important;
+    border-radius: 16px !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w), calc(100% - 12px)) !important;
+    min-height: 118px !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+    background:
+        linear-gradient(180deg, rgba(255, 220, 150, 0.12) 0%, transparent 35%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.92) 0%, rgba(28, 14, 8, 0.88) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(240, 180, 80, 0.22),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.55) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player {
+    flex-direction: row-reverse !important;
+    padding: 6px 6px 6px 8px !important;
+    min-height: 118px !important;
+    width: fit-content !important;
+    max-width: min(var(--df-hero-hub-max-w, 272px), calc(100% - 12px)) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-portrait {
+    width: 110px !important;
+    height: 110px !important;
+    flex: 0 0 110px !important;
+    border-radius: 12px 14px 14px 12px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-info {
+    padding-left: 4px !important;
+    padding-right: 2px !important;
+    gap: 5px !important;
+    min-width: 88px !important;
+    max-width: 124px !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-info {
+    overflow: hidden !important;
+    min-width: 88px !important;
+    max-width: 124px !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-name {
+    text-align: left !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-name {
+    text-align: right !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-stat-row {
+    font-size: 0.76rem !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-num {
+    font-size: 1.05rem !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel.is-active-turn:not(:has(.dlhp-stack)) {
+    border-color: rgba(120, 240, 130, 0.95) !important;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.75),
+        0 0 28px rgba(80, 240, 130, 0.55),
+        inset 0 1px 0 rgba(220, 255, 230, 0.4) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai.is-active-turn:not(:has(.dlhp-stack)) {
+    border-color: rgba(255, 140, 120, 0.95) !important;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.75),
+        0 0 28px rgba(255, 100, 80, 0.55),
+        inset 0 1px 0 rgba(255, 220, 210, 0.4) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-portrait {
+    width: 108px !important;
+    height: 108px !important;
+    border-radius: 14px !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    border: 3px solid rgba(255, 220, 150, 0.85) !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.85),
+        0 0 20px rgba(255, 200, 100, 0.35),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.4) !important;
+    flex: 0 0 108px !important;
+    align-self: center !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-portrait {
+    border-radius: 14px 10px 10px 14px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-portrait {
+    border-radius: 10px 14px 14px 10px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-info {
+    flex: 1 1 0 !important;
+    min-width: 88px !important;
+    max-width: 124px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-ai .dlhp-info {
+    text-align: left !important;
+    padding-right: 4px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-info {
+    text-align: right !important;
+    padding-left: 4px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-name {
+    flex: 0 0 auto !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.4px !important;
+    text-transform: uppercase !important;
+    color: #ffe6a4 !important;
+    text-align: inherit !important;
+    width: 100% !important;
+    line-height: 1.15 !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: clip !important;
+    min-height: 1.15em !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-stat-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+    font-size: 0.72rem !important;
+    color: #f0d8a8 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-stat-row {
+    flex-direction: row-reverse !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-label {
+    font-size: 0.62rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+    white-space: nowrap !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-num {
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-deck.dlhp-num {
+    color: #ffc63a !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-vp-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 0 !important;
+    flex: 1 1 auto !important;
+    flex-shrink: 0 !important;
+    min-height: 54px !important;
+    grid-template-columns: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-vp-row {
+    direction: ltr !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-timer,
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-timer::before,
+html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel.is-active-turn .dlhp-timer,
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-timer.urgent {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlhp-status {
+    width: 100% !important;
+    text-align: inherit !important;
+}
+
+@keyframes df-hub-turn-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.028); }
+}
+
+html.df-mobile-desktop-fit .dlh-hero-panel.df-hub-turn-vfx-fallback {
+    animation: df-hub-turn-breathe 2.6s ease-in-out infinite;
+    transform-origin: 50% 50% !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.df-mobile-desktop-fit .dlh-hero-panel.df-hub-turn-vfx-fallback {
+        animation: none !important;
+    }
+}
+
+/* ========== HUD direito — botões (Ultimate, Passar, Baralho, Descarte) ========== */
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box {
+    pointer-events: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 16px !important;
+    background:
+        linear-gradient(180deg, rgba(255, 220, 150, 0.10) 0%, transparent 30%),
+        linear-gradient(180deg, rgba(80, 50, 25, 0.92) 0%, rgba(28, 14, 8, 0.88) 100%) !important;
+    border: 2px solid rgba(255, 200, 100, 0.65) !important;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(240, 180, 80, 0.22),
+        inset 0 1px 0 rgba(255, 230, 170, 0.3) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-hero-label {
+    width: 100% !important;
+    padding: 0 2px 6px !important;
+    border-bottom: 1px solid rgba(255, 200, 100, 0.38) !important;
+    font-size: 0.78rem !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    color: #ffe6a4 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-primary,
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-secondary {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-secondary .drh-box-hero-label {
+    color: #ffd0c8 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-secondary.is-active-turn .drh-box-hero-label {
+    color: #ffd8d0 !important;
+    border-bottom-color: rgba(255, 130, 110, 0.55) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-primary.is-active-turn .drh-box-hero-label {
+    color: #c8ffd0 !important;
+    border-bottom-color: rgba(120, 240, 130, 0.55) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-primary .drh-box-hero-label,
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box-secondary .drh-box-hero-label {
+    grid-column: 1 / -1 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #bottom-bar #deck-pile,
+html.df-mobile-desktop-fit.df-combat-canvas #bottom-bar #discard-pile,
+html.df-mobile-desktop-fit.df-combat-canvas #bottom-bar #ultimate-btn,
+html.df-mobile-desktop-fit.df-combat-canvas .drh-box {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #deck-pile,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #deck-pile-ai,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #discard-pile,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #discard-pile-ai,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #ultimate-btn,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #pass-turn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #deck-pile img.deck-icon,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #deck-pile-ai img.deck-icon {
+    width: 30px !important;
+    height: 40px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #ultimate-btn {
+    border-color: #c890ff !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(220, 160, 255, 0.55) 0%, transparent 65%),
+        linear-gradient(180deg, #6a2a8a 0%, #240a36 100%) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #discard-pile,
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #discard-pile-ai {
+    border-color: #d878a8 !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 180, 220, 0.30) 0%, transparent 60%),
+        linear-gradient(180deg, #6a1a3a 0%, #2a0a18 100%) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud #pass-turn {
+    border-color: #80c890 !important;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(180, 240, 200, 0.30) 0%, transparent 60%),
+        linear-gradient(180deg, #1a4a28 0%, #0a2010 100%) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .pile-hero-caption {
+    display: none !important;
+}
+
+/* Combate — fundo no viewport por modo (cover; canvas transparente) */
+html.df-mobile-desktop-fit.df-combat-canvas,
+html.df-mobile-desktop-fit.df-combat-canvas #df-rotate-stage {
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-mobile,
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-mobile #df-rotate-stage {
+    background: #0a0608 url("bg/CAMPO-DE-BATALHA-MOBILE.png?v=6") center center / cover no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-windowed,
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-windowed #df-rotate-stage {
+    background: #0a0608 url("bg/CAMPO-DESKTOP-SEM-TELA-CHEIA.png?v=6") center center / cover no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-fullscreen,
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-fullscreen #df-rotate-stage {
+    background: #0a0608 url("bg/CAMPO-DE-BATALHA-DESKTOP-TELA-CHEIA.png?v=6") center center / cover no-repeat !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root {
+    background: transparent !important;
+}
+
+/* Canvas 1280×720 transparente — o fundo vem só do #df-rotate-stage */
+html.df-mobile-desktop-fit.df-combat-canvas #game.active,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #game.active {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #fx-particles {
+    opacity: 0.1 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 .quadrant,
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 .quadrant.ai-quadrant,
+html.df-mobile-desktop-fit.df-combat-canvas #game-grid.mode-2 .quadrant.player-quadrant {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #desktop-scale-root {
+    overflow: hidden !important;
+}
+
+/* F11 — mãos nas bordas: vence overflow hidden genérico acima (cascade). */
+html.df-desktop-fullscreen.df-combat-canvas #df-rotate-stage,
+html.df-desktop-fullscreen.df-combat-canvas #df-scale-root,
+html.df-desktop-fullscreen.df-combat-canvas.df-mobile-desktop-fit:has(#game.active) #df-scale-root > #game.active,
+html.df-desktop-fullscreen.df-combat-canvas #game.active #desktop-scale-root,
+html.df-mobile-desktop-fit.df-combat-canvas.df-desktop-fullscreen #game.active #desktop-scale-root,
+html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-0,
+html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 > #quadrant-1,
+html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant,
+html.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2 .player-quadrant,
+html.df-desktop-fullscreen.df-combat-canvas #quadrant-0 .quadrant-hand,
+html.df-desktop-fullscreen.df-combat-canvas .ai-quadrant .quadrant-hand,
+html.df-desktop-fullscreen.df-combat-canvas #df-scale-root .hand-wrap,
+html.df-desktop-fullscreen.df-combat-canvas #df-scale-root .hand-wrap.ai-hand-wrap {
+    overflow: visible !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas .ai-quadrant .quadrant-hand {
+    height: auto !important;
+    min-height: var(--df-ai-hand-visible-h, 48px) !important;
+    max-height: none !important;
+}
+
+html.df-desktop-fullscreen.df-combat-canvas #quadrant-0 .quadrant-hand {
+    min-height: calc(var(--df-hand-card-h, 150px) + 12px) !important;
+    max-height: none !important;
+}
+
+/* Fase C1: combate no canvas — proíbe fixed no viewport dentro do fit */
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root > #game.active,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-left-hud,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-right-hud,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-turn-indicator,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-timer,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #fx-particles {
+    position: absolute !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #fx-particles {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #quadrant-0 .quadrant-hand,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #quadrant-0 .hand-wrap,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #quadrant-0 .hcard,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #quadrant-0 .quadrant-field .ccard {
+    touch-action: none !important;
+    pointer-events: auto !important;
+}
+
+/* Mão do jogador em qualquer combate mobile/touch — arrasto sem long-press */
+html.df-mobile #game.active #quadrant-0 .quadrant-hand,
+html.df-mobile #game.active #quadrant-0 .hand-wrap:not(.ai-hand-wrap),
+html.df-mobile #game.active #quadrant-0 .hcard,
+html.df-combat-canvas #game.active #quadrant-0 .quadrant-hand,
+html.df-combat-canvas #game.active #quadrant-0 .hand-wrap:not(.ai-hand-wrap),
+html.df-combat-canvas #game.active #quadrant-0 .hcard {
+    touch-action: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #game.active {
+    touch-action: none !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-scale-root {
+    touch-action: none !important;
+}
+
+/* ========== Menus no canvas — layout horizontal (paisagem) igual desktop ========== */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #hero-select.active {
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 16px 16px 20px !important;
+    overflow: hidden !important;
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #opcoes.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #release-notes.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 24px 16px !important;
+    overflow: hidden !important;
+    background: var(--df-ih-screen-bg, radial-gradient(ellipse 90% 70% at 50% 18%, rgba(90, 140, 180, 0.28) 0%, transparent 55%), linear-gradient(165deg, #2a3a58 0%, #3a2848 48%, #1a1428 100%)) !important;
+    touch-action: manipulation !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-arsenal.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 24px 16px !important;
+    overflow: hidden !important;
+    touch-action: manipulation !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #df-training-setup.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 24px 16px !important;
+    overflow: hidden !important;
+    touch-action: manipulation !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+}
+
+html.df-mobile-desktop-fit:has(#opcoes.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#release-notes.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#df-training-setup.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#df-play-mode.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#hero-select.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#df-arsenal.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#mercado-screen.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#online-lobby.active) .df-mobile-bg-host,
+html.df-mobile-desktop-fit:has(#opcoes.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#release-notes.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#df-training-setup.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#df-play-mode.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#hero-select.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#df-arsenal.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#mercado-screen.active) #df-hub-splash-layer,
+html.df-mobile-desktop-fit:has(#online-lobby.active) #df-hub-splash-layer {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #play-menu.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #ai-mode-select.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #objective-select.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 24px 16px !important;
+    overflow: hidden !important;
+    touch-action: manipulation !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #ai-mode-select.active,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #objective-select.active {
+    background: var(--df-ih-screen-bg, radial-gradient(ellipse 90% 70% at 50% 18%, rgba(90, 140, 180, 0.28) 0%, transparent 55%), linear-gradient(165deg, #2a3a58 0%, #3a2848 48%, #1a1428 100%)) !important;
+}
+
+/* play-menu é hub-logic: transparente para mostrar splash PNG */
+html.df-mobile-desktop-fit:not(:has(#game.active)) #play-menu.active {
+    background: transparent !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #play-menu .menu-btn,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #ai-mode-select .menu-btn,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #hero-select .menu-btn,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #objective-select .menu-btn {
+    width: 100% !important;
+    max-width: 280px !important;
+    min-width: 0 !important;
+    margin: 6px 0 !important;
+    touch-action: manipulation !important;
+}
+
+html.df-mobile-desktop-fit:not(:has(#game.active)) #play-menu .title,
+html.df-mobile-desktop-fit:not(:has(#game.active)) #ai-mode-select .title {
+    font-size: 2rem !important;
+    margin-bottom: 18px !important;
+}
+
+/* ========== Leque da mão (fanHand) — garante transform no canvas fit ========== */
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .hand-wrap:not(.ai-hand-wrap) {
+    transform: translate3d(var(--fan-x, 0), var(--fan-y, 0), 0)
+        rotateZ(var(--fan-rot, 0deg)) !important;
+    transform-origin: 50% 180% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .hand-wrap.ai-hand-wrap {
+    transform: translate3d(var(--fan-x, 0), var(--fan-y, 0), 0)
+        rotateZ(var(--fan-rot, 0deg)) !important;
+    transform-origin: 50% 100% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .hand-wrap.ai-hand-wrap:hover {
+    transform: translate3d(var(--fan-x, 0), var(--fan-y, 0), 0)
+        rotateZ(var(--fan-rot, 0deg)) !important;
+    transform-origin: 50% 100% !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #game.active #game-grid.mode-2 .ai-quadrant {
+    overflow: visible !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand {
+    justify-content: center !important;
+    align-items: flex-end !important;
+}
+
+/* ========== Overlays informativos no canvas (não viewport gigante) ========== */
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .maint-box {
+    position: absolute !important;
+    z-index: 215 !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    padding: 8px 14px !important;
+    min-width: 130px !important;
+    max-width: 260px !important;
+    border-radius: 10px !important;
+    line-height: 1.25 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85), 0 0 16px rgba(0, 0, 0, 0.45) !important;
+    transform: translate(-50%, -50%) scale(0.72) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .maint-box.visible {
+    transform: translate(-50%, -50%) scale(1) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .maint-box.turn .hero-name {
+    font-size: 1.05em !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .maint-box .maint-hero-img {
+    width: 38px !important;
+    height: 38px !important;
+    margin-bottom: 4px !important;
+    border-width: 2px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .maint-box .maint-verso-img {
+    width: 32px !important;
+    height: 44px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .phase-blocker {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 205 !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .float {
+    position: absolute !important;
+    z-index: 220 !important;
+    font-size: 0.82rem !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .float.vp {
+    font-size: 1rem !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .float.zero {
+    font-size: 1.05rem !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .float.center {
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: 598px !important;
+    transform: translate(-50%, 0) !important;
+    padding: 6px 14px !important;
+    font-size: 0.76rem !important;
+    border-radius: 16px !important;
+    max-width: 320px !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .splash {
+    position: absolute !important;
+    left: 50% !important;
+    top: 38% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 210 !important;
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    padding: 8px 16px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+    max-width: 90% !important;
+    box-sizing: border-box !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .splash.player-turn,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .splash.ai-turn,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .splash.maintenance,
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root .splash.action-phase {
+    animation: splashAnim 2.4s forwards !important;
+}
+
+/* ========== D3 — ban position:fixed dentro do canvas fit (combate mobile) ==========
+   VFX de ultimate/animação usam fixed no desktop; no fit ficam absolute no canvas. */
+html.df-mobile-desktop-fit #df-scale-root [class$="-sky"],
+html.df-mobile-desktop-fit #df-scale-root [class*="-sky "],
+html.df-mobile-desktop-fit #df-scale-root [class*="-bolt"],
+html.df-mobile-desktop-fit #df-scale-root [class^="ult-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="doppel-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="cancel-ult-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="troca-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="slime-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="necro-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="vamp-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="poison-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="wall-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="dream-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="potion-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="land-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="dragon-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="hook-"],
+html.df-mobile-desktop-fit #df-scale-root [class^="drag-ghost"],
+html.df-mobile-desktop-fit #df-scale-root .insufficient-banner,
+html.df-mobile-desktop-fit #df-scale-root [class^="combat-vfx"],
+html.df-mobile-desktop-fit #df-scale-root [class^="df-vfx"],
+html.df-mobile-desktop-fit #df-scale-root .preview-card.has-art.preview-zoomed,
+html.df-mobile-desktop-fit #df-scale-root #preview-backdrop,
+html.df-mobile-desktop-fit #df-scale-root #talent-spotlight-layer,
+html.df-mobile-desktop-fit #df-scale-root #card-zoom-overlay,
+html.df-mobile-desktop-fit #df-scale-root .df-sprite-vfx-layer,
+html.df-mobile-desktop-fit #df-scale-root .df-pixi-vfx-host {
+    position: absolute !important;
+}
+
+/* ===== 1.22.10 — campo jogador: colado, sem fantasma (não exige #game.active) =====
+   Mira/Ritual: NÃO aplicar border transparent / animation:none em .valid-target. */
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):active,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):focus-visible,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover {
+    position: relative !important;
+    align-self: flex-start !important;
+    flex: 0 0 var(--df-field-card-w, 108px) !important;
+    width: var(--df-field-card-w, 108px) !important;
+    min-width: var(--df-field-card-w, 108px) !important;
+    max-width: var(--df-field-card-w, 108px) !important;
+    height: var(--df-field-card-h, 151px) !important;
+    min-height: var(--df-field-card-h, 151px) !important;
+    max-height: var(--df-field-card-h, 151px) !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    top: auto !important;
+    left: auto !important;
+    transition: none !important;
+    animation: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+    overflow: hidden !important;
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transform-style: flat !important;
+    backface-visibility: hidden !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art.tapped,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped:hover,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art.tapped:hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art.tapped,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped:hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art.tapped:hover {
+    transform: none !important;
+    rotate: none !important;
+    margin-left: 22px !important;
+    margin-right: 22px !important;
+    filter: brightness(0.62) !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard::after,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:hover::after,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard::after,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard:hover::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    filter: none !important;
+    transform: none !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard > img.card-art-bg,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard > img.card-art-bg {
+    opacity: 1 !important;
+    transform: none !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    pointer-events: none !important;
+    border-radius: inherit !important;
+}
+
+/* ===== 1.22.11 — TRAVA FINAL (última folha): campo desktop sem fantasma no hover =====
+   Exclui mira/Ritual — senão border transparent + animation:none matam o destaque. */
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):active,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):focus-visible,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target),
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.has-art:not(.valid-target):not(.ritual-drag-target):not(.df-target-levitating):not(.drag-attack-target):hover {
+    position: relative !important;
+    align-self: flex-start !important;
+    flex: 0 0 var(--df-field-card-w, 108px) !important;
+    width: var(--df-field-card-w, 108px) !important;
+    min-width: var(--df-field-card-w, 108px) !important;
+    max-width: var(--df-field-card-w, 108px) !important;
+    height: var(--df-field-card-h, 151px) !important;
+    min-height: var(--df-field-card-h, 151px) !important;
+    max-height: var(--df-field-card-h, 151px) !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    top: auto !important;
+    left: auto !important;
+    transition: none !important;
+    animation: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+    overflow: hidden !important;
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped:hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped:hover {
+    transform: none !important;
+    rotate: none !important;
+    margin-left: 18px !important;
+    margin-right: 18px !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static::after,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:hover::after,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static::after,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:hover::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: none !important;
+    filter: none !important;
+}
+/* Campo (todos os jogadores): uma camada — img vence, sem bg CSS duplicado */
+@media (min-width: 901px) {
+    html:not(.df-mobile) #game.active .quadrant-field .ccard.has-art.art-ready {
+        background-image: none !important;
+        background-color: transparent !important;
+    }
+}
+
+/* ===== 1.22.12 — fileira do jogador: alinhamento fixo (hover = mesmo layout) ===== */
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: flex-start !important;
+    align-content: flex-start !important;
+    justify-content: center !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:hover,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:hover {
+    align-self: flex-start !important;
+    vertical-align: top !important;
+    overflow: hidden !important;
+}
+
+/* ===== 1.22.13 — campo jogador desktop: sem inclinação/fantasma; arrastar e zoom intactos =====
+   Causa: leque da mão (DOM depois do campo + z-index do fan-stack) interceptava clique/arrasto
+   na zona de sobreposição; propriedades rotate/transform divergentes no :hover geravam inclinação
+   e camada dupla (bg + img). Campo acima da mão; cartas 2D fixas; filhos não roubam pointer. */
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field {
+    position: relative !important;
+    z-index: 30 !important;
+    isolation: isolate !important;
+    transform: none !important;
+    perspective: none !important;
+    transform-style: flat !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-hand,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-hand {
+    position: relative !important;
+    z-index: 5 !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:hover,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:active,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard:focus-visible,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art,
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard:hover,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:hover {
+    --fan-rot: 0deg !important;
+    --fan-x: 0px !important;
+    --fan-y: 0px !important;
+    --fan-stack: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    transform-style: flat !important;
+    transform-origin: 50% 50% !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard > *:not(.status-crown),
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard > *:not(.status-crown) {
+    pointer-events: none !important;
+}
+html:not(.df-mobile) #quadrant-0.player-quadrant .quadrant-field > .ccard > img.card-art-bg,
+html.df-mobile-desktop-fit #quadrant-0.player-quadrant .quadrant-field > .ccard > img.card-art-bg {
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    opacity: 1 !important;
+}
+
+/* ===== 1.22.14 — fileira ímã: centrada na linha vertical da arena (todos os jogadores) ===== */
+html:not(.df-mobile) #game.active #game-grid.mode-2 .quadrant-field {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    align-content: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    perspective: none !important;
+    transform-style: flat !important;
+}
+html:not(.df-mobile) #game.active #game-grid.mode-2 .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px))) !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px)))
+        translateY(calc(var(--df-player-field-y-nudge, 0) + var(--df-player-field-y-bias, 4px))) !important;
+}
+html:not(.df-mobile) #game.active .ai-quadrant .quadrant-field {
+    transform: translateX(calc(var(--df-arena-center-x, 0px) + var(--df-field-x-bias, 0px)))
+        translateY(calc(var(--df-ai-field-y-nudge, -18px) + var(--df-ai-field-y-bias, -4px))) !important;
+}
+html:not(.df-mobile) #game.active #game-grid.mode-2 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle),
+html:not(.df-mobile) #game.active #game-grid.mode-2 .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):hover {
+    flex: 0 0 var(--df-field-card-w, 108px) !important;
+    width: var(--df-field-card-w, 108px) !important;
+    min-width: var(--df-field-card-w, 108px) !important;
+    max-width: var(--df-field-card-w, 108px) !important;
+    height: var(--df-field-card-h, 151px) !important;
+    min-height: var(--df-field-card-h, 151px) !important;
+    max-height: var(--df-field-card-h, 151px) !important;
+    align-self: flex-start !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+}
+html:not(.df-mobile) #game.active #game-grid.mode-2 .quadrant-field > .ccard.df-summon-settle {
+    transition: transform 400ms cubic-bezier(0.33, 0.02, 0.18, 1) !important;
+}
+
+/* ===== 1.22.15 — campo jogador: ímã estático (inline lock + CSS; paridade IA) ===== */
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):active,
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+    --fan-rot: 0deg !important;
+    --fan-x: 0px !important;
+    --fan-y: 0px !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    transform-origin: 50% 50% !important;
+    transition: none !important;
+}
+
+/* ===== 1.22.16 — selagem JS: carta selada nunca herda leque da mão ===== */
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+    --fan-rot: 0deg !important;
+    --fan-x: 0px !important;
+    --fan-y: 0px !important;
+    --fan-stack: auto !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    margin: 0 !important;
+    transform-origin: 50% 50% !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating),
+html:not(.df-mobile) #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating),
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-player-field-sealed.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):hover {
+    transform: none !important;
+    rotate: none !important;
+}
+
+/* ===== 1.22.17 — campo jogador isolado do leque da mão (fator externo) =====
+   Causa: fanHand recalcula --fan-rot/--fan-y na mão; hover da mão (z-index 220 + lift)
+   podia sobrepor/interagir com a zona do campo. Campo: sem vars de leque, sem margem
+   negativa de overlap, transform 0 — descendentes ou irmãos da mão não inclinam .ccard. */
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):active,
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible,
+html.df-mobile-desktop-fit #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html.df-mobile-desktop-fit #game.active #quadrant-0 .quadrant-field .ccard.df-field-static:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-settle):not(.df-summon-busy):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover {
+    --fan-rot: 0deg !important;
+    --fan-x: 0px !important;
+    --fan-y: 0px !important;
+    --fan-stack: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    rotate: none !important;
+    transform-origin: 50% 50% !important;
+    transform-style: flat !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating),
+html:not(.df-mobile) #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating),
+html.df-mobile-desktop-fit #game.active #quadrant-0 .quadrant-field .ccard.df-field-static.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):hover {
+    transform: none !important;
+    rotate: none !important;
+}
+html:not(.df-mobile) #game.active #quadrant-0:has(.quadrant-field .ccard:hover) .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src):hover,
+html.df-mobile-desktop-fit #game.active #quadrant-0:has(.quadrant-field .ccard:hover) .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src):hover {
+    transform: translate3d(var(--fan-x), var(--fan-y), 0) rotateZ(var(--fan-rot)) !important;
+    z-index: var(--fan-stack, auto) !important;
+    filter: none !important;
+}
+
+/* ===== 1.22.18 — alvos válidos no campo do jogador: borda pulsante + zoom (vence border transparent da selagem) ===== */
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):hover,
+html.df-desktop-field-lock body[data-targeting] #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):hover {
+    animation: fieldRedBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(255, 70, 70, 1) !important;
+    box-shadow: none !important;
+    z-index: 52 !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-green:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-green:not(.combat-animating):hover {
+    animation: fieldGreenBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(80, 255, 115, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating):hover {
+    animation: fieldBlueBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(70, 160, 255, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target,
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-target-levitating,
+html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target,
+html.df-desktop-field-lock #game.active .quadrant-field .ccard.df-target-levitating {
+    flex: 0 0 var(--df-field-card-w, 108px) !important;
+    width: var(--df-field-card-w, 108px) !important;
+    min-width: var(--df-field-card-w, 108px) !important;
+    max-width: var(--df-field-card-w, 108px) !important;
+    height: var(--df-field-card-h, 151px) !important;
+    min-height: var(--df-field-card-h, 151px) !important;
+    max-height: var(--df-field-card-h, 151px) !important;
+    box-sizing: border-box !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating):hover {
+    animation: fieldOrangeBorderPulse 0.9s ease-in-out infinite !important;
+    border: 2px solid transparent !important;
+    outline: 3.5px solid rgba(255, 160, 50, 1) !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating):hover,
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.ritual-drag-target:not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.ritual-drag-target:not(.combat-animating):hover {
+    animation: fieldPurpleBorderPulse 0.75s ease-in-out infinite !important;
+    border: 3.5px solid rgba(200, 85, 255, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-target-levitating:not(.combat-animating):not(.field-drag-src),
+html.df-desktop-field-lock #game.active #quadrant-0 .quadrant-field .ccard.df-target-levitating:not(.combat-animating):not(.field-drag-src):hover {
+    will-change: transform !important;
+    z-index: 44 !important;
+    pointer-events: auto !important;
+}
+/* PvP: mesmos destaques/zoom em qualquer quadrante (assento 0 mira o campo em #quadrant-1). */
+body.df-pvp-mode html.df-desktop-field-lock #game.active .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-red:not(.combat-animating):hover {
+    animation: fieldRedBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(255, 70, 70, 1) !important;
+    box-shadow: none !important;
+    z-index: 52 !important;
+}
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-green:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-green:not(.combat-animating):hover {
+    animation: fieldGreenBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(80, 255, 115, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-blue:not(.combat-animating):hover {
+    animation: fieldBlueBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(70, 160, 255, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-orange:not(.combat-animating):hover {
+    animation: fieldOrangeBorderPulse 0.9s ease-in-out infinite !important;
+    border: 3.5px solid rgba(255, 160, 50, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.valid-target.vt-purple:not(.combat-animating):hover,
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.ritual-drag-target:not(.combat-animating),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.ritual-drag-target:not(.combat-animating):hover {
+    animation: fieldPurpleBorderPulse 0.75s ease-in-out infinite !important;
+    border: 3.5px solid rgba(200, 85, 255, 1) !important;
+    box-shadow: none !important;
+    z-index: 48 !important;
+}
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.df-target-levitating:not(.combat-animating):not(.field-drag-src),
+html.df-desktop-field-lock body.df-pvp-mode #game.active .quadrant-field .ccard.df-target-levitating:not(.combat-animating):not(.field-drag-src):hover {
+    will-change: transform !important;
+    z-index: 54 !important;
+    pointer-events: auto !important;
+}
+
+/* ===== 1.22.19 — TRAVA ÍMÃ FINAL: campo #quadrant-0 isolado do leque da mão =====
+   Fator externo: fanHand aplica --fan-rot só em .hand-wrap; esta regra garante que
+   .ccard do campo nunca herde inclinação/levitação, mesmo após re-render ou hover. */
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-busy):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-busy):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-busy):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):active,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.is-summoning):not(.df-summon-busy):not(.df-summon-settle):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+    --fan-rot: 0deg !important;
+    --fan-x: 0px !important;
+    --fan-y: 0px !important;
+    --fan-stack: auto !important;
+    transform: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: 1 !important;
+    transform-origin: 50% 50% !important;
+    transform-style: flat !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transition: none !important;
+    animation: none !important;
+    filter: none !important;
+    will-change: auto !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating),
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.tapped:not(.field-drag-src):not(.field-dragging):not(.combat-animating):hover {
+    transform: none !important;
+    rotate: none !important;
+    scale: 1 !important;
+    translate: none !important;
+    flex: 0 0 var(--df-field-card-w, 108px) !important;
+    width: var(--df-field-card-w, 108px) !important;
+    min-width: var(--df-field-card-w, 108px) !important;
+    max-width: var(--df-field-card-w, 108px) !important;
+    height: var(--df-field-card-h, 151px) !important;
+    min-height: var(--df-field-card-h, 151px) !important;
+    max-height: var(--df-field-card-h, 151px) !important;
+}
+
+/* ===== 1.22.20 — anti-fantasma: uma camada no campo do jogador (vence --card-art global) ===== */
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target),
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):hover,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):active,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.field-drag-src):not(.field-dragging):not(.combat-animating):not(.df-target-levitating):not(.valid-target):not(.ritual-drag-target):not(.drag-attack-target):focus-visible {
+    background: none !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target)::before,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target)::after,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):hover::before,
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art:not(.valid-target):not(.ritual-drag-target):hover::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+html.df-desktop-field-lock #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.has-art > img.card-art-bg {
+    opacity: 1 !important;
+    transform: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: 1 !important;
+    display: block !important;
+}
+/* Fator externo: leque da mão não sobe quando o mouse está no campo (evita cartas “voando” ao centro). */
+html.df-desktop-field-lock #game.active #quadrant-0:has(.quadrant-field > .ccard:hover) .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src),
+html.df-desktop-field-lock #game.active #quadrant-0:has(.quadrant-field > .ccard:hover) .quadrant-hand > .hand-wrap:not(.ai-hand-wrap):not(.dragging-src):hover {
+    transform: translate3d(var(--fan-x), var(--fan-y), 0) rotateZ(var(--fan-rot)) !important;
+    z-index: var(--fan-stack, auto) !important;
+    filter: none !important;
+}
+
+/* ===== Mobile canvas fit — cartas +20% / zoom ampliado −15% (1.40.163) ===== */
+html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand {
+    min-height: 178px !important;
+    overflow: visible !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas .ai-quadrant .quadrant-hand {
+    /* clip/absolute — ver bloco mode-2 */
+}
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped,
+html.df-mobile-desktop-fit #game.active #quadrant-0.player-quadrant .quadrant-field > .ccard.df-field-static.tapped:hover {
+    margin-left: 22px !important;
+    margin-right: 22px !important;
+}
+
+/* ========== Mobile touch — escala HUD combate (desktop mouse intacto) ========== */
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit.df-combat-canvas {
+        --df-hand-card-w: 139px;
+        --df-hand-card-h: 193px;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #quadrant-0 .quadrant-hand {
+        min-height: 205px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo {
+        gap: 7px !important;
+        width: 262px !important;
+        max-width: 262px !important;
+        height: 82px !important;
+        padding: 7px 17px 7px 14px !important;
+        border-radius: 17px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo img {
+        max-width: calc(100% - 43px) !important;
+        max-height: 65px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-logo .desktop-menu-bars {
+        font-size: 1.8rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-frame {
+        gap: 16px !important;
+        padding: 12px 21px 12px 12px !important;
+        min-width: 299px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-portrait {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-name {
+        font-size: 1.14rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions {
+        display: none !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions-label {
+        font-size: 0.67rem !important;
+        letter-spacing: 1.7px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-turn-indicator .dti-actions-num {
+        font-size: 1.98rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-left-hud {
+        max-width: min(var(--df-hero-hub-max-w, 286px), calc(100% - 12px)) !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root #desktop-right-hud {
+        max-width: min(var(--df-hero-hub-max-w, 286px), calc(100% - 12px)) !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-right-hud .drh-box {
+        max-width: 220px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #desktop-left-hud .dlh-hero-panel:not(:has(.dlhp-stack)) {
+        max-width: min(var(--df-hero-hub-max-w, 286px), calc(100% - 12px)) !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel:not(:has(.dlhp-stack)),
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player:not(:has(.dlhp-stack)) {
+        gap: 12px !important;
+        padding: 9px 14px 9px 9px !important;
+        border-radius: 18px !important;
+        min-height: 136px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player {
+        padding: 9px 9px 9px 14px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-portrait {
+        width: 127px !important;
+        height: 127px !important;
+        flex: 0 0 127px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlhp-portrait {
+        width: 124px !important;
+        height: 124px !important;
+        flex: 0 0 124px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlhp-stat-row {
+        font-size: 0.83rem !important;
+        gap: 9px !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-stat-row {
+        font-size: 0.87rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlhp-label {
+        font-size: 0.71rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlhp-num,
+    html.df-mobile-desktop-fit.df-combat-canvas #dlh-hero-player .dlhp-num {
+        font-size: 1.15rem !important;
+    }
+
+    html.df-mobile-desktop-fit.df-combat-canvas .dlhp-vp-row {
+        gap: 0 !important;
+        min-height: 0 !important;
+    }
+}
+
+/* ========== Hub herói — retrato + coluna (nome em cima, PV centralizado) ========== */
+.dlh-hero-panel .dlhp-stat-row,
+.dlh-hero-panel .dlhp-timer {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.dlh-hero-panel {
+    overflow: hidden !important;
+}
+
+.dlh-hero-panel .dlhp-info {
+    gap: 5px !important;
+    justify-content: flex-start !important;
+    flex-direction: column !important;
+    flex: 1 1 0 !important;
+    min-width: 88px !important;
+    max-width: 124px !important;
+    width: auto !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+}
+
+.dlh-hero-panel .dlhp-name {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+    font-size: 0.78rem !important;
+    font-weight: 900 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.15 !important;
+    text-transform: uppercase !important;
+    width: 100% !important;
+    align-self: stretch !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    min-height: 1.15em !important;
+    color: #ffe6a4 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85) !important;
+}
+
+#dlh-hero-ai .dlhp-name {
+    text-align: left !important;
+}
+
+#dlh-hero-player .dlhp-name {
+    text-align: right !important;
+}
+
+.dlh-hero-panel .dlhp-status {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+}
+
+.dlh-hero-panel .dlhp-vp-row {
+    order: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    grid-template-columns: none !important;
+    min-height: 54px !important;
+    gap: 0 !important;
+    width: 100% !important;
+    flex: 1 1 auto !important;
+}
+
+#dlh-hero-player .dlhp-vp-row {
+    direction: ltr !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel .dlhp-vp,
+.dlh-hero-panel .dlhp-vp {
+    display: block !important;
+    font-size: 3.225rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.5px !important;
+    color: #ffe08a !important;
+    text-shadow:
+        0 0 22px rgba(255, 200, 80, 0.62),
+        0 4px 10px rgba(0, 0, 0, 0.92) !important;
+    padding: 12px 21px !important;
+    border-radius: 21px !important;
+    background: linear-gradient(180deg, rgba(48, 28, 10, 0.95) 0%, rgba(14, 8, 4, 0.92) 100%) !important;
+    border: 2px solid rgba(255, 210, 120, 0.82) !important;
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.8),
+        0 0 24px rgba(255, 190, 90, 0.35),
+        inset 0 1px 0 rgba(255, 235, 190, 0.32) !important;
+    min-width: 3.4ch !important;
+    text-align: center !important;
+    font-variant-numeric: tabular-nums !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+.dlh-hero-panel .dlhp-vp::before {
+    content: "PV " !important;
+    display: block !important;
+    font-size: 0.38em !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    opacity: 0.9 !important;
+    margin-bottom: 2px !important;
+    text-transform: uppercase !important;
+}
+
+.dlh-hero-panel .dlhp-portrait {
+    width: 108px !important;
+    height: 108px !important;
+    flex: 0 0 108px !important;
+    align-self: center !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-color: #1a0c14 !important;
+    background-repeat: no-repeat !important;
+    border-width: 3px !important;
+    border-radius: 14px !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.85),
+        0 0 20px rgba(255, 200, 100, 0.35),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dlh-hero-panel.is-active-turn .dlhp-portrait {
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.9),
+        0 0 28px rgba(255, 220, 120, 0.5),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.df-mobile-desktop-fit.df-combat-canvas .dlh-hero-panel:not(:has(.dlhp-stack)) {
+    min-height: 118px !important;
+    gap: 8px !important;
+}
+
+@media (pointer: coarse) {
+    html.df-mobile-desktop-fit.df-combat-canvas {
+        --df-hero-hub-max-w: 286px;
+    }
+
+    .dlh-hero-panel .dlhp-info {
+        min-width: 92px !important;
+        max-width: 130px !important;
+    }
+
+    .dlh-hero-panel .dlhp-portrait {
+        width: 112px !important;
+        height: 112px !important;
+        flex: 0 0 112px !important;
+    }
+
+    .dlh-hero-panel .dlhp-vp {
+        font-size: 2.45rem !important;
+        padding: 9px 16px !important;
+    }
+}
+
+/* ========== UI de combate suspensa temporariamente (DfCombatUi / df-feature-flags.js) ========== */
+html.df-hide-combat-turn-box #desktop-turn-indicator,
+html.df-hide-combat-turn-box #mobile-turn-indicator {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-hide-combat-hero-hubs #desktop-left-hud,
+html.df-hide-combat-hero-hubs .dlh-hero-panel {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.df-hide-combat-menu-btn #desktop-logo,
+html.df-hide-combat-menu-btn #end-turn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+@media (min-width: 901px) {
+    html.df-hide-combat-hero-hubs:not(.df-mobile-desktop-fit):has(#game.active) #game-grid {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+}
+
+/* Leque IA no topo — metade visível, clip + pivô na base (fanAIHandLandscape). */
+.hand-wrap.ai-hand-wrap {
+    transform-origin: 50% 100% !important;
+}
+
+.ai-quadrant .quadrant-hand {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+}
+
+/* F11 — mão IA: descer um pouco (menos lift) para ficar visível no topo. */
+@media (hover: hover) and (pointer: fine) {
+    html.df-mobile-desktop-fit.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid.mode-2,
+    html.df-mobile-desktop-fit.df-desktop-fullscreen.df-combat-canvas #game.active #game-grid {
+        padding-top: 0 !important;
+    }
+
+    html.df-mobile-desktop-fit.df-desktop-fullscreen.df-combat-canvas .ai-quadrant .quadrant-hand {
+        transform: translateX(var(--df-hand-pan-x, 0))
+            translateY(calc(-1 * (var(--df-ai-hand-lift, 18px) + var(--df-ai-hand-f11-extra, 0px) + var(--df-ai-hand-f11-gap, 0px)))) !important;
+        transform-origin: center top !important;
+    }
+}
+
+/* Zoom: véu 99980 < HUD pedra 99985 < carta/status 99999. */
+body > #preview-card-inner.preview-zoomed {
+    position: fixed !important;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+}
+body > #preview-backdrop.active,
+body.preview-open > #preview-backdrop {
+    position: fixed !important;
+    z-index: 99980 !important;
+}
+body.preview-open #df-actions-label-pedestal:not([hidden]),
+body.preview-open #df-actions-count-pedestal:not([hidden]),
+body.preview-open #desktop-timer.df-arena-clock:not([hidden]) {
+    z-index: 99985 !important;
+}

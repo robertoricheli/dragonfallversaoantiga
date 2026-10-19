@@ -1,0 +1,401 @@
+/**
+ * Botão Opções — pedestal esquerdo da arena (CAMPO DE BATALHA).
+ */
+:root {
+    --df-opcoes-pedestal-x: 7.5%;
+    --df-opcoes-pedestal-y: 25.2%;
+    --df-opcoes-pedestal-w: 16.9%;
+}
+
+#df-combat-opcoes-pedestal {
+    position: absolute;
+    left: var(--df-opcoes-pedestal-x);
+    top: var(--df-opcoes-pedestal-y);
+    transform: translate(-50%, -50%);
+    width: var(--df-opcoes-pedestal-w);
+    max-width: 290px;
+    min-width: 136px;
+    z-index: 216;
+    pointer-events: none;
+    display: none;
+    background: transparent !important;
+}
+
+body:has(#game.active) #df-combat-opcoes-pedestal:not([hidden]) {
+    display: block;
+}
+
+html.df-mobile-desktop-fit body > #df-combat-opcoes-pedestal[data-df-pedestal-sync="stage-cover"] {
+    position: fixed !important;
+    max-width: none;
+    min-width: 0;
+    z-index: 180;
+    left: auto;
+    top: auto;
+    width: auto;
+}
+
+#combat-opcoes-btn.df-combat-opcoes-btn {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    line-height: 0;
+    pointer-events: auto;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+#combat-opcoes-btn:focus-visible {
+    outline: 2px solid rgba(255, 220, 120, 0.85);
+    outline-offset: 3px;
+    border-radius: 8px;
+}
+
+.df-combat-opcoes-face {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.32));
+}
+
+#combat-opcoes-btn:active .df-combat-opcoes-face {
+    transform: scale(0.94) translateY(2px);
+    transition: transform 0.07s ease-out;
+}
+
+html.df-arena-desktop-fullscreen #df-combat-opcoes-pedestal .df-combat-opcoes-face {
+    transform: scaleY(1.07);
+    transform-origin: center bottom;
+}
+
+html.df-arena-desktop-fullscreen #combat-opcoes-btn:active .df-combat-opcoes-face {
+    transform: scaleY(1.07) scale(0.94) translateY(2px);
+}
+
+html.df-arena-mobile #df-combat-opcoes-pedestal .df-combat-opcoes-face {
+    transform: scale(1.01, 1.02);
+    transform-origin: center bottom;
+}
+
+html.df-arena-mobile #combat-opcoes-btn:active .df-combat-opcoes-face {
+    transform: scale(1.01, 1.02) scale(0.94) translateY(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #combat-opcoes-btn:active .df-combat-opcoes-face {
+        transform: scale(0.98);
+    }
+}
+
+/* Opções sobre o combate (mobile canvas fit oculta .screen por padrão). */
+html.df-mobile-desktop-fit:has(#game.active) #df-scale-root > #opcoes.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 500 !important;
+    overflow: hidden !important;
+    padding: 12px 10px !important;
+    background: radial-gradient(circle at center, rgba(30, 15, 30, 0.94) 0%, rgba(5, 2, 8, 0.97) 100%) !important;
+}
+
+/* Opções durante combate — viewport inteiro (todas as versões; reparent p/ body). */
+#df-opcoes-combat-scrim {
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    z-index: 100060 !important;
+    pointer-events: auto !important;
+    background: radial-gradient(circle at center, rgba(30, 15, 30, 0.97) 0%, rgba(5, 2, 8, 0.99) 100%) !important;
+}
+
+#df-opcoes-combat-scrim[hidden] {
+    display: none !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active {
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: clamp(8px, 2vh, 16px) clamp(8px, 2vw, 14px) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 100070 !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    pointer-events: auto !important;
+    background: radial-gradient(circle at center, rgba(30, 15, 30, 0.97) 0%, rgba(5, 2, 8, 0.99) 100%) !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active > .title {
+    font-size: clamp(1.15rem, 4.5vh, 1.75rem) !important;
+    margin: 0 0 clamp(4px, 1vh, 10px) !important;
+    line-height: 1.1 !important;
+    flex: 0 0 auto !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active > .df-opcoes-vol-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(6px, 1.4vh, 12px) !important;
+    max-width: min(420px, 92vw) !important;
+    width: min(420px, 92vw) !important;
+    margin: clamp(4px, 1vh, 10px) auto !important;
+    flex: 0 1 auto !important;
+    min-height: 0 !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .opt-row label {
+    font-size: clamp(0.72rem, 2.2vh, 0.92rem) !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .opt-row input[type="range"] {
+    height: clamp(18px, 3vh, 24px) !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .df-opcoes-vol-note {
+    font-size: clamp(0.65rem, 1.8vh, 0.78rem) !important;
+    margin-top: 0 !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .opcoes-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(6px, 1.2vh, 10px) !important;
+    width: min(92vw, 480px) !important;
+    max-width: 480px !important;
+    margin: clamp(6px, 1.2vh, 12px) auto 0 !important;
+    flex: 0 0 auto !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .opcoes-actions .menu-btn {
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: clamp(8px, 1.6vh, 12px) clamp(6px, 1.5vw, 10px) !important;
+    font-size: clamp(0.68rem, 2vh, 0.9rem) !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+}
+
+/* Ações de combate com leitura imediata: voltar, reiniciar e desistir. */
+#opcoes.df-opcoes-combat-overlay.active #btn-opcoes-back {
+    color: #effff3 !important;
+    border-color: #62df83 !important;
+    background: linear-gradient(180deg, #36a85a 0%, #19753b 52%, #0d4824 100%) !important;
+    box-shadow: 0 0 0 1px rgba(202, 255, 216, 0.3) inset, 0 0 14px rgba(65, 220, 108, 0.35) !important;
+}
+
+/* Rankeado / MP: Reiniciar sempre oculto (backup além do gate JS). */
+body.df-pvp-mode #btn-opcoes-restart {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Rankeado: Retornar sob Desistir (Reiniciar oculto). Retornar um pouco à esquerda. */
+body.df-pvp-mode #opcoes.df-opcoes-combat-overlay.active .opcoes-actions {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+}
+body.df-pvp-mode #opcoes.df-opcoes-combat-overlay.active #btn-opcoes-back {
+    width: min(100%, 280px) !important;
+    margin-left: 4% !important;
+    justify-self: center !important;
+    transform: translateX(-10px) !important;
+}
+body.df-pvp-mode #opcoes.df-opcoes-combat-overlay.active #btn-opcoes-surrender {
+    width: min(100%, 320px) !important;
+    justify-self: center !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active #btn-opcoes-restart {
+    color: #fff8df !important;
+    border-color: #ffc85a !important;
+    background: linear-gradient(180deg, #c88a24 0%, #8e5915 52%, #57330b 100%) !important;
+    box-shadow: 0 0 0 1px rgba(255, 239, 185, 0.3) inset, 0 0 14px rgba(255, 180, 55, 0.35) !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active #btn-opcoes-surrender {
+    grid-column: 1 / -1 !important;
+    white-space: normal !important;
+    font-size: clamp(0.58rem, 1.65vh, 0.78rem) !important;
+    line-height: 1.2 !important;
+    padding: clamp(8px, 1.5vh, 11px) clamp(10px, 2vw, 14px) !important;
+    color: #fff0f0 !important;
+    border-color: #ff6767 !important;
+    background: linear-gradient(180deg, #bd3f45 0%, #811f29 52%, #4c1018 100%) !important;
+    box-shadow: 0 0 0 1px rgba(255, 205, 205, 0.25) inset, 0 0 14px rgba(255, 70, 80, 0.35) !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .df-opcoes-surrender-confirm {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: clamp(12px, 3vh, 24px) !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    background: rgba(5, 2, 8, 0.96) !important;
+    z-index: 5 !important;
+    overflow: hidden !important;
+}
+
+#opcoes.df-opcoes-combat-overlay.active .df-opcoes-surrender-text {
+    font-size: clamp(0.78rem, 2.4vh, 1rem) !important;
+}
+
+/* Combate + opções aberto: elevar z-index mesmo sem reparent (F11 fallback). */
+body:has(#game.active):has(#opcoes.active) #opcoes.active {
+    z-index: 100070 !important;
+}
+
+/* Combate + opções: ocultar TODO o HUD (pedestais reparentados p/ body). */
+html.df-opcoes-combat-open #df-pass-turn-pedestal,
+html.df-opcoes-combat-open #df-combat-opcoes-pedestal,
+html.df-opcoes-combat-open #df-buy-card-pedestal,
+html.df-opcoes-combat-open #df-deck-count-pedestal,
+html.df-opcoes-combat-open #df-actions-label-pedestal,
+html.df-opcoes-combat-open #df-actions-count-pedestal,
+html.df-opcoes-combat-open #df-ultimate-pedestal,
+html.df-opcoes-combat-open #df-ultimate-count-pedestal,
+html.df-opcoes-combat-open #desktop-timer,
+html.df-opcoes-combat-open #df-deck-badge,
+body:has(#game.active):has(#opcoes.active) #df-pass-turn-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-combat-opcoes-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-buy-card-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-deck-count-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-actions-label-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-actions-count-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-ultimate-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-ultimate-count-pedestal,
+body:has(#game.active):has(#opcoes.active) #desktop-timer,
+html.df-opcoes-combat-open #df-turn-banner-pedestal,
+body:has(#game.active):has(#opcoes.active) #df-deck-badge,
+body:has(#game.active):has(#opcoes.active) #df-turn-banner-pedestal,
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+body:has(#opcoes.active) #df-combat-opcoes-pedestal,
+body:has(#opcoes.active) #df-pass-turn-pedestal,
+body:has(#opcoes.active) #df-buy-card-pedestal {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Combate + opções: ocultar tabuleiro e cartas (ficam atrás do menu). */
+html.df-opcoes-combat-open #df-scale-root,
+html.df-opcoes-combat-open #game.active,
+html.df-opcoes-combat-open #game.active *,
+html.df-opcoes-combat-open .hand-wrap,
+html.df-opcoes-combat-open .hcard,
+html.df-opcoes-combat-open .ccard,
+html.df-opcoes-combat-open #df-vfx-layer,
+html.df-opcoes-combat-open .df-pixi-vfx-canvas,
+html.df-opcoes-combat-open .df-pixi-vfx-host,
+html.df-opcoes-combat-open #card-preview-container.active,
+html.df-opcoes-combat-open #menu-overlay.active,
+html.df-opcoes-combat-open #detail-overlay.active {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+html.df-opcoes-combat-open #opcoes.active,
+html.df-opcoes-combat-open #opcoes.active *,
+html.df-opcoes-combat-open #df-opcoes-combat-scrim {
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+#opcoes .df-opcoes-combat-only[hidden] {
+    display: none !important;
+}
+
+#opcoes .df-opcoes-surrender-confirm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 420px;
+    width: 90%;
+    margin: 18px auto 0;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 215, 120, 0.35);
+}
+
+#opcoes .df-opcoes-surrender-confirm[hidden] {
+    display: none !important;
+}
+
+#opcoes .df-opcoes-surrender-text {
+    margin: 0;
+    color: #ffd76b;
+    text-align: center;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+#opcoes .df-opcoes-surrender-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Sem barra de rolagem no menu de combate (todas as versões). */
+html.df-opcoes-combat-open,
+html.df-opcoes-combat-open body {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+}
+
+html.df-opcoes-combat-open #opcoes.df-opcoes-combat-overlay.active {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+}
+
+html.df-opcoes-combat-open #opcoes.df-opcoes-combat-overlay.active::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
