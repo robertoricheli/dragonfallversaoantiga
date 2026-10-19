@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <script>
+/* Bloqueia "Instalar aplicativo" do Chrome ANTES de qualquer JS externo
+   (em dados móveis o beforeinstallprompt pode disparar antes do df-pwa-install.js). */
+(function () {
+  function blockInstall(e) {
+    try { e.preventDefault(); } catch (err) { /* */ }
+  }
+  window.addEventListener("beforeinstallprompt", blockInstall, true);
+  window.addEventListener("beforeinstallprompt", blockInstall, false);
+})();
+    </script>
+    <script>window.__DF_CARD_ART_V="70a6141860e4";window.__DF_GAME_V="70a6141860e4";window.__DF_DISPLAY_VERSION="1.49.73";</script>
+    <script>window.__DF_CONTENT_HASHES={"/DRAGONFALL.webp":"874975d36be6","/HUB MUSIC.mp3":"acd82cbca213","/ai-hard.json":"816ad08642b9","/audio/sfx/block.mp3":"bf21d51e3e10","/audio/sfx/bomb.mp3":"7d0975782d6f","/audio/sfx/buff_power.mp3":"d2ec4e2c4552","/audio/sfx/card_draw.mp3":"fd802c30cc75","/audio/sfx/champion_destroy.mp3":"18550f9beeb8","/audio/sfx/champion_summon.mp3":"95bdaaf21e50","/audio/sfx/charge.mp3":"0c67e571b76b","/audio/sfx/combat_clash.mp3":"c3f01d8f2f30","/audio/sfx/comet.mp3":"1df20f4a0a10","/audio/sfx/defeat.mp3":"27f45c0c741a","/audio/sfx/devour.mp3":"297d50df2fc5","/audio/sfx/dimension.mp3":"226174d74adc","/audio/sfx/divine.mp3":"65ee007a6394","/audio/sfx/dragon_roar.mp3":"0764d993a0d9","/audio/sfx/explosao.mp3":"e88e80d28e98","/audio/sfx/fireball.mp3":"956b68bc9480","/audio/sfx/freeze.mp3":"fed77031482f","/audio/sfx/heal.mp3":"d07c8cadee2d","/audio/sfx/hook_pull.mp3":"80cf94f7f398","/audio/sfx/imitar.mp3":"c75464887634","/audio/sfx/legado.mp3":"12dfe5e03ba5","/audio/sfx/lightning.mp3":"b89bfd664241","/audio/sfx/maldicao.mp3":"728571164c0a","/audio/sfx/necromancia.mp3":"a1c30e18cd76","/audio/sfx/nightmare.mp3":"fde2eb6d941a","/audio/sfx/pass_turn.mp3":"de50b4f5c9c7","/audio/sfx/poison.mp3":"77937daeaaab","/audio/sfx/potion.mp3":"3a382ee2b657","/audio/sfx/scare.mp3":"99eefcb48e6f","/audio/sfx/shield.mp3":"470407b9a0ee","/audio/sfx/transform_monster.mp3":"8b9e01eb084b","/audio/sfx/transform_pet.mp3":"7b5ac0fa1d13","/audio/sfx/ui_click.mp3":"396c7331f152","/audio/sfx/ultimate_intro.mp3":"5a5e4c59d71e","/audio/sfx/vampirism.mp3":"cf43f4b8a355","/audio/sfx/victory.mp3":"c270fca3d813","/audio/sfx/vinganca.mp3":"f94e6706aa3d","/audio/sfx/wall.mp3":"f3cf6bd0ec08","/audio/sfx/zero_absoluto.mp3":"d5172d417e4e","/battle-music.mp3":"44bdeb6269fd","/bg/A GUERRA.webp":"f35a638bdfd6","/bg/ABISMO AMETISTA.webp":"5729e79df03e","/bg/ARENA CRISTAL.webp":"c92e2ba31cf4","/bg/ARSENAL 2.webp":"839ddfd1a16d","/bg/ARSENAL.webp":"c52a5c6ade34","/bg/AVENTURA.webp":"f763b17185c7","/bg/BANNER SUA VEZ.webp":"368b58890936","/bg/BANNER VEZ DO ADVERSÁRIO.webp":"7a823799d2ec","/bg/BOSQUE DOS ELFOS.webp":"de86d4a4d4f5","/bg/BOTAO-JOGAR.webp":"076192e8524a","/bg/BOTÃO COMPRAR CARTA.webp":"963084ccf442","/bg/BOTÃO PASSAR A VEZ.webp":"4c5f9db72fc8","/bg/BOTÃO ULTIMATE.webp":"a3bd76f66254","/bg/BOTÃO VEZ DO ADVERSÁRIO.webp":"2d5f2df43fe6","/bg/CASTELO DA ALIANÇA.webp":"1f576fdae99f","/bg/CIDADE STEAMPUNK.webp":"fb2b7f303018","/bg/CÉU E INFERNO.webp":"67f2fee5acaf","/bg/DESERTO SEM FIM.webp":"3b539c0af00a","/bg/DESOLAÇÃO.webp":"5d43dd13a2d3","/bg/FLORESTA RUNICA.webp":"ec8f9db21565","/bg/FLORISBELLA.png.webp":"e7a3829c31e2","/bg/FRENTE DE BATALHA.webp":"edbecbccbdbb","/bg/FUNDO DE COMBATE.webp":"d64a22ab9311","/bg/JOGAR 2.webp":"6bf6018b1432","/bg/MAPA FINAL.webp":"c9bfab55655a","/bg/MASMORRA SEM FIM.webp":"38d7d0470e1b","/bg/MENU-PRINCIPAL.webp":"2ab525439d55","/bg/MENU-PRINCIPAL@2x.webp":"2ab525439d55","/bg/MERCADO 2.webp":"686ebc63707b","/bg/MERCADO.webp":"ca1914db9d5d","/bg/MOLDURA PRINCIPAL CAMPEÃO FINAL.webp":"95f1df7e4093","/bg/MOLDURA PRINCIPAL REAÇÃO FINAL.webp":"aa3c12a1ad10","/bg/MOLDURA PRINCIPAL TALENTO FINAL.webp":"8c1e0c02de3f","/bg/MONTANHA FLAMEJANTE.webp":"fddfdac5a259","/bg/NOTAS.webp":"2e705f329b90","/bg/O FUNDO DO MAR.webp":"44fd3939cdc3","/bg/OPCOES.webp":"e428a9c115a2","/bg/OPÇÕES.webp":"e428a9c115a2","/bg/RANKEADO.webp":"68220e0eb999","/bg/REINO DE ARCADIA.webp":"6f4015c20ae1","/bg/REINO ENCANTADO.webp":"857dcab3309f","/bg/SALA DE ARSENAL.webp":"f9df1faa2efb","/bg/TREINAMENTO.webp":"9f14a046468d","/bg/VILA-DOS-CRISTAIS.webp":"0a1607ed9834","/bg/botao-comprar-carta.webp":"963084ccf442","/bg/botao-passar-a-vez.webp":"4c5f9db72fc8","/bg/hub-thumbs/abismo-ametista.jpg":"3849e9286e7a","/bg/hub-thumbs/arcadia.jpg":"f70486085edf","/bg/hub-thumbs/bosque-dos-elfos.jpg":"c5ff47d12dad","/bg/hub-thumbs/cidade-steampunk.jpg":"086c37adadd0","/bg/hub-thumbs/frente-de-batalha.jpg":"0ea24f1e24ff","/bg/hub-thumbs/masmorra-sem-fim.jpg":"1b539f03a7eb","/bg/hub-thumbs/montanha-flamejante.jpg":"9d0360a5d31a","/bg/hub-thumbs/reino-encantado.jpg":"c9b520fc6f22","/bg/hub-thumbs/vila-dos-cristais.jpg":"95a4f139069d","/card-hashes.json":"44136fa355b3","/cards/portraits/ACELERAÇÃO.webp":"e551eb3d34ce","/cards/portraits/AKASHA.webp":"24c3d1f776d3","/cards/portraits/AMEDRONTAR.webp":"2f8af59dd4ea","/cards/portraits/ANTI-MAGOS.webp":"18a9bc6f8d88","/cards/portraits/APRENDIZ_DE_ARQUIMAGO.webp":"bd32179426ce","/cards/portraits/ARCADIA.webp":"5589e9edbed7","/cards/portraits/ARCANJO.webp":"d2d59d5f4005","/cards/portraits/A_DUELISTA.webp":"2e0bc21eecc2","/cards/portraits/BAFORADA_VENENOSA.webp":"b5973914b664","/cards/portraits/BANJO.webp":"7e5941640b03","/cards/portraits/BARBALONGA.webp":"5bbe6de1def6","/cards/portraits/BARREIRA.webp":"98d57dd07bdb","/cards/portraits/BATEDOR_FEROZ.webp":"6bd0e7d5732b","/cards/portraits/BEATRIX.webp":"cba812cad7d5","/cards/portraits/BICHINHO_FOFINHO.webp":"8adc248c8285","/cards/portraits/BLOQUEAR_ATAQUE.webp":"d60922086048","/cards/portraits/BOLA_DE_FOGO.webp":"a553c7141ce7","/cards/portraits/BOLA_DE_PELOS.webp":"f98facb18f78","/cards/portraits/BOLHAS.webp":"d456fabc57e7","/cards/portraits/CALCIFER.webp":"c1ca48dcfd4b","/cards/portraits/CANCELAR_ULTIMATE.webp":"3111374bb86f","/cards/portraits/CARNIVORA.webp":"f3529d899d78","/cards/portraits/CAVALEIRA_BRINQUEDO.webp":"e42cadf4b151","/cards/portraits/CAVALEIRO_DA_NOITE.webp":"d6945b251a82","/cards/portraits/COME_PEDRA.webp":"978cf97080a8","/cards/portraits/CROCOLOSSO.webp":"1ea795344e1f","/cards/portraits/DRAGÃO_AZUL.webp":"3d2ebf86c7d4","/cards/portraits/DUPLICAR.webp":"7984fe79c316","/cards/portraits/EFREET.webp":"3d14b9e21d96","/cards/portraits/ELEMENTISTA.webp":"8004bbbe7f10","/cards/portraits/ENIGMA.webp":"18ae86e6393f","/cards/portraits/EXPLOSÃO.webp":"3d6c2b1e3656","/cards/portraits/FAUNO.webp":"c2626ae64f61","/cards/portraits/FERAGROSS.webp":"134e658b720d","/cards/portraits/FILHOTE_DE_DRAGÃO.webp":"d9429ad835b8","/cards/portraits/FORTALECER.webp":"c407da418804","/cards/portraits/GAIA.webp":"5c0ecb420cfa","/cards/portraits/GAMER.webp":"1e91987a3ef5","/cards/portraits/GAROU.webp":"3ffed0536e2a","/cards/portraits/GRISELDA.webp":"22bb3b9ee6e8","/cards/portraits/HELA.webp":"627a5a43a30b","/cards/portraits/JAY_O_BRIGÃO.webp":"17543dbbd47e","/cards/portraits/LEONA.webp":"d5e2b259913f","/cards/portraits/LICH.webp":"023eb7700099","/cards/portraits/LILITH.webp":"4a1454c5e8f6","/cards/portraits/MAGA_DO_TEMPO.webp":"c0d488c9637c","/cards/portraits/MAGO_DE_GELO.webp":"ea2c4912e57c","/cards/portraits/MANDAGORA.webp":"90eb131d8915","/cards/portraits/MARTIS.webp":"d0a51fdbdef7","/cards/portraits/MENINA_URSO.webp":"54f0b68b0737","/cards/portraits/MIRA_OCULTA.webp":"5d4ce4ee6a94","/cards/portraits/MÁSCARA_DA_MORTE.webp":"e77bf21c483e","/cards/portraits/MÍSSEIS_MÁGICOS.webp":"421e5d31a036","/cards/portraits/NOBRE_ELFA.webp":"364514f3a5c3","/cards/portraits/OLAF.webp":"5ffd2fafdf34","/cards/portraits/O_CHEFÃO.webp":"838b99dabc28","/cards/portraits/PANDA.webp":"5bff7412acd4","/cards/portraits/PANTEÃO.webp":"6a5757316e5e","/cards/portraits/PISTOLEIRA_NEON.webp":"c18de9fd7daf","/cards/portraits/POPPY.webp":"14092d622e1e","/cards/portraits/PRINCESA_AURORA.webp":"f62c2aba832e","/cards/portraits/PROTEÇÃO_DIVINA.webp":"2dd4574c4156","/cards/portraits/RAZIEL.webp":"32c53ff22ff9","/cards/portraits/REI_CAVEIRA.webp":"98e452460f7b","/cards/portraits/SIR_DUNKAN.webp":"5edf1aeac7ca","/cards/portraits/SOLDADO_DO_FUTURO.webp":"44e17824c325","/cards/portraits/SUCCUBUS.webp":"c7f22a202054","/cards/portraits/TAGARELA.webp":"f71fbf3b9eac","/cards/portraits/TEMPESTA.webp":"f59cdd3f7091","/cards/portraits/TIAMAT.webp":"4a311f1f152c","/cards/portraits/TIGRE_DE_GELO.webp":"6df1febac0d8","/cards/portraits/TIRÂNICO.webp":"5eeea2f9570f","/cards/portraits/TOXINA.webp":"183287c75502","/cards/portraits/TUBARÃO_BORRIFANTE.webp":"3744f35bc648","/cards/portraits/URSA.webp":"f6b77ac46d15","/cards/portraits/VEGA.webp":"e688aa7682e4","/cards/portraits/VIOLÊNCIA.webp":"a837facf54ab","/cards/portraits/VIPER.webp":"1eb035d1b4b0","/cards/portraits/WU-KONG.webp":"259874cb6e6c","/cards/portraits/WYVERN.webp":"ec0c6254ea51","/cards/portraits/ZERO_ABSOLUTO.webp":"21d2dc916a1c","/cards/portraits/ÔMEGA.webp":"6463e59b2ac0","/css/df-actions-pedestal.css":"48b75f900af2","/css/df-arsenal.css":"06ff5be31ea9","/css/df-buy-card-pedestal.css":"4440b2d7a644","/css/df-canvas-shield.css":"86179b98014a","/css/df-card-face.css":"32590ed6457e","/css/df-combat-opcoes-pedestal.css":"d9c794dc0124","/css/df-combat-special-layout.css":"dc7a2beede2a","/css/df-deck-badge.css":"59c83dfc0df7","/css/df-desktop-universal.css":"14212665afd2","/css/df-game-base.css":"f766c6ecd9d9","/css/df-game-board.css":"c5025cc029fd","/css/df-game-menu.css":"224c6c4a8f2b","/css/df-game-misc.css":"20e6c94d6760","/css/df-hero-hub.css":"e6c47649d138","/css/df-layout-author.css":"40d25127892f","/css/df-layout-dev.css":"77fc3a7adc16","/css/df-menu-theme-ih.css":"3a73e74c859b","/css/df-pass-turn-pedestal.css":"7235b0fa7158","/css/df-profile.css":"82c8cc1787a9","/css/df-training-setup.css":"b8b2873c3200","/css/df-turn-banner-pedestal.css":"4b2bd75ae3ed","/css/df-turn-clock.css":"abf20a806260","/css/df-ultimate-pedestal.css":"87d09da0c925","/favicon.svg":"8ffbde9092b1","/heroes/alexander.webp":"123ffaf01e35","/heroes/alquimista.webp":"7a5fa88eed9a","/heroes/bastion.webp":"089a1a1a367c","/heroes/estrelar.webp":"1ac991bd45f6","/heroes/euravia.webp":"990d4a384b00","/heroes/florisbella.webp":"7beaac2fb0b8","/heroes/frosty.webp":"070d9638b12c","/heroes/gancho.webp":"856da7426943","/heroes/hercules.webp":"7a2130812e0a","/heroes/jekiro.webp":"b418dba79e5f","/heroes/paladino.webp":"08e88355eab7","/heroes/princesa_slime.webp":"bc530a8612b5","/heroes/quimera.webp":"493f73acea27","/heroes/rei_bomba.webp":"5447c78d1db3","/heroes/sangue_de_dragao.webp":"bf91d11d62bb","/heroes/sinistrela.webp":"4d81c94d1a42","/heroes/tecnomago.webp":"3e3bb5d686a6","/heroes/thor.webp":"3d2776ecb9a9","/heroes/tina_punker.webp":"dfe54f3f7e65","/heroes/valmont.webp":"1367dba53c04","/heroes/violencia.webp":"a87276a60c24","/js/df-actions-pedestal.js":"48e9377bfefa","/js/df-ai-controller.js":"757017273f78","/js/df-anim.js":"a8bc113eca8f","/js/df-arena-clock-pixi.js":"1877e3cc4f8e","/js/df-arsenal-vfx.js":"0ea12b8fa639","/js/df-arsenal.js":"a215aa60ae7f","/js/df-audio-engine.js":"562038d0ab11","/js/df-auth-client.js":"34af67edf9c0","/js/df-auth-ui.js":"51f9621e9395","/js/df-battle-music.js":"656a544ed429","/js/df-board-renderer.js":"10e6f9fd662b","/js/df-buy-card-pedestal.js":"6012af89d6f0","/js/df-card-art-boot.js":"fd7453338178","/js/df-card-art-overlay.js":"6285a547e590","/js/df-card-face.js":"e120ee92164b","/js/df-combat-opcoes-pedestal.js":"9f73c0fb5e78","/js/df-combat-presenter.js":"1925fee0a152","/js/df-combat-view-pan.js":"3571500d7165","/js/df-data.js":"22ad84db091c","/js/df-deck-badge.js":"a412e12818cc","/js/df-desktop-hud.js":"cd75a8e48314","/js/df-drag-safety.js":"63131d6304d1","/js/df-effects-resolve.js":"070f34a29b57","/js/df-effects.js":"b6cb0793f38c","/js/df-engine.js":"c53b505120e5","/js/df-feature-flags.js":"44e18ebc22ec","/js/df-fx-particles.js":"5cc0a02c71ea","/js/df-game-view.js":"566e44f238bf","/js/df-gsap-bridge.js":"7d4b1a7adc7a","/js/df-hero-hub-vfx.js":"b7c1cb313449","/js/df-hero-select-scroll.js":"42694df538d8","/js/df-hub-splash-assets.js":"c2c2192a513e","/js/df-input-controller.js":"457a605d74d0","/js/df-layout-dev.js":"6383b4b30029","/js/df-layout-policy.js":"e7e913483cae","/js/df-lazy-load.js":"0eb3a56b3e12","/js/df-manual-governance.js":"3d789efbe5ea","/js/df-menu-bootstrap.js":"b3cdb62fca46","/js/df-menu-controller.js":"2549ccc4d76d","/js/df-menu-load-bar.js":"e42f5ec4e49f","/js/df-menu-music.js":"e017a66f6cba","/js/df-menu-splash-assets.js":"5331e3f86c42","/js/df-mobile-app-gate.js":"33352b6a964f","/js/df-mobile-immersive.js":"1345820e82ad","/js/df-mp-presenter.js":"cd2151c25d92","/js/df-net-client.js":"ba32999d32e0","/js/df-online-session.js":"79dffef68126","/js/df-orientation-lock.js":"65d8f3c275eb","/js/df-pass-turn-pedestal.js":"abb5fdd823b6","/js/df-phase1-bundle.js":"286c5e47097b","/js/df-phase1-wire.js":"196eb8264c0b","/js/df-phase3-wire.js":"28d588f198f1","/js/df-pixi-hero-ult-vfx.js":"044e11dabe83","/js/df-pixi-vfx.js":"f744d06e3307","/js/df-presentation-bus.js":"646796f19993","/js/df-profile-assets.js":"d36d1feb7f26","/js/df-profile-xp.js":"78cd56cbefe7","/js/df-protocol.js":"921aafcb9769","/js/df-pwa-install.js":"b92d62c562e1","/js/df-ranked-setup.js":"0a6506677484","/js/df-rules.js":"fcd8d99b9fd3","/js/df-server-config.js":"9711677a948c","/js/df-sprite-manifest.js":"21ff158ee9c6","/js/df-sprite-vfx-core.js":"f8fd405a15ca","/js/df-sprite-vfx-play.js":"b5a89611aa0b","/js/df-sprite-vfx.js":"ea45347a5dde","/js/df-state.js":"16e961999520","/js/df-talent-ultimate-presenter.js":"1e549501a64a","/js/df-target-levitate.js":"0390927ef7f5","/js/df-touch-nav.js":"2bc5e123c1cb","/js/df-training-decks.js":"d05cd7fd837e","/js/df-training-setup.js":"11775d639b74","/js/df-turn-banner-pedestal.js":"65e7be70343c","/js/df-turn-clock.js":"849b70e78a98","/js/df-ultimate-director.js":"af83407af078","/js/df-ultimate-pedestal.js":"fecdf0266d79","/js/df-ultimate-recipes.js":"256bacd52cd0","/js/df-ultimate-resolve.js":"65ea3a09ccd9","/js/df-version-guard.js":"e6791b41b85d","/js/df-vfx-engine.js":"b277943ae15d","/js/df-vfx-runtime.js":"07bcf443c742","/js/df-vfx-settings.js":"d3b077e2db07","/js/df-view-session.js":"51de29a121ec","/js/df-viewport-adapt.js":"e73523315861","/js/vendor/gsap.min.js":"5468a19b889d","/js/vendor/pixi.min.js":"9ddba9cd78bc","/js/vendor/socket.io.min.js":"7bcff1b4f144","/logo.webp":"9f8a18ed1c3d","/manifest.webmanifest":"793884d34980","/menu-music.mp3":"99660c1a780a","/version.json":"7ceb883d4ba0","/verso.webp":"86d2370a628c","/vfx/frames-manifest.json":"b228c40fc97b","/vfx/generation-progress.json":"3e8cedd87bd6","/vfx/generation-state.json":"446738cb08e4","/vfx/manifest.json":"8e771d50973b","/vfx/poison-slime/proj-1.webp":"6df01fdc9447","/vfx/poison-slime/proj-2.webp":"9f595c1bdcd7","/vfx/poison-slime/proj-3.webp":"760dad906e75","/vfx/poison-slime/proj-4.webp":"027c5b9a75e0","/vfx/regen-queue.json":"b43401ebb4d5","/vfx/ult-banish/void.webp":"93087dab1bba","/vfx/ult-bomb/impact.webp":"3eae1f55d0fc","/vfx/ult-comet/impact.webp":"b6f9adbed444","/vfx/ult-ice/impact.webp":"512fc9a532cf","/vfx/ult-poison/impact.webp":"7db9070314de","/vfx/ult-poison/travel.webp":"c89287c2ca47","/vfx/ult-scare/mist.webp":"f551cc6cfa06","/vfx/ult-thunder/strike.webp":"a165c49f654c","/vfx/ult-wall/stone.png":"ffcac519a64a","/vfx/ultimate-recipes.json":"761b2c7dc783","/vfx/validated-sheets.json":"d18682e1bdd1","/vfx/video-overlays.json":"ca3d163bab05","/vfx/wait-comet_aftermath.json":"28c8df47cdf6","/vfx/wait-comet_impact.json":"a27c7be085f6","/vfx/wait-comet_proj-temp.json":"5b7510443cf9","/vfx/wait-comet_proj.json":"685f54d92cdd","/vfx/wait-comet_windup-temp.json":"6663a1241693","/vfx/wait-comet_windup.json":"bc31c12e0a2f","/vfx/wait-dragon_aftermath.json":"5e7de7cdbc2f","/vfx/wait-dragon_impact.json":"6122411aad64","/vfx/wait-dragon_proj.json":"f6d66aaf2d5e","/vfx/wait-dragon_windup.json":"8d80c895f784","/vfx/wait-fireice_fire_aftermath.json":"ffab51c5718d","/vfx/wait-fireice_fire_impact.json":"5cfb2461a3a9","/vfx/wait-fireice_fire_proj.json":"36713cb1c21c","/vfx/wait-fireice_fire_windup.json":"71d1e36ff768","/vfx/wait-fireice_ice_aftermath.json":"201cce5432fc","/vfx/wait-fireice_ice_impact.json":"c6a9b6169937","/vfx/wait-fireice_ice_proj.json":"d08086c1234b","/vfx/wait-fireice_ice_windup.json":"5a2aa6bdce0b","/vfx/wait-hook_aftermath.json":"ab54cefe2264","/vfx/wait-hook_impact.json":"f3e411f4e6bb","/vfx/wait-hook_proj.json":"370eb84d87b0","/vfx/wait-hook_windup.json":"8ca0489e35aa","/vfx/wait-might_aftermath-temp.json":"b24f8e3a7f45","/vfx/wait-might_aftermath.json":"cbec53795466","/vfx/wait-might_impact-temp.json":"5d43e60112f9","/vfx/wait-might_impact.json":"b4cbc62d8e28","/vfx/wait-might_proj-temp.json":"6a5eb1b0ba3e","/vfx/wait-might_proj.json":"875796f80b63","/vfx/wait-might_windup.json":"f4355addc0d6","/vfx/wait-poison_aftermath-temp.json":"ef0c0241a64e","/vfx/wait-poison_aftermath.json":"677c677d773c","/vfx/wait-poison_impact-temp.json":"f48b184ad37a","/vfx/wait-poison_impact.json":"e2d8d2a59f28","/vfx/wait-poison_proj-temp.json":"b86d12641e38","/vfx/wait-poison_proj.json":"b86d12641e38","/vfx/wait-poison_windup-temp.json":"8099760e577b","/vfx/wait-poison_windup.json":"e31e5045911b","/vfx/wait-potion_fail_aftermath.json":"68e930c95399","/vfx/wait-potion_fail_impact.json":"734a875c1dee","/vfx/wait-potion_fail_proj.json":"840e4937a360","/vfx/wait-potion_fail_windup.json":"bd7199ac9bd5","/vfx/wait-potion_ok_aftermath.json":"a6db5e8175e2","/vfx/wait-potion_ok_impact.json":"c01ff6d4f72c","/vfx/wait-potion_ok_proj.json":"da2ba5552bd3","/vfx/wait-potion_ok_windup.json":"a13058633535","/vfx/wait-resurrect_aftermath.json":"b6a674ebafcf","/vfx/wait-resurrect_impact.json":"c011d4eaf086","/vfx/wait-resurrect_proj.json":"61c9a6025f9f","/vfx/wait-resurrect_windup.json":"0139aca25882","/vfx/wait-scare_aftermath.json":"b4be270fae8d","/vfx/wait-scare_impact-temp.json":"32f150eb863c","/vfx/wait-scare_impact.json":"c8176764b11f","/vfx/wait-scare_proj.json":"96a755ba63f0","/vfx/wait-scare_windup.json":"93e98f4f81f5","/vfx/wait-thunder_aftermath.json":"f82554c2c644","/vfx/wait-thunder_impact.json":"d25dd0151b6a","/vfx/wait-thunder_windup.json":"1b3d126791cc","/vfx/wait-vamp_aftermath.json":"85c9ba5d0ece","/vfx/wait-vamp_impact-temp.json":"c63c0cb69185","/vfx/wait-vamp_impact.json":"29d0b66d8908","/vfx/wait-vamp_proj.json":"8d58cc1daeb6","/vfx/wait-vamp_windup.json":"931709a3dfd1","/vfx/wait-void_aftermath.json":"6ff2efd7ac44","/vfx/wait-void_impact-temp.json":"87d43773ce54","/vfx/wait-void_impact.json":"d1cde2ab0f78","/vfx/wait-void_proj-temp.json":"b1dfe0986941","/vfx/wait-void_proj.json":"bb099ac059b2","/vfx/wait-void_windup.json":"8c7d65758ee1","/vfx/wait-wall_aftermath-temp.json":"9a9cf9e4766f","/vfx/wait-wall_aftermath.json":"9de485dfbd7c","/vfx/wait-wall_impact-temp.json":"cd063ce5fa4a","/vfx/wait-wall_impact.json":"0fb9890b85ea","/vfx/wait-wall_proj-temp.json":"b7109987d642","/vfx/wait-wall_proj.json":"d8732ae50302","/vfx/wait-wall_windup-temp.json":"3d4a799af5fa","/vfx/wait-wall_windup.json":"2d095a54eac4","/vfx/wait-war_aftermath.json":"61063443cafa","/vfx/wait-war_impact.json":"79c07c8aaf8a","/vfx/wait-war_proj.json":"880d73c254f0","/vfx/wait-war_windup.json":"8768d7f6f275"};</script>
+    <script>
+window.__DF_WEBP_OK=(function(){try{var c=document.createElement("canvas");return c.toDataURL("image/webp").indexOf("data:image/webp")===0;}catch(e){return false;}})();
+window.dfAssetUrl=function(p){
+  if(!p||typeof p!=="string")return p;
+  if(/^(data:|https?:|blob:)/i.test(p))return p;
+  var qIdx=p.indexOf("?");
+  var pathOnly=qIdx>=0?p.slice(0,qIdx):p;
+  pathOnly=pathOnly.replace(/^\.\//,"");
+  try{pathOnly=decodeURIComponent(pathOnly);}catch(e){}
+  var key=pathOnly.charAt(0)==="/"?pathOnly:("/"+pathOnly);
+  var hashes=window.__DF_CONTENT_HASHES||{};
+  if(window.__DF_WEBP_OK&&/\.png$/i.test(key)){
+    var wk=key.replace(/\.png$/i,".webp");
+    if(hashes[wk]){pathOnly=pathOnly.replace(/\.png$/i,".webp");key=wk;}
+  }
+  var cm=key.match(/^\/cards\/(?:v2\/)?([^/]+)\.(?:png|webp)$/i);
+  if(cm&&window.__DF_CARD_HASHES){
+    var ch=window.__DF_CARD_HASHES[cm[1]]||window.__DF_CARD_HASHES[String(cm[1]).replace(/_/g," ")];
+    if(ch)return pathOnly+(pathOnly.indexOf("?")>=0?"&":"?")+"v="+encodeURIComponent(String(ch));
+  }
+  var pm=key.match(/^\/cards\/portraits\/([^/]+)\.(?:png|webp)$/i);
+  if(pm&&window.__DF_PORTRAIT_HASHES){
+    var ph=window.__DF_PORTRAIT_HASHES[pm[1]]||window.__DF_PORTRAIT_HASHES[String(pm[1]).replace(/_/g," ")];
+    if(ph)return pathOnly+(pathOnly.indexOf("?")>=0?"&":"?")+"v="+encodeURIComponent(String(ph));
+  }
+  var h=hashes[key];
+  if(h)return pathOnly+(pathOnly.indexOf("?")>=0?"&":"?")+"h="+encodeURIComponent(h);
+  var v=window.__DF_GAME_V||"dev";
+  return pathOnly+(pathOnly.indexOf("?")>=0?"&":"?")+"v="+encodeURIComponent(v);
+};
+window.dfRewriteDomAssets=function(root){
+  try{
+    var scope=root||document;
+    if(!scope||!scope.querySelectorAll)return;
+    scope.querySelectorAll("img[src]").forEach(function(img){
+      var s=img.getAttribute("src");
+      if(!s||/^(data:|blob:|https?:)/i.test(s))return;
+      if(!/\.(png|webp|jpe?g)(\?|$)/i.test(s))return;
+      var next=window.dfAssetUrl(String(s).split("?")[0]);
+      if(next&&next!==s)img.setAttribute("src",next);
+    });
+  }catch(e){}
+};
+(function(){
+  function run(){try{window.dfRewriteDomAssets(document);}catch(e){}}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run,{once:true});
+  else run();
+})();
+</script>
+    <script>window.__DF_CARD_HASHES={};</script>
+    <script>window.__DF_PORTRAIT_HASHES={"ACELERAÇÃO":"e551eb3d34","AKASHA":"24c3d1f776","AMEDRONTAR":"2f8af59dd4","ANTI-MAGOS":"18a9bc6f8d","APRENDIZ_DE_ARQUIMAGO":"bd32179426","ARCADIA":"5589e9edbe","ARCANJO":"d2d59d5f40","A_DUELISTA":"2e0bc21eec","BAFORADA_VENENOSA":"b5973914b6","BANJO":"7e5941640b","BARBALONGA":"5bbe6de1de","BARREIRA":"98d57dd07b","BATEDOR_FEROZ":"6bd0e7d573","BEATRIX":"cba812cad7","BICHINHO_FOFINHO":"8adc248c82","BLOQUEAR_ATAQUE":"d609220860","BOLA_DE_FOGO":"a553c7141c","BOLA_DE_PELOS":"f98facb18f","BOLHAS":"d456fabc57","CALCIFER":"c1ca48dcfd","CANCELAR_ULTIMATE":"3111374bb8","CARNIVORA":"f3529d899d","CAVALEIRA_BRINQUEDO":"e42cadf4b1","CAVALEIRO_DA_NOITE":"d6945b251a","COME_PEDRA":"978cf97080","CROCOLOSSO":"1ea795344e","DRAGÃO_AZUL":"3d2ebf86c7","DUPLICAR":"7984fe79c3","EFREET":"3d14b9e21d","ELEMENTISTA":"8004bbbe7f","ENIGMA":"18ae86e639","EXPLOSÃO":"3d6c2b1e36","FAUNO":"c2626ae64f","FERAGROSS":"134e658b72","FILHOTE_DE_DRAGÃO":"d9429ad835","FORTALECER":"c407da4188","GAIA":"5c0ecb420c","GAMER":"1e91987a3e","GAROU":"3ffed0536e","GRISELDA":"22bb3b9ee6","HELA":"627a5a43a3","JAY_O_BRIGÃO":"17543dbbd4","LEONA":"d5e2b25991","LICH":"023eb77000","LILITH":"4a1454c5e8","MAGA_DO_TEMPO":"c0d488c963","MAGO_DE_GELO":"ea2c4912e5","MANDAGORA":"90eb131d89","MARTIS":"d0a51fdbde","MENINA_URSO":"54f0b68b07","MIRA_OCULTA":"5d4ce4ee6a","MÁSCARA_DA_MORTE":"e77bf21c48","MÍSSEIS_MÁGICOS":"421e5d31a0","NOBRE_ELFA":"364514f3a5","OLAF":"5ffd2fafdf","O_CHEFÃO":"838b99dabc","PANDA":"5bff7412ac","PANTEÃO":"6a5757316e","PISTOLEIRA_NEON":"c18de9fd7d","POPPY":"14092d622e","PRINCESA_AURORA":"f62c2aba83","PROTEÇÃO_DIVINA":"2dd4574c41","RAZIEL":"32c53ff22f","REI_CAVEIRA":"98e452460f","SIR_DUNKAN":"5edf1aeac7","SOLDADO_DO_FUTURO":"44e17824c3","SUCCUBUS":"c7f22a2020","TAGARELA":"f71fbf3b9e","TEMPESTA":"f59cdd3f70","TIAMAT":"4a311f1f15","TIGRE_DE_GELO":"6df1febac0","TIRÂNICO":"5eeea2f957","TOXINA":"183287c755","TUBARÃO_BORRIFANTE":"3744f35bc6","URSA":"f6b77ac46d","VEGA":"e688aa7682","VIOLÊNCIA":"a837facf54","VIPER":"1eb035d1b4","WU-KONG":"259874cb6e","WYVERN":"ec0c6254ea","ZERO_ABSOLUTO":"21d2dc916a","ÔMEGA":"6463e59b2a"};</script>
+    <script>
+/* Atualização PWA: limpa só runtime; PRESERVA dragonfall-media (cartas/artes já baixadas). */
+(function(){try{
+  var v=window.__DF_CARD_ART_V||"0",k="df_pwa_build_v",p=localStorage.getItem(k);
+  var localDev=/^127\.0\.0\.1$|^localhost$/i.test(location.hostname||"");
+  if(localDev)return;
+  if(p&&p!==v){
+    localStorage.setItem(k,v);
+    var MEDIA="dragonfall-media";
+    var go=function(){location.reload();};
+    var c=Promise.resolve();
+    if(navigator.serviceWorker)c=c.then(function(){return navigator.serviceWorker.getRegistrations();})
+      .then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));});
+    if(window.caches)c=c.then(function(){return caches.keys();})
+      .then(function(ns){return Promise.all(ns.filter(function(n){return n!==MEDIA;}).map(function(n){return caches.delete(n);}));});
+    c.then(go).catch(go);
+    return;
+  }
+  localStorage.setItem(k,v);
+}catch(e){}})();
+</script>
+    <script src="js/df-version-guard.js?v=70a6141860e4"></script>
+    <script>
+/* Bootstrap crítico: viewport 1280×720 via document.write (antes do 1º paint). */
+(function(){try{
+  var iw=innerWidth|0,ih=innerHeight|0,sw=screen.width|0,sh=screen.height|0,portrait=false;
+  try{
+    var vv=window.visualViewport;
+    if(vv&&vv.width>0&&vv.height>0){iw=Math.round(vv.width);ih=Math.round(vv.height);}
+    else{
+      var cw=document.documentElement&&document.documentElement.clientWidth|0;
+      var ch=document.documentElement&&document.documentElement.clientHeight|0;
+      if(cw>0&&ch>0){iw=cw;ih=ch;}
+    }
+  }catch(e){}
+  if(!iw||!ih){iw=sw||390;ih=sh||844;}
+  portrait=ih>iw;
+  var touchOrMob=("ontouchstart"in window)||((navigator.maxTouchPoints|0)>0)||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||"");
+  var usePortraitLayout=touchOrMob&&portrait;
+  var pw,ph;
+  if(iw>0&&ih>0){pw=Math.min(iw,ih);ph=Math.max(iw,ih);}
+  else if(sw>0&&sh>0){pw=Math.min(sw,sh);ph=Math.max(sw,sh);}
+  else{pw=390;ph=844;}
+  window.__DF_PHYSICAL_PW=pw;window.__DF_PHYSICAL_PH=ph;
+  window.__DF_DEVICE_PW=pw;window.__DF_DEVICE_PH=ph;
+  window.__DF_PHYSICAL_VW=iw;window.__DF_PHYSICAL_VH=ih;
+  window.__DF_PHYSICAL_PORTRAIT=portrait;window.__DF_FORCE_DESKTOP_LAYOUT=true;
+  window.__DF_MOBILE_FIT_LOCKED=true;
+  try{sessionStorage.setItem("df_mobile_fit","1");}catch(e){}
+  var defVp="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover";
+  var visW=iw,visH=ih;
+  if(!visW||!visH){visW=iw||pw;visH=ih||ph;}
+  var r=document.documentElement;
+  var fitScale;
+  if(usePortraitLayout){
+    fitScale=Math.min(ph/1280,pw/720);
+  }else{
+    fitScale=Math.min(visW/1280,visH/720);
+  }
+  if(!isFinite(fitScale)||fitScale<=0)fitScale=0.3;
+  document.write('<meta name="viewport" content="'+defVp+'" data-df-vp-patched="1">');
+    if(r&&r.classList){
+    r.classList.add("df-mobile-desktop-fit","df-desktop-canvas","df-desktop-universal");
+    if(usePortraitLayout)r.classList.add("df-portrait-landscape");
+    else r.classList.remove("df-portrait-landscape");
+    r.style.setProperty("--df-pw",pw+"px");
+    r.style.setProperty("--df-ph",ph+"px");
+    r.style.setProperty("--df-vv-w",visW+"px");
+    r.style.setProperty("--df-vv-h",visH+"px");
+    r.style.setProperty("--df-fit-scale",String(fitScale));
+  }
+}catch(e){
+  document.write('<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">');
+}})();
+    </script>
+    <script src="js/df-layout-policy.js?v=70a6141860e4"></script>
+    <script>
+(function () {
+    if (!/^(localhost|127\.0\.0\.1)$/i.test(location.hostname || "")) return;
+    var s = document.createElement("script");
+    s.src = "js/df-layout-dev.js";
+    document.head.appendChild(s);
+})();
+    </script>
+    <style id="df-orient-critical">
+/* Opção A — stage de escala + canvas 1280×720 (#df-scale-root) */
+#df-rotate-stage { display: contents; }
+#df-scale-root {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+}
+html:not(.df-mobile-desktop-fit) #df-rotate-stage,
+html:not(.df-mobile-desktop-fit) #df-scale-root {
+    display: contents;
+}
+html.df-mobile-desktop-fit {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+html.df-mobile-desktop-fit {
+    overscroll-behavior: none !important;
+}
+html.df-mobile-desktop-fit #df-rotate-stage {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas {
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-mobile,
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-windowed,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special {
+    background: #0a0608 url("bg/TELA%20DE%20COMBATE%20ESPECIAL.png?v=1") center center / 100% 100% no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-fullscreen {
+    background: #0a0608 url("bg/TELA%20DE%20COMBATE%20ESPECIAL.png?v=1") center center / cover no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas #df-rotate-stage {
+    background: #0a0608 !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-mobile #df-rotate-stage,
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-windowed #df-rotate-stage {
+    background: #0a0608 url("bg/TELA%20DE%20COMBATE%20ESPECIAL.png?v=1") center center / 100% 100% no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas.df-arena-desktop-fullscreen #df-rotate-stage,
+html.df-mobile-desktop-fit.df-combat-canvas.df-combat-special.df-arena-desktop-fullscreen #df-rotate-stage {
+    background: #0a0608 url("bg/TELA%20DE%20COMBATE%20ESPECIAL.png?v=1") center center / cover no-repeat !important;
+}
+html.df-mobile-desktop-fit.df-combat-canvas #df-scale-root,
+html.df-mobile-desktop-fit.df-combat-canvas #game.active {
+    background: transparent !important;
+}
+html.df-mobile-desktop-fit #df-scale-root {
+    width: 1280px !important;
+    height: 720px !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+    background: transparent !important;
+    position: relative !important;
+    transform: scale(var(--df-fit-scale, 1)) !important;
+    -webkit-transform: scale(var(--df-fit-scale, 1)) !important;
+    transform-origin: center center !important;
+    -webkit-transform-origin: center center !important;
+}
+/* Canvas: telas absolute (crítico antes do 1º paint de menus) */
+html.df-mobile-desktop-fit #df-scale-root > .screen,
+html.df-mobile-desktop-fit #df-scale-root > .screen.active,
+html.df-mobile-desktop-fit #df-scale-root > #main {
+    position: absolute !important;
+    inset: 0 !important;
+}
+/* Menus splash: viewport cheio + mesma rotação do stage em retrato */
+html.df-mobile-desktop-fit.df-portrait-landscape #df-menu-splash-layer,
+html.df-mobile-desktop-fit.df-portrait-landscape #df-hub-splash-layer {
+    inset: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100dvh !important;
+    height: 100dvw !important;
+    transform: rotate(90deg) translateY(-100%) !important;
+    -webkit-transform: rotate(90deg) translateY(-100%) !important;
+    transform-origin: top left !important;
+    -webkit-transform-origin: top left !important;
+}
+html.df-mobile-desktop-fit #df-scale-root > #game:not(.active) {
+    display: none !important;
+}
+html.df-mobile-desktop-fit body::before,
+html.df-mobile-desktop-fit body::after {
+    display: none !important;
+}
+/* Retrato físico: paisagem lógica desde o 1º paint (menu + combate) */
+html.df-mobile-desktop-fit.df-portrait-landscape #df-rotate-stage {
+    inset: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100dvh !important;
+    height: 100dvw !important;
+    transform: rotate(90deg) translateY(-100%) !important;
+    -webkit-transform: rotate(90deg) translateY(-100%) !important;
+    transform-origin: top left !important;
+    -webkit-transform-origin: top left !important;
+}
+    </style>
+    <script src="js/df-orientation-lock.js?v=70a6141860e4"></script>
+    <script src="js/df-viewport-adapt.js?v=70a6141860e4"></script>
+    <script src="js/df-mobile-immersive.js?v=70a6141860e4"></script>
+    <script src="js/df-pwa-install.js?v=70a6141860e4"></script>
+    <script src="js/df-mobile-app-gate.js?v=70a6141860e4"></script>
+    <script>
+(function(){try{
+  var host=location.hostname||"";
+  var isLocal=/^127\.0\.0\.1$|^localhost$/i.test(host);
+  var s=document.createElement("style");
+  s.textContent="#df-dev-only{position:fixed;inset:0;z-index:2147483647;background:#120808;color:#ffd86b;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}#df-dev-only code{background:#2a1810;padding:2px 8px;border-radius:4px}";
+  document.head.appendChild(s);
+  function mount(html){
+    function show(){
+      if(document.getElementById("df-dev-only"))return;
+      var d=document.createElement("div");
+      d.id="df-dev-only";
+      d.innerHTML=html;
+      (document.body||document.documentElement).appendChild(d);
+    }
+    if(document.body)show(); else document.addEventListener("DOMContentLoaded",show);
+  }
+  var portNote="<p style=\"opacity:.7;font-size:.8rem;margin-top:8px\">Porta <code>"+(location.port||"?")+"</code> não serve o pacote completo (arena, CSS, artes).</p>";
+  var linkBlock="<p style=\"margin-top:14px\"><a href=\"http://127.0.0.1:5173/\" style=\"color:#ffd86b;font-size:1.05rem;font-weight:700;text-decoration:underline\">http://127.0.0.1:5173/</a></p>"+portNote;
+  if(isLocal&&location.port!=="5173"){
+    mount("<div><h1 style=\"margin:0 0 12px\">Porta errada</h1><p>Use <code>node scripts/serve-local.mjs</code> e abra a porta <b>5173</b>.</p>"+linkBlock+"</div>");
+    return;
+  }
+  if(location.protocol!=="file:"&&window.__DF_GAME_V!=="dev")return;
+  if(isLocal&&location.port==="5173")return;
+  mount("<div><h1 style=\"margin:0 0 12px\">Arquivo de desenvolvimento</h1><p>Abra o jogo com o servidor local (<code>netlify-dist</code>).</p><p style=\"margin-top:16px\"><code>node scripts/serve-local.mjs</code></p>"+linkBlock+"</div>");
+}catch(e){}})();
+</script>
+    <script src="js/df-card-art-boot.js?v=70a6141860e4"></script>
+    <script src="js/df-card-face.js?v=70a6141860e4"></script>
+    <meta charset="UTF-8">
+    <base href="./">
+    <link rel="preload" href="js/vendor/gsap.min.js" as="script">
+    <link rel="preload" href="js/vendor/pixi.min.js" as="script">
+    <title>Dragonfall ✦ Card Game</title>
+    <!-- Preload crítico: fundo de combate do dispositivo (mobile não baixa 3 arenas). -->
+    <script>(function(){try{document.write('<link rel="preload" as="image" href="bg/TELA%20DE%20COMBATE%20ESPECIAL.png?v=1" fetchpriority="high">');}catch(e){}})();</script>
+    <!-- Cache offline via Service Worker. Manifest NÃO é "instalável"
+         (display:browser) — o Chrome não deve pedir "Instalar aplicativo". -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0a0708">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dragonfall">
+    <link rel="apple-touch-icon" href="logo.webp">
+    <!-- style → css/df-game-base.css -->
+    <!-- style → css/df-game-board.css -->
+    <link rel="stylesheet" href="css/df-game-base.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-game-board.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-card-face.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-game-menu.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-profile.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-game-misc.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-desktop-universal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-canvas-shield.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-pass-turn-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-ultimate-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-turn-clock.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-deck-badge.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-buy-card-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-combat-opcoes-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-actions-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-turn-banner-pedestal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-hero-hub.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-combat-special-layout.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-arsenal.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-training-setup.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-layout-author.css?v=70a6141860e4">
+    <link rel="stylesheet" href="css/df-menu-theme-ih.css?v=70a6141860e4">
+    <script>
+(function () {
+    if (!/^(localhost|127\.0\.0\.1)$/i.test(location.hostname || "")) return;
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = "css/df-layout-dev.css";
+    document.head.appendChild(l);
+})();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet"></noscript>
+    <link rel="preload" as="image" href="bg/MENU-PRINCIPAL.webp" fetchpriority="high" id="df-preload-menu">
+    <script>
+    (function () {
+        /* Prefere WebP quando o build/hash existir; no mobile só o menu é high-priority. */
+        function asset(p) {
+            try { return window.dfAssetUrl ? window.dfAssetUrl(p) : p; } catch (e) { return p; }
+        }
+        function preferWebp() {
+            try {
+                if (window.__DF_WEBP_OK === false) return false;
+                if (window.__DF_WEBP_OK === true) return true;
+                var c = document.createElement("canvas");
+                return c.toDataURL("image/webp").indexOf("data:image/webp") === 0;
+            } catch (e) { return false; }
+        }
+        function injectPreload(href, prio) {
+            if (!href) return;
+            var l = document.createElement("link");
+            l.rel = "preload";
+            l.as = "image";
+            l.href = href;
+            if (prio) l.fetchPriority = prio;
+            document.head.appendChild(l);
+        }
+        var coarse = false;
+        try { coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches); } catch (e) {}
+        var menu = document.getElementById("df-preload-menu");
+        if (menu) {
+            var menuHref = asset("bg/MENU-PRINCIPAL.png");
+            if (menuHref && menuHref !== menu.getAttribute("href")) menu.setAttribute("href", menuHref);
+        }
+        var extras = [
+            "bg/FUNDO DE COMBATE.png",
+            "bg/A GUERRA.png",
+            "bg/DESOLAÇÃO.png",
+            "bg/SALA DE ARSENAL.png"
+        ];
+        extras.forEach(function (p) {
+            injectPreload(asset(p), coarse ? "low" : "high");
+        });
+        /* Decode cedo só do essencial no mobile; no desktop decodifica os extras. */
+        var warm = coarse
+            ? [asset("bg/MENU-PRINCIPAL.png")]
+            : extras.map(asset);
+        warm.forEach(function (p) {
+            try {
+                var img = new Image();
+                img.decoding = "async";
+                img.src = p;
+            } catch (e) { /* */ }
+        });
+        void preferWebp;
+    })();
+    </script>
+</head>
+<body>
+    <!-- Mobile: fundo estático fora de camadas com transform (iOS Safari). -->
+    <div id="df-mobile-bg-host" class="df-mobile-bg-host" aria-hidden="true">
+        <img id="df-mobile-bg-img" class="df-mobile-bg-video df-mobile-bg-img" alt="" aria-hidden="true" decoding="async">
+    </div>
+    <div id="df-rotate-stage">
+    <div id="df-scale-root">
+    <canvas id="fx-particles"></canvas>
+    <div id="main" class="screen active main-splash-screen">
+        <button type="button" id="btn-main-opcoes" class="df-menu-fn-hidden" hidden tabindex="-1" aria-hidden="true">⚙️ Opções</button>
+        <button type="button" id="btn-main-notes" class="df-menu-fn-hidden" hidden tabindex="-1" aria-hidden="true">📋 Notas da Atualização</button>
+        <button type="button" id="btn-main-offline" class="df-menu-fn-hidden" hidden tabindex="-1" aria-hidden="true">📥 Salvar pra Jogar Offline</button>
+        <div id="main-nav-hint" class="main-nav-hint" aria-hidden="true">Pressione Enter para jogar</div>
+        <div id="df-build-tag" class="df-version-tag" aria-label="Versão do jogo"></div>
+        <div id="offline-status" style="display:none;color:#ffd86b;margin-top:10px;font-size:0.9rem;text-align:center;max-width:320px;line-height:1.4"></div>
+    </div>
+    <div id="df-update-overlay" class="df-update-overlay" aria-hidden="true" role="dialog" aria-labelledby="df-update-title">
+        <div class="df-update-panel">
+            <div id="df-update-title" class="df-update-title">Atualizando Dragonfall</div>
+            <div class="df-update-sub">Baixando a versão mais recente: cartas, áudio, heróis e efeitos.</div>
+            <div class="df-update-bar-wrap" aria-hidden="true"><div id="df-update-bar" class="df-update-bar"></div></div>
+            <div id="df-update-pct" class="df-update-pct">0%</div>
+            <div id="df-update-status" class="df-update-status">Verificando versão…</div>
+        </div>
+    </div>
+    <div id="howto-overlay" class="overlay howto-overlay">
+        <div class="howto-panel">
+            <div class="howto-title">📖 Como Jogar</div>
+            <div class="howto-body">
+                <div class="howto-section">
+                    <div class="howto-heading">🎯 O Jogo em 30 segundos</div>
+                    <p>Dragonfall é um card game 1vs1 (você contra a IA) por turnos. Cada jogador escolhe um <b>Herói</b> com uma <b>Ultimate</b> própria, recebe uma mão de cartas e luta pra ser o primeiro a chegar nos <b>Pontos de Vitória (PV)</b> da partida.</p>
+                    <p>Você invoca <b>Campeões</b> no seu campo, usa <b>Talentos</b> e <b>Reações</b> pra virar a luta e ataca os Campeões inimigos pra destruí-los.</p>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">🏆 Como se vence a partida</div>
+                    <p>Antes do jogo você escolhe a meta: <b>10 PV</b> (rápida) ou <b>15 PV</b> (longa). Quem chegar primeiro <b>vence na hora</b> — pode ser no meio de uma luta, ao destruir um Campeão, ou na manutenção do seu próximo turno. Não existe empate.</p>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">⭐ As 3 formas de ganhar PV</div>
+                    <ul>
+                        <li><b>Passivo (manutenção):</b> +1 PV por Campeão seu vivo no campo no início do seu turno, <b>limitado a +2 PV por turno</b>. Manter Campeões vivos é a forma mais consistente de pontuar.</li>
+                        <li><b>Combate:</b> +1 PV cada vez que você ataca e <b>destrói</b> um Campeão inimigo.</li>
+                        <li><b>Efeitos de carta:</b> alguns Talentos e Ultimates dão PV direto.</li>
+                    </ul>
+                    <div class="tip">⚠️ Campeões com a tag <b>Sem Honra</b> NÃO dão PV ao morrer — mas vale matá-los pra limpar o campo.</div>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">🔄 Como funciona um turno</div>
+                    <p>Todo turno tem 2 fases:</p>
+                    <ul>
+                        <li><b>1. Manutenção (automática):</b> recarrega 3 Pontos de Ação, +1 carta grátis (saque livre), +PV passivo, congelamentos e escudos diminuem 1 e seus Campeões "destapam" pra poder atacar de novo.</li>
+                        <li><b>2. Ações (sua vez):</b> você gasta seus <b>3 Pontos de Ação</b> como quiser e quando acabar (ou quiser) clica em <b>⏭ Passar a vez</b>.</li>
+                    </ul>
+                    <div class="tip">💀 Se você está com <b>Pesadelo</b> (caveira ao lado dos PV), perde o saque livre da próxima manutenção.</div>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">⚡ Pontos de Ação: o que cada coisa custa</div>
+                    <ul>
+                        <li><b>Invocar Campeão:</b> custa o <b>Poder da carta</b> em ações (Poder 2 = 2 ações).</li>
+                        <li><b>Atacar com um Campeão:</b> 1 ação.</li>
+                        <li><b>Comprar carta extra do baralho:</b> 1 ação.</li>
+                        <li><b>Usar Talento:</b> <b>NÃO custa ação</b> (mas é uso único).</li>
+                        <li><b>Usar Ultimate:</b> <b>NÃO custa ação</b> (mas tem limite por partida).</li>
+                    </ul>
+                    <p>Você tem no máximo 3 ações por turno e elas aparecem como <b>bolinhas amarelas</b> embaixo do rótulo "⚡ Ações" no seu quadrante.</p>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading"><img src="verso.webp" alt="" class="verso-icon-inline"> Os 3 tipos de carta</div>
+                    <div class="howto-imgs">
+                        <div class="howto-img">
+                            <img src="cards/TIRÂNICO.png" alt="Campeão Tirânico" loading="lazy">
+                            <div class="cap">CAMPEÃO</div>
+                            <div class="sub">vai pro campo<br>tem Poder</div>
+                        </div>
+                        <div class="howto-img">
+                            <img src="cards/BOLA_DE_FOGO.png" alt="Talento Bola de Fogo" loading="lazy">
+                            <div class="cap">TALENTO</div>
+                            <div class="sub">efeito imediato<br>uso único</div>
+                        </div>
+                        <div class="howto-img">
+                            <img src="cards/BLOQUEAR_ATAQUE.png" alt="Reação Bloquear Ataque" loading="lazy">
+                            <div class="cap">REAÇÃO</div>
+                            <div class="sub">automática<br>quando atacam</div>
+                        </div>
+                    </div>
+                    <ul>
+                        <li><b>Campeão</b> — arraste da mão pro seu campo pra invocar. Custa Poder em ações. Não pode atacar no turno em que é invocado.</li>
+                        <li><b>Talento</b> — arraste da mão pro <b>seu</b> campo, depois toque/clique no alvo (ou duplo-toque no celular) pra confirmar. Sem custo de ação. Ex: <b>Bola de Fogo</b> destrói, <b>Amedrontar</b> devolve pra mão.</li>
+                        <li><b>Reação</b> — fica na mão e dispara <b>sozinha</b> quando o adversário ataca você. Ex: <b>Bloquear Ataque</b>, <b>Proteção Divina</b>.</li>
+                    </ul>
+                    <div class="tip">✋ Limite de <b>8 cartas na mão</b>. Cheia? Sem saque livre, e o botão Comprar fica desativado até você baixar carta.</div>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">💎 Como funcionam as Lutas (Poder vs Poder)</div>
+                    <p>Toda carta de Campeão tem um <b>número</b> no círculo no topo esquerdo — é o <b>Poder atual</b> dele. Quando você ataca, compara-se os dois Poderes:</p>
+                    <div class="howto-imgs">
+                        <div class="howto-img gem"><img src="gems/3.png" alt="Poder 3" loading="lazy"><div class="cap">SEU 3</div></div>
+                        <div class="howto-img gem"><img src="gems/2.png" alt="Poder 2" loading="lazy"><div class="cap">vs INIMIGO 2</div></div>
+                    </div>
+                    <ul>
+                        <li><b>Seu Poder MAIOR</b> ✅ → inimigo morre, seu sobrevive, <b>+1 PV</b>.</li>
+                        <li><b>Poder IGUAL</b> ⚠️ → <b>os dois morrem</b>. Ninguém ganha PV.</li>
+                        <li><b>Seu Poder MENOR</b> ❌ → <b>só o seu morre</b>. Ataque desperdiçado.</li>
+                    </ul>
+                    <p>Status que aparecem em cima do Campeão e mudam a luta:</p>
+                    <ul>
+                        <li><b>🛡️ Escudo</b> — não pode ser destruído por combate enquanto durar.</li>
+                        <li><b>❄️ Congelado</b> — não ataca e fica tapado até descongelar.</li>
+                        <li><b>Sem Honra</b> — não dá PV ao morrer.</li>
+                        <li><b>Sobrepujar</b> — permite atacar direto o adversário (regra na própria carta).</li>
+                    </ul>
+                    <div class="tip">💡 Use Talentos e Ultimates pra <b>subir</b> o Poder do seu aliado ou <b>baixar</b> o do inimigo ANTES de atacar. Combate desperdiçado é PV perdido.</div>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">⚔️ Como atacar</div>
+                    <p>É só arrastar seu Campeão até o Campeão inimigo:</p>
+                    <ul>
+                        <li><b>Celular:</b> segure seu Campeão e arraste em cima do alvo inimigo. Solte pra confirmar.</li>
+                        <li><b>Computador:</b> segure com o mouse e arraste no alvo. Ou clique pra selecionar e use <b>← →</b> + <b>Enter</b>.</li>
+                    </ul>
+                    <p>Custa <b>1 ação</b>. Cada Campeão ataca <b>1 vez por turno</b>. Campeão recém-invocado <b>não pode</b> atacar no mesmo turno (entra "tapado").</p>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading"><img src="verso.webp" alt="" class="verso-icon-inline"> Como invocar um Campeão</div>
+                    <p><b>Invocar:</b> segure a carta de Campeão na sua mão e arraste pro seu campo. Solte ali. Você precisa ter ações suficientes (= ao Poder da carta).</p>
+                    <p><b>Baralho:</b> clique na <b>moldura PARA-CARTA</b> acima do hub do herói (canto inferior direito) para <b>comprar 1 carta por 1 ação</b>. O número mostra quantas cartas restam no baralho. No início de cada turno você também recebe o <b>Saque Livre</b> (grátis).</p>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">🦸 Heróis e Ultimates</div>
+                    <p>Cada Herói tem uma <b>Ultimate única</b> — a habilidade mais forte do baralho dele. <b>Clique na foto do Herói</b> (canto do quadrante) pra ver o efeito completo, quantos usos sobraram e todo o histórico da partida (invocações, ataques, mortes, PV ganhos). Funciona também na foto do adversário pra "espiar" a ultimate dele.</p>
+                    <div class="howto-imgs">
+                        <div class="howto-img hero"><img src="heroes/florisbella.webp" alt="Florisbella" loading="lazy"><div class="cap">Florisbella</div></div>
+                        <div class="howto-img hero"><img src="heroes/alexander.webp" alt="Alexander" loading="lazy"><div class="cap">Alexander</div></div>
+                        <div class="howto-img hero"><img src="heroes/quimera.webp" alt="Quimera" loading="lazy"><div class="cap">Quimera</div></div>
+                    </div>
+                    <ul>
+                        <li><b>Usos por partida:</b> a maioria tem <b>2 usos</b>; alguns (Bruxa do Gelo, Eurávia, Quimera, Alexander) têm <b>3 ou 4</b>. As <b>bolinhas ao lado do Herói</b> mostram quantos sobraram.</li>
+                        <li><b>1 Ultimate por turno</b>, no máximo.</li>
+                        <li><b>Não custa ação.</b></li>
+                    </ul>
+                    <p><b>Como ativar:</b> clique no botão <b>✨ Ultimate</b> do rodapé. Se exige alvo (dano, congelar, fortalecer…), o jogo entra em <b>modo de seleção</b>:</p>
+                    <ul>
+                        <li><b>Celular:</b> duplo-toque no alvo pra confirmar.</li>
+                        <li><b>Computador:</b> <b>← →</b> navega entre alvos, <b>Enter</b> confirma.</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">🎮 Os 4 botões do rodapé</div>
+                    <ul>
+                        <li><b>⏭ Passar a vez</b> — termina seu turno agora. Ações não usadas são perdidas.</li>
+                        <li><b><img src="verso.webp" alt="" class="verso-icon-inline"> Comprar</b> — moldura PARA-CARTA acima do hub (brilho dourado). Compra 1 carta por 1 ação. Acinzentado se sua mão = 8.</li>
+                        <li><b>✨ Ultimate</b> — botão brilhante. Aciona a Ultimate do seu Herói. Acinzentado se: não é seu turno, já usou no turno, ou acabaram os usos.</li>
+                        <li><b>⚡ Menu</b> — abre: <b>RETOMAR</b>, <b>🏳️ Desistir</b> (adversário vence), <b>🔄 Reiniciar</b> (mesma partida do zero), <b>Sair do Jogo</b> (volta pra tela inicial).</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">📍 Indicadores visuais importantes</div>
+                    <ul>
+                        <li><b>Borda verde brilhante pulsante</b> no quadrante = é a vez DAQUELE jogador. Sua borda acesa = sua vez.</li>
+                        <li><b>Bolinhas amarelas</b> embaixo do "⚡ Ações" = quantas ações você ainda tem no turno.</li>
+                        <li><b>Bolinhas ao lado da foto do Herói</b> = quantos usos de Ultimate sobraram.</li>
+                        <li><b>🗑️ Descarte (topo)</b> — toque/clique pra ver TODAS as cartas que já saíram do baralho.</li>
+                        <li><b>💀 Caveira ao lado dos PV</b> = você está com Pesadelo (perde o saque livre na próxima manutenção).</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">🛡️ Estratégia: defender vale ouro</div>
+                    <p>Um Campeão fraco que sobrevive 5 turnos rende <b>+5 PV silenciosos</b> só ficando vivo. Conclusões:</p>
+                    <ul>
+                        <li><b>Nem todo turno você precisa atacar.</b> Defender também ganha o jogo.</li>
+                        <li><b>Empatar perdendo seu Campeão é ruim:</b> você perde o PV passivo dele nos turnos seguintes.</li>
+                        <li>Use Talentos/Ultimate pra <b>enfraquecer</b> o inimigo ANTES de atacar — atacar sem garantia é PV jogado fora.</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">📱 Controles — Celular</div>
+                    <ul>
+                        <li><b>Toque rápido</b> em qualquer carta → <b>zoom</b> da carta no centro.</li>
+                        <li><b>Segure e arraste</b> carta da mão → solte no SEU campo pra invocar/usar Talento.</li>
+                        <li><b>Segure e arraste</b> um Campeão do seu campo → solte em um inimigo pra <b>atacar</b>.</li>
+                        <li><b>Duplo-toque</b> num Campeão → confirma alvo (ataque/talento/ultimate).</li>
+                        <li><b>Toque na foto do Herói</b> → abre Ultimate + Histórico.</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">⌨️ Controles — Computador</div>
+                    <ul>
+                        <li><b>Clique</b> em uma carta → zoom. Clique de novo (ou Esc) → fecha.</li>
+                        <li><b>Segure com o mouse e arraste</b> carta/Campeão → invocar ou atacar.</li>
+                        <li><b>← →</b> → navega entre alvos numa seleção. <b>Enter</b> → confirma.</li>
+                        <li><b>Seta ↑</b> → abre o Menu. <b>Seta ↓ / Esc</b> → fecha.</li>
+                    </ul>
+                </div>
+
+                <div class="howto-section">
+                    <div class="howto-heading">📚 Resumo do seu turno</div>
+                    <ol style="color:#d8c9a8;font-size:0.88rem;line-height:1.5;margin:4px 0 4px 18px;padding:0;">
+                        <li><b>Manutenção</b> roda sozinha (PV passivo, +1 carta, 3 ações).</li>
+                        <li><b>Invoque Campeões</b> (custo = Poder).</li>
+                        <li>Use <b>Talentos / Ultimate</b> pra enfraquecer inimigos ou fortalecer aliados.</li>
+                        <li><b>Ataque</b> arrastando seu Campeão no inimigo (quando o Poder for maior).</li>
+                        <li>Sobrou ação? <b>Compre carta extra</b>.</li>
+                        <li><b>⏭ Passar a vez</b> e espere a borda verde voltar pra você.</li>
+                    </ol>
+                </div>
+            </div>
+            <button id="btn-howto-close" class="menu-btn">✔ Entendi</button>
+        </div>
+    </div>
+    <div id="mode" class="screen">
+        <div class="title" style="font-size:2rem">⚔️ Escolha o Modo</div>
+        <div class="mode-grid">
+            <div class="mode-card recommended" data-mode="2"><div class="big">⚔️</div><div class="name">1vs1 - Duelo</div><div class="desc">Você vs 1 IA</div><div class="recommended-badge">RECOMENDADO</div></div>
+            <!-- Modos 3vs (Épico) e 4vs (Lendário) removidos: o jogo agora
+                 só suporta 1v1 pra focar em testes rápidos e simples. -->
+
+        </div>
+        <button id="btn-mode-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+    <div id="hero-select" class="screen">
+        <div class="title" style="font-size:2rem">Escolha seu Herói</div>
+        <div class="hero-grid" id="hero-grid" data-df-scroll-area></div>
+        <button id="btn-hero-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+    <div id="objective-select" class="screen">
+        <div class="title" style="font-size:2rem">🎯 Objetivo de Jogo</div>
+        <div class="objective-grid" id="objective-grid">
+            <div class="objective-card" data-points="10"><div class="pts">10</div><div class="lbl">pontos de vitória</div></div>
+            <div class="objective-card" data-points="15"><div class="pts">15</div><div class="lbl">pontos de vitória</div></div>
+        </div>
+        <button id="btn-obj-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+    <div id="mercado-screen" class="screen">
+        <div class="title" style="font-size:2rem">🏪 Mercado</div>
+        <div style="color:#ffe6b0;font-size:1.1rem;text-align:center;margin:24px auto;max-width:420px;line-height:1.5">
+            🚧 <b>Em construção</b> 🚧<br>
+            <span style="color:#c9b0e8;font-size:0.95rem;font-style:italic">O Mercado está sendo preparado na Vila dos Cristais. Volte em breve!</span>
+        </div>
+        <button id="btn-mercado-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <!-- ============================================================
+         Submenu JOGAR (IA / Online / Lista de Cartas) +
+         Notas da Atualização + Lista de Cartas + zoom de carta.
+         Modo História / Aventura removidos (pedido do autor).
+         ============================================================ -->
+    <!-- style → css/df-game-menu.css -->
+
+    <div id="play-menu" class="screen play-menu-hub-logic">
+        <div class="title" style="font-size:2rem">▶️ Jogar</div>
+        <button id="btn-play-ai"    class="menu-btn selected">⚔️ Jogar contra IA</button>
+        <button id="btn-play-online" class="menu-btn">👥 Jogador contra jogador</button>
+        <p class="mode-construction-note">Modo em construção. As partidas podem demorar até 1 minuto para começar.</p>
+        <button id="btn-play-cards" class="menu-btn"><img src="verso.webp" alt="" class="verso-icon-inline"> Lista de Cartas</button>
+        <button id="btn-play-howto" class="menu-btn" style="opacity:0.85">❓ Como Jogar</button>
+        <button id="btn-play-back"  class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <!-- Hub → JOGAR: escolha IA ou Rankeado Online (pedido do autor) -->
+    <div id="df-play-mode" class="screen" aria-label="Escolher modo de jogo">
+        <div class="title" style="font-size:2rem">▶️ Jogar</div>
+        <p class="df-play-mode-hint">Escolha como deseja jogar</p>
+        <button type="button" id="btn-play-mode-ai" class="menu-btn selected">⚔️ Jogador contra IA</button>
+        <button type="button" id="btn-play-mode-ranked" class="menu-btn">🏆 Rankeado Online</button>
+        <button type="button" id="btn-play-mode-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <div id="online-lobby" class="screen">
+        <div class="title" style="font-size:2rem">🏆 Rankeado Online</div>
+        <p class="mode-construction-note" style="margin-top:-6px;margin-bottom:14px">
+            Modo em construção. As partidas podem demorar até 1 minuto para começar.
+        </p>
+        <p class="mode-construction-note" style="margin-top:-8px;margin-bottom:18px">
+            Duelo online a <b>15 pontos de vitória</b>.
+        </p>
+        <div id="pvp-queue-panel" style="width:100%;max-width:360px;text-align:center">
+            <p id="online-status" class="play-menu-hint" style="line-height:1.45;margin-bottom:16px">
+                Conectando… Pode levar até 1 minuto na primeira vez.
+            </p>
+            <p style="color:#704020;font-size:0.85rem;margin:0 0 8px">Tempo na fila</p>
+            <p id="pvp-queue-seconds" style="font-size:2.8rem;font-weight:800;color:#704020;margin:0 0 6px;line-height:1">0</p>
+            <p style="color:#704020;font-size:0.75rem;margin:0 0 20px">segundos</p>
+            <div id="pvp-match-flash" style="display:none;margin:12px 0 20px;padding:14px 18px;border-radius:12px;border:2px solid #ffd76b;background:rgba(255,215,107,0.12)">
+                <p style="margin:0;font-size:1.6rem;font-weight:800;color:#ffd76b;letter-spacing:2px">MATCH!</p>
+                <p class="mode-construction-note" style="margin:8px 0 0">Preparando a partida…</p>
+            </div>
+        </div>
+        <!-- Ranked (standby): ligue __DF_FEATURE_FLAGS__.rankedUi + remova hidden -->
+        <button type="button" id="btn-online-ranked" class="menu-btn" hidden
+                data-df-standby="ranked" style="font-size:0.85rem;margin-top:8px">
+            🏆 Ranked (em breve)
+        </button>
+        <details id="pvp-advanced-panel" style="width:100%;max-width:360px;margin:12px auto 0;text-align:left">
+            <summary style="color:#8a7aaa;font-size:0.72rem;cursor:pointer">Opções avançadas (servidor / sala manual)</summary>
+            <div style="margin-top:10px">
+                <input id="online-server-url" type="url" placeholder="https://seu-app.onrender.com"
+                       style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid #5a4070;background:#1a1028;color:#fff;margin-bottom:8px;font-size:0.85rem">
+                <button type="button" id="btn-online-save-server" class="menu-btn" style="font-size:0.85rem">💾 Salvar servidor</button>
+                <input id="online-join-input" type="text" placeholder="DRAGON-XXXX" autocomplete="off"
+                       style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid #5a4070;background:#1a1028;color:#fff;text-align:center;margin:10px 0">
+                <button type="button" id="btn-online-create" class="menu-btn" style="font-size:0.85rem">➕ Criar sala</button>
+                <button type="button" id="btn-online-join" class="menu-btn" style="font-size:0.85rem">🔗 Entrar com código</button>
+            </div>
+        </details>
+        <button type="button" id="btn-online-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <div id="ai-mode-select" class="screen">
+        <div class="title" style="font-size:2rem">⚔️ Jogar contra IA</div>
+        <p class="ai-mode-subtitle">A IA joga sempre no modo Difícil</p>
+        <button type="button" id="btn-ai-mode-hard" class="menu-btn selected">💀 Continuar</button>
+        <button type="button" id="btn-ai-mode-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <div id="df-training-setup" class="screen" aria-label="Configuração da partida">
+        <div class="df-training-head">
+            <h2 class="title">⚔️ Jogar</h2>
+        </div>
+        <div class="df-training-scroll">
+            <section class="df-training-panel is-reveal" aria-labelledby="df-training-obj-title">
+                <h3 id="df-training-obj-title" class="df-training-panel-title">Objetivo da partida</h3>
+                <div class="df-training-choices">
+                    <button type="button" class="df-training-choice" data-df-training-group="winPoints" data-value="10">10 <span class="df-training-choice-sub">pontos de vitória</span></button>
+                    <button type="button" class="df-training-choice selected" data-df-training-group="winPoints" data-value="15">15 <span class="df-training-choice-sub">pontos de vitória</span></button>
+                </div>
+            </section>
+            <section class="df-training-panel is-reveal" aria-labelledby="df-training-player-deck-title">
+                <h3 id="df-training-player-deck-title" class="df-training-panel-title">Seu baralho</h3>
+                <div class="df-training-choices">
+                    <button type="button" class="df-training-choice" data-df-training-group="playerDeck" data-value="custom">Jogar com meu baralho</button>
+                    <button type="button" class="df-training-choice selected" data-df-training-group="playerDeck" data-value="random">Baralho aleatório</button>
+                </div>
+                <div id="df-training-deck-list" class="df-training-deck-list" hidden></div>
+                <p id="df-training-deck-hint" class="df-training-hint"></p>
+            </section>
+        </div>
+        <div class="df-training-foot">
+            <button type="button" id="df-training-back" class="menu-btn df-training-back-btn">↩️ Voltar</button>
+            <button type="button" id="df-training-advance" class="df-training-advance-btn">Avançar →</button>
+        </div>
+        <div id="df-training-toast" class="df-training-toast" aria-live="polite"></div>
+    </div>
+
+    <!-- Rankeado Online: baralho (sem objetivo) — tela dedicada, não altera vs IA -->
+    <div id="df-ranked-setup" class="screen" aria-label="Configuração Rankeado Online">
+        <div class="df-training-head">
+            <h2 class="title">🏆 Jogar</h2>
+        </div>
+        <div class="df-training-scroll">
+            <section class="df-training-panel is-reveal" aria-labelledby="df-ranked-deck-title">
+                <h3 id="df-ranked-deck-title" class="df-training-panel-title">Seu baralho</h3>
+                <div class="df-training-choices">
+                    <button type="button" class="df-training-choice" data-df-ranked-group="playerDeck" data-value="custom">Jogar com meu baralho</button>
+                    <button type="button" class="df-training-choice selected" data-df-ranked-group="playerDeck" data-value="random">Baralho aleatório</button>
+                </div>
+                <div id="df-ranked-deck-list" class="df-training-deck-list" hidden></div>
+                <p id="df-ranked-deck-hint" class="df-training-hint"></p>
+            </section>
+        </div>
+        <div class="df-training-foot">
+            <button type="button" id="df-ranked-back" class="menu-btn df-training-back-btn">↩️ Voltar</button>
+            <button type="button" id="df-ranked-advance" class="df-training-advance-btn">Avançar →</button>
+        </div>
+        <div id="df-ranked-toast" class="df-training-toast" aria-live="polite"></div>
+    </div>
+
+    <div id="df-ranked-hero-select" class="screen" aria-label="Escolha seu Herói — Rankeado">
+        <div class="title" style="font-size:2rem">Escolha seu Herói</div>
+        <div class="hero-grid" id="df-ranked-hero-grid" data-df-scroll-area></div>
+        <button type="button" id="btn-ranked-hero-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <div id="opcoes" class="screen">
+        <div class="title" style="font-size:2rem">⚙️ Opções</div>
+        <div class="df-opcoes-vol-panel" style="display:flex;flex-direction:column;gap:18px;max-width:420px;width:90%;margin:18px auto;">
+            <div class="opt-row">
+                <label for="opt-vol-master" style="display:flex;justify-content:space-between;color:#ffd76b;font-weight:700;letter-spacing:1px;">
+                    <span>🔊 Volume Geral</span><span id="opt-vol-master-val">100%</span>
+                </label>
+                <input type="range" id="opt-vol-master" min="0" max="100" value="100" step="1"
+                       style="width:100%;accent-color:#ffd76b;">
+            </div>
+            <div class="opt-row">
+                <label for="opt-vol-music" style="display:flex;justify-content:space-between;color:#9cc8ff;font-weight:700;letter-spacing:1px;">
+                    <span>🎵 Volume da Música</span><span id="opt-vol-music-val">55%</span>
+                </label>
+                <input type="range" id="opt-vol-music" min="0" max="100" value="55" step="1"
+                       style="width:100%;accent-color:#9cc8ff;">
+            </div>
+            <div class="opt-row">
+                <label for="opt-vol-sfx" style="display:flex;justify-content:space-between;color:#ffb38a;font-weight:700;letter-spacing:1px;">
+                    <span>💥 Volume dos Efeitos Sonoros</span><span id="opt-vol-sfx-val">85%</span>
+                </label>
+                <input type="range" id="opt-vol-sfx" min="0" max="100" value="85" step="1"
+                       style="width:100%;accent-color:#ffb38a;">
+            </div>
+            <div class="df-opcoes-vol-note" style="color:#888;font-size:0.8rem;text-align:center;margin-top:4px;">
+                As configurações ficam salvas neste navegador.
+            </div>
+        </div>
+        <div class="opcoes-actions">
+            <button id="btn-opcoes-back" class="menu-btn" style="min-width:220px">↩️ Voltar</button>
+            <button id="btn-opcoes-restart" class="menu-btn df-opcoes-combat-only" type="button" hidden style="min-width:220px">🔄 Reiniciar</button>
+            <button id="btn-opcoes-surrender" class="menu-btn df-opcoes-combat-only" type="button" hidden style="min-width:220px">🏳️ Desistir / Voltar ao Menu principal</button>
+        </div>
+        <div id="df-opcoes-surrender-confirm" class="df-opcoes-surrender-confirm" hidden>
+            <p class="df-opcoes-surrender-text">Tem certeza que deseja sair da partida e voltar ao menu principal?</p>
+            <div class="df-opcoes-surrender-btns">
+                <button type="button" id="btn-opcoes-surrender-yes" class="menu-btn">Sim</button>
+                <button type="button" id="btn-opcoes-surrender-no" class="menu-btn">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="release-notes" class="screen">
+        <div class="title" style="font-size:2rem">📋 Notas da Atualização</div>
+        <div id="release-notes-version" class="df-version-tag"></div>
+        <div class="release-notes-scroll" id="release-notes-list"></div>
+        <button id="btn-notes-back" class="menu-btn" style="margin-top:16px;min-width:220px">↩️ Voltar</button>
+    </div>
+
+    <div id="df-arsenal" class="screen" aria-label="Arsenal">
+        <div class="df-arsenal-head">
+            <div class="title"><img src="verso.webp" alt="" class="verso-icon-inline"> Arsenal</div>
+            <button type="button" id="btn-arsenal-back" class="menu-btn" style="min-width:160px;margin:0">↩️ Voltar</button>
+        </div>
+        <div class="df-arsenal-body">
+            <section class="df-arsenal-pane df-arsenal-catalog" id="df-arsenal-catalog-pane" aria-label="Catálogo de cartas">
+                <p class="df-arsenal-pane-title">Catálogo · <span id="df-arsenal-catalog-count">0 cartas</span></p>
+                <div class="df-arsenal-tabs" role="tablist">
+                    <button type="button" class="df-arsenal-tab df-arsenal-tab--champion selected" data-filter="champion" role="tab"><span class="df-arsenal-tab-ico" aria-hidden="true">★</span> CAMPEÃO</button>
+                    <button type="button" class="df-arsenal-tab df-arsenal-tab--talent" data-filter="talent" role="tab"><span class="df-arsenal-tab-ico" aria-hidden="true">✊</span> TALENTO</button>
+                    <button type="button" class="df-arsenal-tab df-arsenal-tab--reaction" data-filter="reaction" role="tab"><span class="df-arsenal-tab-ico" aria-hidden="true">🛡</span> REAÇÃO</button>
+                    <button type="button" class="df-arsenal-tab df-arsenal-tab--all" data-filter="all" role="tab"><span class="df-arsenal-tab-ico" aria-hidden="true">◈</span> TODAS</button>
+                </div>
+                <div class="df-arsenal-grid-wrap">
+                    <div class="df-arsenal-grid" id="df-arsenal-catalog-grid"></div>
+                </div>
+                <div class="df-arsenal-pager">
+                    <button type="button" class="df-arsenal-page-btn" id="df-arsenal-page-prev" aria-label="Página anterior">←</button>
+                    <span class="df-arsenal-page-label" id="df-arsenal-page-label">PAGE 1/1</span>
+                    <button type="button" class="df-arsenal-page-btn" id="df-arsenal-page-next" aria-label="Próxima página">→</button>
+                </div>
+            </section>
+            <section class="df-arsenal-pane df-arsenal-builder" id="df-arsenal-builder-pane" aria-label="Montar baralho">
+                <p class="df-arsenal-pane-title df-arsenal-pane-title--deck"><span class="df-arsenal-deck-title-ico" aria-hidden="true">🗂</span> MEU BARALHO</p>
+                <div class="df-arsenal-deck-header">
+                    <input type="text" class="df-arsenal-deck-name" id="df-arsenal-deck-name" maxlength="32" autocomplete="off" spellcheck="false" aria-label="Nome do baralho">
+                    <span class="df-arsenal-deck-pencil" aria-hidden="true">✏️</span>
+                </div>
+                <div class="df-arsenal-grid-wrap">
+                    <div class="df-arsenal-grid" id="df-arsenal-deck-grid"></div>
+                </div>
+                <div class="df-arsenal-deck-footer">
+                    <div class="df-arsenal-deck-tabs" id="df-arsenal-deck-tabs" role="tablist" aria-label="Baralhos salvos"></div>
+                    <button type="button" class="df-arsenal-delete-btn" id="df-arsenal-delete-btn">Excluir baralho</button>
+                    <button type="button" class="df-arsenal-save-btn" id="df-arsenal-save-btn" disabled>SALVAR</button>
+                </div>
+                <div id="df-arsenal-delete-confirm" class="df-arsenal-delete-confirm" hidden>
+                    <p class="df-arsenal-delete-text">Excluir este baralho?</p>
+                    <div class="df-arsenal-delete-btns">
+                        <button type="button" id="df-arsenal-delete-yes" class="df-arsenal-delete-yes">Sim</button>
+                        <button type="button" id="df-arsenal-delete-no" class="df-arsenal-delete-no">Não</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="df-arsenal-zoom-layer" class="df-arsenal-zoom-layer" hidden aria-hidden="true">
+            <div class="df-arsenal-zoom-dialog" id="df-arsenal-zoom-dialog">
+                <div class="df-arsenal-zoom-stage">
+                    <button type="button" id="df-arsenal-zoom-prev" class="df-arsenal-zoom-nav df-arsenal-zoom-nav--prev" aria-label="Carta anterior" hidden>‹</button>
+                    <div id="df-arsenal-zoom-host" class="df-arsenal-zoom-host df-arsenal-zoom-art">
+                        <img id="df-arsenal-zoom-art" class="df-arsenal-zoom-art-img" alt="" draggable="false" decoding="async">
+                    </div>
+                    <button type="button" id="df-arsenal-zoom-next" class="df-arsenal-zoom-nav df-arsenal-zoom-nav--next" aria-label="Próxima carta" hidden>›</button>
+                </div>
+                <div class="df-arsenal-zoom-actions" id="df-arsenal-zoom-actions">
+                    <button type="button" id="df-arsenal-zoom-back" class="df-arsenal-zoom-btn-back">VOLTAR</button>
+                    <button type="button" id="df-arsenal-zoom-action" class="df-arsenal-zoom-btn-action">ADICIONAR</button>
+                </div>
+            </div>
+        </div>
+        <div id="df-arsenal-drag-ghost" class="df-arsenal-drag-ghost" hidden aria-hidden="true"></div>
+        <div class="df-arsenal-toast" id="df-arsenal-toast" aria-live="polite"></div>
+    </div>
+
+    <!-- Legado: zoom reutilizado por outras telas -->
+    <div id="card-list" class="screen" hidden aria-hidden="true">
+        <div class="card-list-grid" id="card-list-grid"></div>
+    </div>
+
+    <div id="card-zoom-overlay"></div>
+
+    <div id="game">
+        <div id="desktop-scale-root">
+        <div id="top-bar" hidden aria-hidden="true">
+            <button type="button" id="menu-btn" hidden aria-hidden="true"></button>
+            <div class="top-bar-opponent-piles">
+                <div id="deck-pile-ai" class="pile-opponent pile-deck-opponent" data-player="1" title="Baralho do adversário">
+                    <img class="deck-icon" src="verso.webp" alt="" draggable="false">
+                    <span class="deck-label">Baralho</span>
+                    <span class="pile-hero-caption" id="caption-deck-ai"></span>
+                    <span id="deck-count-ai">0</span>
+                </div>
+                <div id="discard-pile-ai" class="pile-opponent pile-discard-opponent" data-player="1" title="Descarte do adversário">
+                    <span class="discard-icon">🗑️</span>
+                    <span class="discard-label">Descarte</span>
+                    <span class="pile-hero-caption" id="caption-discard-ai"></span>
+                    <span id="discard-count-ai">0</span>
+                </div>
+            </div>
+        </div>
+        <div id="game-grid">
+            <div class="quadrant ai-quadrant" id="quadrant-1" data-player="1">
+                <div class="quadrant-header">
+                    <span class="hero-icon"></span>
+                    <span class="hero-name"></span>
+                    <span class="vp-badge">PV: 0</span>
+                    <span class="stat-label action-label">⚡ Ações</span>
+                    <span class="action-dots"></span>
+                    <span class="stat-label ult-label">🔮 Ultimates</span>
+                    <span class="hero-stats" style="display:flex;gap:3px;"></span>
+                </div>
+                <div class="quadrant-field"><span class="quadrant-field-label">Campo</span></div>
+                <div class="quadrant-hand"></div>
+            </div>
+            <div class="quadrant ai-quadrant" id="quadrant-2" data-player="2">
+                <div class="quadrant-header">
+                    <span class="hero-icon"></span>
+                    <span class="hero-name"></span>
+                    <span class="vp-badge">PV: 0</span>
+                    <span class="stat-label action-label">⚡ Ações</span>
+                    <span class="action-dots"></span>
+                    <span class="stat-label ult-label">🔮 Ultimates</span>
+                    <span class="hero-stats" style="display:flex;gap:3px;"></span>
+                </div>
+                <div class="quadrant-field"><span class="quadrant-field-label">Campo</span></div>
+                <div class="quadrant-hand"></div>
+            </div>
+            <div class="quadrant player-quadrant" id="quadrant-0" data-player="0">
+                <div class="quadrant-header">
+                    <span class="hero-icon"></span>
+                    <span class="hero-name"></span>
+                    <span class="vp-badge">PV: 0</span>
+                    <span class="stat-label action-label">⚡ Ações</span>
+                    <span class="action-dots"></span>
+                    <span class="stat-label ult-label">🔮 Ultimates</span>
+                    <span class="hero-stats" style="display:flex;gap:3px;"></span>
+                </div>
+                <div class="quadrant-field"><span class="quadrant-field-label">Campo</span></div>
+                <div class="quadrant-hand"></div>
+                <div id="card-preview-container">
+                    <span class="preview-label">🔍 CLIQUE PARA AMPLIAR</span>
+                    <div class="preview-card" id="preview-card-inner" title="Clique para ampliar"></div>
+                </div>
+                <div id="preview-backdrop"></div>
+            </div>
+            <div class="quadrant ai-quadrant" id="quadrant-3" data-player="3">
+                <div class="quadrant-header">
+                    <span class="hero-icon"></span>
+                    <span class="hero-name"></span>
+                    <span class="vp-badge">PV: 0</span>
+                    <span class="stat-label action-label">⚡ Ações</span>
+                    <span class="action-dots"></span>
+                    <span class="stat-label ult-label">🔮 Ultimates</span>
+                    <span class="hero-stats" style="display:flex;gap:3px;"></span>
+                </div>
+                <div class="quadrant-field"><span class="quadrant-field-label">Campo</span></div>
+                <div class="quadrant-hand"></div>
+            </div>
+        </div>
+        <div id="bottom-bar">
+            <div id="deck-pile" title="Baralho do jogador">
+                <img class="deck-icon" src="verso.webp" alt="" draggable="false">
+                <span class="deck-label">Comprar</span>
+                <span class="pile-hero-caption" id="caption-deck-p0"></span>
+                <span id="deck-count">0</span>
+            </div>
+            <button id="ultimate-btn" title="Use sua Ultimate (sem custo de ação)">
+                <span class="ult-icon">✨</span>
+                <span class="ult-label">Ultimate</span>
+            </button>
+            <div id="discard-pile" data-player="0" title="Seu descarte — clique para ver a lista">
+                <span class="discard-icon">🗑️</span>
+                <span class="discard-label">Descarte</span>
+                <span class="pile-hero-caption" id="caption-discard-p0"></span>
+                <span id="discard-count">0</span>
+            </div>
+            <button id="end-turn" type="button" title="Abrir menu">☰ Menu</button>
+        </div>
+        </div><!-- /#desktop-scale-root -->
+        <!-- Talento em uso: overlay central (não ocupa slot no campo). -->
+        <div id="talent-spotlight-layer" aria-hidden="true"></div>
+        <div id="df-pass-turn-pedestal" class="df-pass-turn-pedestal is-opponent-turn" hidden aria-live="polite">
+            <button id="pass-turn" type="button"
+                class="df-pass-turn-pedestal-btn"
+                title="Encerra seu turno imediatamente"
+                aria-label="Passar a vez">
+                <span class="df-pass-turn-visual">
+                    <img class="df-pass-turn-face df-pass-turn-face--pass" src="bg/botao-passar-a-vez.webp" alt="" draggable="false" decoding="async">
+                    <span class="df-hex-btn-overlay" aria-hidden="true">
+                        <span class="df-hex-btn-label">PASSAR</span>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <div id="df-combat-opcoes-pedestal" class="df-combat-opcoes-pedestal" hidden aria-live="polite">
+            <button id="combat-opcoes-btn" type="button"
+                class="df-combat-opcoes-btn"
+                title="Opções — volume, voltar ao menu e sair"
+                aria-label="Opções">
+                <img class="df-combat-opcoes-face" src="bg/BOTÃO OPÇÕES.png" alt="" draggable="false" decoding="async">
+            </button>
+        </div>
+        <div id="df-ultimate-pedestal" class="df-ultimate-pedestal is-disabled" hidden aria-live="polite">
+            <button id="ultimate-pedestal-btn" type="button"
+                class="df-ultimate-art-btn"
+                title="Use sua Ultimate (sem custo de ação)"
+                aria-label="Ultimate"
+                disabled>
+                <span class="df-ultimate-pedestal-visual">
+                    <img class="df-ultimate-pedestal-img df-ultimate-face" src="bg/BOT%C3%83O%20ULTIMATE.webp" alt="" draggable="false" decoding="async">
+                    <span class="df-hex-btn-overlay" aria-hidden="true">
+                        <span class="df-hex-btn-label">ULTIMATE</span>
+                        <span class="df-hex-btn-row">
+                            <span class="df-hex-btn-icon df-hex-btn-icon--ult" aria-hidden="true">✦</span>
+                            <span id="df-ultimate-count-pedestal-num" class="df-ultimate-count-pedestal-num df-hex-btn-count" aria-label="Ultimates restantes">0</span>
+                        </span>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <div id="df-ultimate-count-pedestal" class="df-ultimate-count-pedestal" hidden aria-hidden="true"></div>
+        <div id="df-buy-card-pedestal" class="df-buy-card-pedestal" hidden aria-live="polite">
+            <button id="buy-card-pedestal-btn" type="button"
+                class="df-buy-card-pedestal-btn"
+                title="Comprar 1 carta (1 ação)"
+                aria-label="Comprar carta do baralho (1 ação)">
+                <span class="df-buy-card-pedestal-visual">
+                    <img class="df-buy-card-pedestal-face" src="bg/botao-comprar-carta.webp" alt="" draggable="false" decoding="async">
+                    <span class="df-hex-btn-overlay" aria-hidden="true">
+                        <span class="df-hex-btn-label">COMPRAR</span>
+                        <span class="df-hex-btn-row">
+                            <img class="df-hex-btn-icon df-hex-btn-icon--card" src="verso.webp" alt="" draggable="false" decoding="async">
+                            <span id="df-deck-count-pedestal-num" class="df-deck-count-pedestal-num df-hex-btn-count" aria-label="Cartas no baralho">0</span>
+                        </span>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <div id="df-deck-count-pedestal" class="df-deck-count-pedestal" hidden aria-hidden="true"></div>
+        <div id="df-actions-label-pedestal" class="df-actions-label-pedestal" hidden aria-hidden="true">
+            <span class="df-actions-pedestal-label">Ações</span>
+        </div>
+        <div id="df-actions-count-pedestal" class="df-actions-count-pedestal" hidden aria-live="polite">
+            <span id="df-actions-count-pedestal-num" class="df-actions-pedestal-num" aria-label="Ações restantes no turno">0</span>
+        </div>
+        <div id="df-turn-banner-pedestal" class="df-turn-banner-pedestal" hidden aria-live="polite">
+            <img class="df-turn-banner-face df-turn-banner-face--you"
+                src="bg/BANNER%20SUA%20VEZ.webp" alt="Sua vez" draggable="false" decoding="async">
+            <img class="df-turn-banner-face df-turn-banner-face--ai"
+                src="bg/BANNER%20VEZ%20DO%20ADVERS%C3%81RIO.webp" alt="Vez do adversário" draggable="false" decoding="async">
+        </div>
+    </div>
+
+    <!-- HUDs desktop — dentro do canvas único (escalam com #df-scale-root) -->
+    <div id="desktop-logo" title="Abrir menu" role="button" tabindex="0" aria-label="Abrir menu">
+        <img src="logo.webp" alt="Dragonfall">
+        <span class="desktop-menu-bars" aria-hidden="true">☰</span>
+    </div>
+    <div id="df-arena-clock-pixi-mount" hidden aria-hidden="true"></div>
+    <div id="desktop-timer" class="df-arena-clock" hidden aria-hidden="true" role="timer" aria-label="Tempo do turno">
+        <div class="df-arena-clock-shell">
+            <img class="df-arena-clock-face" src="ui/turn-clock/CIRCULO-RELOGIO-CAMPO.png" alt="" draggable="false" aria-hidden="true">
+            <span id="timer-display" class="df-arena-clock-num" aria-hidden="true">--</span>
+            <div class="df-arena-clock-dial">
+            <svg class="df-arena-clock-svg" viewBox="0 0 64 64" aria-hidden="true">
+                <defs>
+                    <linearGradient id="df-clock-wedge-fill" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#8b5a28"/>
+                        <stop offset="55%" stop-color="#d4a040"/>
+                        <stop offset="100%" stop-color="#f0c868"/>
+                    </linearGradient>
+                    <linearGradient id="df-clock-wedge-urgent" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#8b1a12"/>
+                        <stop offset="100%" stop-color="#ff7040"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="32" cy="8.5" r="1.4" fill="#4a2818"/>
+                <circle cx="43.5" cy="11.8" r="1.4" fill="#4a2818"/>
+                <circle cx="52.2" cy="20.5" r="1.4" fill="#4a2818"/>
+                <circle cx="55.5" cy="32" r="1.4" fill="#4a2818"/>
+                <circle cx="52.2" cy="43.5" r="1.4" fill="#4a2818"/>
+                <circle cx="43.5" cy="52.2" r="1.4" fill="#4a2818"/>
+                <circle cx="32" cy="55.5" r="1.4" fill="#4a2818"/>
+                <circle cx="20.5" cy="52.2" r="1.4" fill="#4a2818"/>
+                <circle cx="11.8" cy="43.5" r="1.4" fill="#4a2818"/>
+                <circle cx="8.5" cy="32" r="1.4" fill="#4a2818"/>
+                <circle cx="11.8" cy="20.5" r="1.4" fill="#4a2818"/>
+                <circle cx="20.5" cy="11.8" r="1.4" fill="#4a2818"/>
+                <path class="df-arena-clock-wedge-path" fill="url(#df-clock-wedge-fill)" opacity="0.88"/>
+                <g class="df-arena-clock-hand-g">
+                    <line x1="32" y1="34" x2="32" y2="10" stroke="#4a2818" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="32" cy="34" r="2.8" fill="#4a2818"/>
+                </g>
+            </svg>
+            </div>
+        </div>
+    </div>
+    <aside id="desktop-left-hud" aria-hidden="true">
+        <div class="dlh-hero-panel dlh-hero-panel--ai" id="dlh-hero-ai" data-player="1">
+            <div class="dlhp-stack" aria-label="Hub do herói adversário">
+                <div class="dlhp-portrait" aria-hidden="true">
+                    <img class="dlhp-portrait-img" alt="" draggable="false" decoding="async" hidden>
+                    <span class="dlhp-portrait-emoji" aria-hidden="true">❓</span>
+                </div>
+                <button type="button" class="dlhp-portrait-hit" title="Ver Ultimate e Registro do jogo" aria-label="Ver histórico, nome e ultimate do herói adversário"></button>
+                <img class="dlhp-frame" src="bg/HUB DO HERÓI DO JOGADOR IA.png" alt="" draggable="false" decoding="async">
+                <div class="dlhp-name">—</div>
+                <div class="dlhp-vp-row" aria-label="Pontos de vitória">
+                    <span class="dlhp-vp">00</span>
+                </div>
+                <div class="dlhp-turn-clock" aria-label="Tempo do turno">
+                    <span class="dlhp-clock-icon" aria-hidden="true">⏱</span>
+                    <span class="dlhp-clock-time" hidden>--</span>
+                </div>
+                <span class="dlhp-role-label">Adversário</span>
+                <div class="dlhp-status" hidden aria-hidden="true"></div>
+            </div>
+        </div>
+    </aside>
+    <aside id="desktop-right-hud" aria-hidden="true">
+        <div class="dlh-hero-panel dlh-hero-panel--player" id="dlh-hero-player" data-player="0">
+            <div class="dlhp-stack" aria-label="Hub do seu herói">
+                <div class="dlhp-portrait" aria-hidden="true">
+                    <img class="dlhp-portrait-img" alt="" draggable="false" decoding="async" hidden>
+                    <span class="dlhp-portrait-emoji" aria-hidden="true">❓</span>
+                </div>
+                <button type="button" class="dlhp-portrait-hit" title="Ver Ultimate e Registro do jogo" aria-label="Ver histórico, nome e ultimate do seu herói"></button>
+                <img class="dlhp-frame" src="bg/HUB DO HERÓI DO JOGADOR PRINCIPAL.png" alt="" draggable="false" decoding="async">
+                <div class="dlhp-name">—</div>
+                <div class="dlhp-vp-row" aria-label="Pontos de vitória">
+                    <span class="dlhp-vp">00</span>
+                </div>
+                <div class="dlhp-turn-clock" aria-label="Tempo do turno">
+                    <span class="dlhp-clock-icon" aria-hidden="true">⏱</span>
+                    <span class="dlhp-clock-time" hidden>--</span>
+                </div>
+                <span class="dlhp-role-label">Você</span>
+                <div class="dlhp-status" hidden aria-hidden="true"></div>
+            </div>
+        </div>
+        <button type="button" id="df-deck-badge" class="df-deck-badge" hidden aria-hidden="true" aria-label="Comprar carta do baralho (1 ação)" title="Comprar 1 carta (1 ação)">
+            <span class="df-deck-badge-frame-wrap" aria-hidden="true">
+                <img class="df-deck-badge-frame" src="ui/deck-badge/PARA-CARTA.png" alt="" draggable="false" aria-hidden="true">
+                <span class="df-deck-badge-inner">
+                    <img class="df-deck-badge-verso" src="verso.webp" alt="" draggable="false" aria-hidden="true">
+                </span>
+            </span>
+            <span id="df-deck-badge-count" class="df-deck-badge-count" aria-hidden="true">0</span>
+        </button>
+        <div id="df-deck-badge-ai" class="df-deck-badge df-deck-badge-opponent" hidden aria-hidden="true" aria-label="Baralho do adversário" title="Baralho do adversário">
+            <span class="df-deck-badge-frame-wrap" aria-hidden="true">
+                <img class="df-deck-badge-frame" src="ui/deck-badge/PARA-CARTA.png" alt="" draggable="false" aria-hidden="true">
+                <span class="df-deck-badge-inner">
+                    <img class="df-deck-badge-verso" src="verso.webp" alt="" draggable="false" aria-hidden="true">
+                </span>
+            </span>
+            <span id="df-deck-badge-ai-count" class="df-deck-badge-count" aria-hidden="true">0</span>
+        </div>
+    </aside>
+    <div id="desktop-turn-indicator" aria-hidden="true">
+        <div class="dti-frame">
+            <div class="dti-portrait"></div>
+            <div class="dti-text">
+                <span class="dti-name">Sua Vez</span>
+            </div>
+            <div class="dti-actions" aria-hidden="true">
+                <span class="dti-actions-label">Ações</span>
+                <span class="dti-actions-num">3</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-overlay" class="overlay"><div id="menu-panel" class="panel"></div></div>
+    <div id="detail-overlay" class="overlay"><div id="detail-panel" class="panel"></div><div style="margin-top:6px;font-size:0.8rem;color:#aaa">ESC ou Enter para fechar</div></div>
+    <div id="discard-overlay" class="overlay"><div id="discard-panel" class="panel" style="max-height:72vh;overflow:auto"></div><div style="margin-top:6px;font-size:0.8rem;color:#aaa">ESC para fechar</div></div>
+    <div id="necromancia-overlay" class="overlay"><div id="necromancia-panel" class="panel" style="width:min(620px,94vw);max-width:94vw;max-height:88vh;overflow:auto;text-align:center;padding:14px;box-sizing:border-box"></div></div>
+    <div id="win-overlay" class="overlay">
+        <div id="win-card">
+            <div id="win-hero-wrap">
+                <div id="win-crown">👑</div>
+                <img id="win-hero-img" alt="" />
+            </div>
+            <div id="win-msg"></div>
+            <div id="win-hero-name"></div>
+            <div id="win-sub"></div>
+            <div id="win-actions">
+                <button id="btn-win-again" class="menu-btn">🔁 Jogar Novamente</button>
+                <button id="btn-win-menu" class="menu-btn">↩️ Voltar ao Menu</button>
+            </div>
+        </div>
+    </div>
+    <div id="hero-info-overlay">
+        <div id="hero-info-panel">
+            <button id="hero-info-close" aria-label="Fechar">✕</button>
+            <div id="hero-info-ult"></div>
+            <div id="hero-info-log"></div>
+        </div>
+    </div>
+
+    <script>
+        if (typeof location !== "undefined" && new URLSearchParams(location.search).has("df_sim")) {
+            window.__DF_SIM_MODE = true;
+        }
+    </script>
+    <script src="js/df-feature-flags.js?v=70a6141860e4"></script>
+    <script src="js/df-server-config.js?v=70a6141860e4"></script>
+    <script src="js/df-profile-xp.js?v=70a6141860e4"></script>
+    <script src="js/df-profile-assets.js?v=70a6141860e4"></script>
+    <script src="js/df-auth-client.js?v=70a6141860e4"></script>
+    <script src="js/df-auth-ui.js?v=70a6141860e4"></script>
+    <script src="js/df-manual-governance.js?v=70a6141860e4"></script>
+    <script src="js/df-vfx-settings.js?v=70a6141860e4"></script>
+    <script src="js/df-protocol.js?v=70a6141860e4"></script>
+    <script src="js/df-state.js?v=70a6141860e4"></script>
+    <script src="js/df-rules.js?v=70a6141860e4"></script>
+    <script src="js/df-data.js?v=70a6141860e4"></script>
+    <script src="js/df-arsenal.js?v=70a6141860e4"></script>
+    <script src="js/df-arsenal-vfx.js?v=70a6141860e4"></script>
+    <script src="js/df-training-decks.js?v=70a6141860e4"></script>
+    <script src="js/df-training-setup.js?v=70a6141860e4"></script>
+    <script src="js/df-ranked-setup.js?v=70a6141860e4"></script>
+    <script src="js/df-effects.js?v=70a6141860e4"></script>
+    <script src="js/df-effects-resolve.js?v=70a6141860e4"></script>
+    <script src="js/df-ultimate-resolve.js?v=70a6141860e4"></script>
+    <script src="js/df-engine.js?v=70a6141860e4"></script>
+    <script src="js/df-lazy-load.js?v=70a6141860e4"></script>
+    <script src="js/df-menu-splash-assets.js?v=70a6141860e4"></script>
+    <script src="js/df-menu-load-bar.js?v=70a6141860e4"></script>
+    <script src="js/df-hub-splash-assets.js?v=70a6141860e4"></script>
+    <script src="js/df-hero-select-scroll.js?v=70a6141860e4"></script>
+    <script src="js/df-touch-nav.js?v=70a6141860e4"></script>
+    <script src="js/df-combat-view-pan.js?v=70a6141860e4"></script>
+    <script src="js/df-menu-bootstrap.js?v=70a6141860e4"></script>
+    <script src="js/df-ultimate-recipes.js?v=70a6141860e4"></script>
+    <script src="js/vendor/socket.io.min.js?v=70a6141860e4"></script>
+    <script>
+    (function () {
+      if (typeof io !== "undefined") return;
+      var s = document.createElement("script");
+      s.src = "https://cdn.socket.io/4.8.1/socket.io.min.js";
+      s.crossOrigin = "anonymous";
+      document.head.appendChild(s);
+    })();
+    </script>
+    <script src="js/df-net-client.js?v=70a6141860e4"></script>
+    <audio id="menu-music" src="menu-music.mp3" loop preload="metadata"></audio>
+    <audio id="hub-music" src="HUB MUSIC.mp3" loop preload="none"></audio>
+    <audio id="battle-music" src="battle-music.mp3" preload="none"></audio>
+    <script src="js/df-audio-engine.js?v=70a6141860e4"></script>
+    <script src="js/df-pass-turn-pedestal.js?v=70a6141860e4"></script>
+    <script src="js/df-combat-opcoes-pedestal.js?v=70a6141860e4"></script>
+    <script src="js/df-ultimate-pedestal.js?v=70a6141860e4"></script>
+    <script src="js/df-buy-card-pedestal.js?v=70a6141860e4"></script>
+    <script>
+    /* Pedestais: passar src por dfAssetUrl (WebP + hash) — evita PNG Unicode quebrado na Netlify. */
+    (function () {
+        function rewritePedestalFaces() {
+            if (typeof window.dfAssetUrl !== "function") return;
+            document.querySelectorAll(
+                ".df-pass-turn-face, .df-buy-card-pedestal-face, .df-combat-opcoes-face, .df-ultimate-face",
+            ).forEach((img) => {
+                const raw = img.getAttribute("src");
+                if (!raw || /^(data:|blob:)/i.test(raw)) return;
+                const base = String(raw).split("?")[0];
+                const next = window.dfAssetUrl(base);
+                if (next && img.getAttribute("src") !== next) img.setAttribute("src", next);
+            });
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", rewritePedestalFaces, { once: true });
+        } else {
+            rewritePedestalFaces();
+        }
+    })();
+    </script>
+    <script src="js/df-actions-pedestal.js?v=70a6141860e4"></script>
+    <script src="js/df-turn-banner-pedestal.js?v=70a6141860e4"></script>
+    <script src="js/df-turn-clock.js?v=70a6141860e4"></script>
+    <script src="js/df-arena-clock-pixi.js?v=70a6141860e4"></script>
+    <script src="js/df-deck-badge.js?v=70a6141860e4"></script>
+    <script src="js/df-desktop-hud.js?v=70a6141860e4"></script>
+
+    <!-- style → css/df-game-misc.css -->
+
+    <script src="js/df-drag-safety.js?v=70a6141860e4"></script>
+
+    <script src="js/df-battle-music.js?v=70a6141860e4"></script>
+    <script src="js/df-menu-music.js?v=70a6141860e4"></script>
+    <script src="js/df-card-art-overlay.js?v=70a6141860e4"></script>
+    <script src="js/df-fx-particles.js?v=70a6141860e4"></script>
+
+    </div><!-- #df-scale-root -->
+    </div><!-- #df-rotate-stage -->
+    <!-- Reação / bloqueio — fora do canvas para cobrir HUD, pedrais e relógio -->
+    <div id="block-overlay" class="overlay"></div>
+    <div id="df-menu-splash-layer" class="df-menu-splash-layer" aria-hidden="false">
+        <img class="main-splash-bg" src="bg/MENU-PRINCIPAL.webp" alt="" width="2048" height="868" draggable="false" decoding="async" fetchpriority="high">
+        <button type="button" id="btn-main-play" class="main-play-btn selected" aria-label="Jogar">
+            <img class="main-play-btn-art" src="bg/BOTAO-JOGAR.webp" alt="" width="1024" height="361" draggable="false" decoding="async">
+        </button>
+        <div id="df-menu-load-bar" class="df-menu-load-bar" aria-hidden="true">
+            <p id="df-menu-load-status" class="df-menu-load-status">Preparando…</p>
+            <p class="df-menu-load-label">Carregando</p>
+            <div id="df-menu-load-track" class="df-menu-load-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Carregando">
+                <div id="df-menu-load-bar-fill" class="df-menu-load-fill"></div>
+                <span id="df-menu-load-pct" class="df-menu-load-pct">0%</span>
+            </div>
+        </div>
+    </div>
+    <div id="df-hub-splash-layer" class="df-hub-splash-layer" aria-hidden="true">
+        <img id="df-hub-splash-bg" class="hub-splash-bg" data-df-hub-bg-id="reino-encantado" src="bg/REINO%20ENCANTADO.webp" alt="" decoding="async" fetchpriority="high" aria-hidden="true" draggable="false">
+        <img id="df-hub-video-strip" class="hub-video-strip hidden" src="bg/FAIXA DOS VÍDEOS.png" alt="" width="3168" height="320" draggable="false" decoding="async" aria-hidden="true">
+        <div class="hub-splash-btn hub-splash-btn-profile-wrap">
+            <button type="button" id="btn-hub-profile" class="hub-splash-btn hub-splash-btn-profile" aria-label="Perfil do herói">
+                <div class="df-hub-profile-widget">
+                    <div class="df-hub-profile-banner" aria-hidden="true">
+                        <div class="df-hub-profile-avatar-slot">
+                            <img id="df-hub-profile-avatar" class="df-hub-profile-avatar" src="" alt="" width="256" height="256" draggable="false" decoding="async">
+                        </div>
+                        <span id="df-hub-profile-name" class="df-hub-profile-name"></span>
+                        <span id="df-hub-profile-level" class="df-hub-profile-level">
+                            <span class="df-hub-profile-level-tag">NÍVEL</span>
+                            <span id="df-hub-profile-level-num" class="df-hub-profile-level-num">1</span>
+                        </span>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <button type="button" id="btn-hub-mercado" class="hub-splash-btn hub-splash-btn-nav hub-splash-btn-mercado" aria-label="Mercado">
+            <img src="bg/MERCADO%202.webp" alt="" width="900" height="720" draggable="false" decoding="async">
+            <span class="hub-splash-btn-label hub-splash-btn-label-bottom">Mercado</span>
+        </button>
+        <button type="button" id="btn-hub-jogar" class="hub-splash-btn hub-splash-btn-nav hub-splash-btn-jogar" aria-label="Jogar">
+            <img src="bg/JOGAR%202.webp" alt="" width="900" height="720" draggable="false" decoding="async">
+            <span class="hub-splash-btn-label hub-splash-btn-label-center">
+                Jogar
+                <span class="hub-splash-btn-sub">Offline/ Multiplayer</span>
+            </span>
+        </button>
+        <button type="button" id="btn-hub-arsenal" class="hub-splash-btn hub-splash-btn-nav hub-splash-btn-arsenal" aria-label="Arsenal">
+            <img src="bg/ARSENAL%202.webp" alt="" width="900" height="720" draggable="false" decoding="async">
+            <span class="hub-splash-btn-label hub-splash-btn-label-bottom">Arsenal</span>
+        </button>
+        <button type="button" id="btn-hub-opcoes" class="hub-splash-btn hub-splash-btn-opcoes" aria-label="Opções">
+            <img src="bg/OPCOES.webp" alt="" width="330" height="342" draggable="false" decoding="async">
+        </button>
+        <button type="button" id="btn-hub-notas" class="hub-splash-btn hub-splash-btn-notas" aria-label="Notas da Atualização">
+            <img src="bg/NOTAS.webp" alt="" width="312" height="300" draggable="false" decoding="async">
+        </button>
+    </div>
+    <!-- Login / Registro (primeira vez no aparelho) -->
+    <div id="df-auth-gate-layer" class="df-auth-layer" aria-hidden="true">
+        <div class="df-auth-panel df-auth-gate">
+            <h2 class="df-auth-title">Dragonfall</h2>
+            <p class="df-auth-sub">Entre ou crie sua conta para jogar.</p>
+            <button type="button" id="btn-auth-login" class="df-auth-btn df-auth-btn-primary">LOGIN</button>
+            <button type="button" id="btn-auth-register" class="df-auth-btn">REGISTRAR</button>
+        </div>
+    </div>
+    <div id="df-auth-form-layer" class="df-auth-layer" aria-hidden="true" data-mode="login">
+        <div class="df-auth-panel">
+            <button type="button" id="btn-auth-back" class="df-auth-back-link" aria-label="Voltar">← Voltar</button>
+            <h2 id="df-auth-form-title" class="df-auth-title">Login</h2>
+            <label class="df-auth-field">
+                <span>E-mail</span>
+                <input type="email" id="df-auth-email" autocomplete="email" inputmode="email">
+            </label>
+            <label class="df-auth-field">
+                <span>Senha</span>
+                <div class="df-auth-password-wrap">
+                    <input type="password" id="df-auth-password" autocomplete="current-password">
+                    <button type="button" id="btn-auth-password-toggle" class="df-auth-password-toggle"
+                        aria-label="Mostrar senha" aria-pressed="false">
+                        <svg class="df-auth-eye-icon df-auth-eye-open" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <path fill="currentColor" d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/>
+                        </svg>
+                        <svg class="df-auth-eye-icon df-auth-eye-closed" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <path fill="currentColor" d="M12 6.5c2.76 0 5.26 1.12 7.07 2.93l-1.41 1.41A6.94 6.94 0 0 0 12 8.5c-1.61 0-3.09.55-4.27 1.47L6.32 8.56A9.96 9.96 0 0 1 12 6.5zM3.71 4.29 2.29 5.71l2.06 2.06C2.73 9.11 1 12 1 12c1.73 3.89 6 7 11 7 1.55 0 3.03-.3 4.38-.84l2.24 2.24 1.41-1.41L5.12 4.29 3.71 4.29zM12 17.5c-2.76 0-5.26-1.12-7.07-2.93l1.41-1.41A6.94 6.94 0 0 0 12 15.5c1.61 0 3.09-.55 4.27-1.47l1.41 1.41A9.96 9.96 0 0 1 12 17.5zm5.66-3.35-1.41-1.41a2.5 2.5 0 0 0-3.54-3.54l-1.41-1.41A4.5 4.5 0 0 1 17.66 14.15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </label>
+            <a href="#" id="df-auth-forgot" class="df-auth-forgot">Esqueci a senha</a>
+            <button type="button" id="df-auth-submit" class="df-auth-btn df-auth-btn-primary">Entrar</button>
+        </div>
+    </div>
+    <div id="df-auth-forgot-layer" class="df-auth-layer" aria-hidden="true">
+        <div class="df-auth-panel">
+            <button type="button" id="btn-forgot-back" class="df-auth-back-link" aria-label="Voltar">← Voltar</button>
+            <h2 class="df-auth-title">Esqueci a senha</h2>
+            <p class="df-auth-sub">Digite seu e-mail</p>
+            <label class="df-auth-field">
+                <span>E-mail</span>
+                <input type="email" id="df-forgot-email" autocomplete="email" inputmode="email" placeholder="seu@email.com">
+            </label>
+            <button type="button" id="btn-forgot-submit" class="df-auth-btn df-auth-btn-primary">Enviar senha</button>
+        </div>
+    </div>
+    <div id="df-auth-toast" class="df-auth-toast" aria-live="polite"></div>
+    <div id="df-auth-banner" class="df-auth-banner" aria-live="polite"></div>
+    <!-- Perfil do jogador v2 (CSS puro — sem chrome PNG) -->
+    <div id="df-profile-layer" class="df-profile-page" aria-hidden="true">
+        <div class="df-profile-backdrop" aria-hidden="true">
+            <img id="df-profile-backdrop-img" class="df-profile-backdrop-video df-profile-backdrop-img" alt="" decoding="async" aria-hidden="true" draggable="false">
+        </div>
+
+        <div id="df-profile-main" class="df-profile-screen active df-profile-v2" data-screen="main">
+            <div class="df-profile-v2-shell">
+                <button type="button" id="btn-profile-settings" class="df-profile-icon-btn df-profile-icon-gear" aria-label="Opções do jogador">⚙</button>
+                <button type="button" id="btn-profile-close" class="df-profile-icon-btn df-profile-icon-close" aria-label="Fechar perfil">×</button>
+                <div class="df-profile-v2-panel">
+                    <div class="df-profile-v2-top">
+                        <div id="df-profile-frame" class="df-profile-frame-wrap df-profile-frame--gold" data-frame="gold">
+                            <div class="df-profile-frame-inner">
+                                <button type="button" id="btn-profile-avatar-main" class="df-profile-hero-portrait-btn" aria-label="Trocar avatar">
+                                    <img id="df-profile-avatar-img" class="df-profile-hero-portrait" src="heroes/florisbella.webp" alt="" width="200" height="200" draggable="false" loading="eager" fetchpriority="high" decoding="async">
+                                </button>
+                            </div>
+                            <div class="df-profile-frame-border" aria-hidden="true"></div>
+                            <button type="button" id="btn-profile-cycle-frame" class="df-profile-cycle-frame-btn" aria-label="Trocar moldura" title="Trocar moldura">◇</button>
+                            <button type="button" id="btn-profile-swap-avatar" class="df-profile-swap-avatar-btn" aria-label="Trocar avatar do jogador" title="Trocar avatar">↻</button>
+                        </div>
+                        <div class="df-profile-v2-top-right">
+                            <div class="df-profile-name-bar">
+                                <span id="df-profile-name-display" class="df-profile-name-text">Jogador Visitante</span>
+                                <input type="text" id="df-profile-name-input" class="df-profile-name-input" maxlength="10" autocomplete="nickname" hidden>
+                                <button type="button" id="btn-profile-name-edit" class="df-profile-name-pencil" aria-label="Editar nome">✎</button>
+                            </div>
+                            <div class="df-profile-xp-row" aria-label="Progresso de experiência">
+                                <span id="df-profile-level" class="df-profile-level-label">Nível 1</span>
+                                <div class="df-profile-xp-track">
+                                    <div id="df-profile-xp-fill" class="df-profile-xp-fill"></div>
+                                    <span id="df-profile-xp-text" class="df-profile-xp-text">0/2 XP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="df-profile-actions">
+                        <div class="df-profile-actions-row">
+                            <button type="button" id="btn-profile-edit-deck" class="df-profile-action-btn" aria-label="Editar baralho">Editar baralho</button>
+                            <button type="button" id="btn-profile-change-bg" class="df-profile-action-btn" aria-label="Trocar tela de fundo">Trocar tela de fundo</button>
+                        </div>
+                        <button type="button" id="btn-profile-journey" class="df-profile-action-btn df-profile-action-btn-muted" aria-label="Jornada do jogador" disabled title="Em breve">Jornada do jogador</button>
+                    </div>
+                    <div class="df-profile-v2-footer">
+                        <div class="df-profile-achievements">
+                            <h3 class="df-profile-section-title">Conquistas</h3>
+                            <div class="df-profile-achieve-slots" aria-label="Conquistas em breve">
+                                <div class="df-profile-achieve-slot">Em breve</div>
+                                <div class="df-profile-achieve-slot">Em breve</div>
+                                <div class="df-profile-achieve-slot">Em breve</div>
+                                <div class="df-profile-achieve-slot">Em breve</div>
+                                <div class="df-profile-achieve-slot">Em breve</div>
+                            </div>
+                        </div>
+                        <div id="df-profile-stats" class="df-profile-winrate">
+                            <button type="button" id="btn-profile-privacy" class="df-profile-privacy-btn" aria-label="Ocultar estatísticas" aria-pressed="false" title="Privacidade">👁</button>
+                            <h3 class="df-profile-section-title">Vitórias</h3>
+                            <div class="df-profile-win-row">
+                                <span class="df-profile-win-label">Temporada</span>
+                                <span id="df-profile-wr-season" class="df-profile-win-value">--%</span>
+                            </div>
+                            <div class="df-profile-win-row">
+                                <span class="df-profile-win-label">Geral</span>
+                                <span id="df-profile-wr-overall" class="df-profile-win-value">--%</span>
+                            </div>
+                        </div>
+                        <div class="df-profile-rank-card" aria-label="Rank">
+                            <span class="df-profile-rank-icon" aria-hidden="true">◆</span>
+                            <span class="df-profile-rank-label">Rank</span>
+                            <span id="df-profile-rank" class="df-profile-rank-text">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="df-profile-avatar-picker" class="df-profile-avatar-picker" hidden>
+                <div class="df-profile-avatar-picker-panel">
+                    <p class="df-profile-picker-label">Escolha seu herói</p>
+                    <div class="df-profile-picker-scroll">
+                        <div id="df-profile-avatar-grid" class="df-profile-avatar-grid"></div>
+                    </div>
+                    <div class="df-profile-picker-foot">
+                        <button type="button" id="btn-profile-picker-close" class="df-profile-picker-close">Salvar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="df-profile-bg-picker" class="df-profile-bg-picker" hidden>
+                <div class="df-profile-bg-picker-panel">
+                    <p class="df-profile-picker-label">Escolha o cenário de fundo</p>
+                    <div class="df-profile-picker-scroll">
+                        <div id="df-profile-bg-grid" class="df-profile-bg-grid"></div>
+                    </div>
+                    <div class="df-profile-picker-foot">
+                        <button type="button" id="btn-profile-bg-picker-close" class="df-profile-picker-close">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="df-profile-settings" class="df-profile-screen" data-screen="settings" hidden>
+            <div class="df-profile-v2-shell">
+                <button type="button" id="btn-settings-gear" class="df-profile-icon-btn df-profile-icon-gear" aria-label="Opções" hidden>⚙</button>
+                <div class="df-profile-sub-shell">
+                    <button type="button" id="btn-settings-close" class="df-profile-icon-btn df-profile-icon-close" aria-label="Voltar ao perfil">×</button>
+                    <div class="df-profile-moldura-menu">
+                        <h2 class="df-profile-menu-title">Opções</h2>
+                        <button type="button" id="btn-settings-password" class="df-profile-menu-btn">Mudar senha</button>
+                        <button type="button" id="btn-settings-logout" class="df-profile-menu-btn df-profile-menu-btn-danger">Desconectar</button>
+                        <div id="df-profile-logout-confirm" class="df-profile-logout-confirm" hidden>
+                            <p class="df-profile-logout-text">Desconectar desta conta?</p>
+                            <div class="df-profile-logout-btns">
+                                <button type="button" id="btn-profile-logout-yes" class="df-profile-menu-btn df-profile-menu-btn-danger">Sim</button>
+                                <button type="button" id="btn-profile-logout-no" class="df-profile-menu-btn">Não</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="df-profile-password" class="df-profile-screen" data-screen="password" hidden>
+            <div class="df-profile-v2-shell">
+                <div class="df-profile-sub-shell">
+                    <button type="button" id="btn-password-close" class="df-profile-icon-btn df-profile-icon-close" aria-label="Voltar ao perfil">×</button>
+                    <div class="df-profile-moldura-form">
+                        <h2 class="df-profile-menu-title">Mudar senha</h2>
+                        <label class="df-auth-field">
+                            <span>Senha atual</span>
+                            <div class="df-auth-password-wrap">
+                                <input type="password" id="df-profile-current-password" autocomplete="current-password">
+                                <button type="button" id="btn-profile-current-pw-toggle" class="df-auth-password-toggle" aria-label="Mostrar senha" aria-pressed="false">
+                                    <svg class="df-auth-eye-icon df-auth-eye-open" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
+                                    <svg class="df-auth-eye-icon df-auth-eye-closed" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 6.5c2.76 0 5.26 1.12 7.07 2.93l-1.41 1.41A6.94 6.94 0 0 0 12 8.5c-1.61 0-3.09.55-4.27 1.47L6.32 8.56A9.96 9.96 0 0 1 12 6.5zM3.71 4.29 2.29 5.71l2.06 2.06C2.73 9.11 1 12 1 12c1.73 3.89 6 7 11 7 1.55 0 3.03-.3 4.38-.84l2.24 2.24 1.41-1.41L5.12 4.29 3.71 4.29zM12 17.5c-2.76 0-5.26-1.12-7.07-2.93l1.41-1.41A6.94 6.94 0 0 0 12 15.5c1.61 0 3.09-.55 4.27-1.47l1.41 1.41A9.96 9.96 0 0 1 12 17.5zm5.66-3.35-1.41-1.41a2.5 2.5 0 0 0-3.54-3.54l-1.41-1.41A4.5 4.5 0 0 1 17.66 14.15z"/></svg>
+                                </button>
+                            </div>
+                        </label>
+                        <label class="df-auth-field">
+                            <span>Nova senha</span>
+                            <div class="df-auth-password-wrap">
+                                <input type="password" id="df-profile-new-password" autocomplete="new-password">
+                                <button type="button" id="btn-profile-new-pw-toggle" class="df-auth-password-toggle" aria-label="Mostrar senha" aria-pressed="false">
+                                    <svg class="df-auth-eye-icon df-auth-eye-open" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
+                                    <svg class="df-auth-eye-icon df-auth-eye-closed" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 6.5c2.76 0 5.26 1.12 7.07 2.93l-1.41 1.41A6.94 6.94 0 0 0 12 8.5c-1.61 0-3.09.55-4.27 1.47L6.32 8.56A9.96 9.96 0 0 1 12 6.5zM3.71 4.29 2.29 5.71l2.06 2.06C2.73 9.11 1 12 1 12c1.73 3.89 6 7 11 7 1.55 0 3.03-.3 4.38-.84l2.24 2.24 1.41-1.41L5.12 4.29 3.71 4.29zM12 17.5c-2.76 0-5.26-1.12-7.07-2.93l1.41-1.41A6.94 6.94 0 0 0 12 15.5c1.61 0 3.09-.55 4.27-1.47l1.41 1.41A9.96 9.96 0 0 1 12 17.5zm5.66-3.35-1.41-1.41a2.5 2.5 0 0 0-3.54-3.54l-1.41-1.41A4.5 4.5 0 0 1 17.66 14.15z"/></svg>
+                                </button>
+                            </div>
+                        </label>
+                        <button type="button" id="btn-profile-change-password" class="df-auth-btn df-auth-btn-primary">Confirmar nova senha</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="df-profile-decks" class="df-profile-screen" data-screen="decks" hidden>
+            <div class="df-profile-v2-shell">
+                <div class="df-profile-sub-shell">
+                    <button type="button" id="btn-decks-close" class="df-profile-icon-btn df-profile-icon-close" aria-label="Fechar perfil">×</button>
+                    <div class="df-profile-moldura-menu">
+                        <button type="button" id="btn-decks-back" class="df-profile-form-back" aria-label="Voltar ao perfil">← Perfil</button>
+                        <h2 class="df-profile-menu-title">Editar baralhos</h2>
+                        <p class="df-profile-decks-hint">Monte até <strong>5 baralhos</strong> de 10 a 24 cartas no <strong>Arsenal</strong> do Hub.</p>
+                        <button type="button" id="btn-decks-return" class="df-profile-menu-btn">Retornar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

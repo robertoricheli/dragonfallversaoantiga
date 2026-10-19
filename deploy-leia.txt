@@ -1,0 +1,24 @@
+COMO PUBLICAR NO NETLIFY (versão SEMPRE atual)
+
+⚠️  PASTA CORRETA: artifacts/dragonfall/netlify-dist  (NÃO a pasta pai!)
+
+FONTE DO JOGO (obrigatório no Git): artifacts/dragonfall/game.html
+
+1) Rode no PC:  node scripts/prepare-netlify-deploy.mjs
+   (serve-local faz isso automaticamente — mesma pasta que o Netlify publica)
+2) Git + Netlify: COMMIT + PUSH de game.html (e netlify.toml / scripts).
+   O build do site usa SÓ game.html — não index.html.html.
+3) Confira no ar: https://SEU-SITE/version.json
+   checks.ANTI-MAGOS e checks.TOXINA devem ser true.
+
+Netlify Drop (sem Git): após o passo 1, arraste a pasta NETLIFY-DIST inteira.
+   Desative o build automático do Git se o site estiver ligado ao GitHub.
+
+4) Jogador: ao clicar JOGAR, o jogo baixa a versão mais recente antes do menu.
+
+5) No celular, após publicar:
+   - Abra o site e espere recarregar sozinho 1 vez, OU
+   - Feche a aba / remova o atalho PWA e abra de novo.
+
+4) Confira no menu: Versão 1.49.73
+   Ou abra no navegador: /version.json e /BUILD.txt

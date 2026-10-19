@@ -1,0 +1,85 @@
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+
+/asset-manifest.json
+  Cache-Control: no-cache, must-revalidate
+
+/asset-manifest-critical.json
+  Cache-Control: no-cache, must-revalidate
+
+/asset-manifest-cosmetic.json
+  Cache-Control: no-cache, must-revalidate
+
+/asset-manifest-after-hub.json
+  Cache-Control: no-cache, must-revalidate
+
+/asset-manifest-match-ready.json
+  Cache-Control: no-cache, must-revalidate
+
+/asset-content-hashes.json
+  Cache-Control: no-cache, must-revalidate
+
+/card-hashes.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/ai-hard.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/version.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/js/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/css/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/BUILD.txt
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/*.mp3
+  Content-Type: audio/mpeg
+  Cache-Control: public, max-age=86400
+
+/*.mp4
+  Content-Type: video/mp4
+  Cache-Control: public, max-age=604800
+
+/cards/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/cards/v2/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/cards/portraits/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/heroes/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/gems/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/champions/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/bg/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/vfx/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/refresh.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable

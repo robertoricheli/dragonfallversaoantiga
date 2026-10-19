@@ -1,0 +1,12 @@
+/auth/*  https://artifacts-dragonfall-public.onrender.com/auth/:splat  200
+/cards/v2/*.png  /cards/v2/:splat  200
+/cards/v2/*.webp  /cards/v2/:splat  200
+/cards/portraits/*.png  /cards/portraits/:splat  200
+/cards/portraits/*.webp  /cards/portraits/:splat  200
+/heroes/*  /heroes/:splat  200
+/gems/*  /gems/:splat  200
+/champions/*  /champions/:splat  200
+/bg/*  /bg/:splat  200
+/refresh.html  /refresh.html  200
+/version.json  /version.json  200
+/*  /index.html  200

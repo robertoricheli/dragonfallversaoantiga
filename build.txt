@@ -1,0 +1,4 @@
+Dragonfall build 70a6141860e4
+Pasta correta para Netlify: artifacts/dragonfall/netlify-dist (conteúdo inteiro)
+No menu do jogo deve aparecer: Versão 1.49.73
+Campeões no pacote: ANTI-MAGOS, BOLT, TOXINA, MANDAGORA, auraAntiMagia, raioDuplo, ai-mode-select, btn-ai-mode-hard, btn-hub-jogar, df-play-mode, btn-play-mode-ai, btn-play-mode-ranked, df-training-setup, JOGAR%202, ARSENAL%202, MERCADO%202, df-card-face, composedFace, MOLDURA PRINCIPAL CAMPEÃO FINAL, MOLDURA PRINCIPAL TALENTO FINAL, MOLDURA PRINCIPAL REAÇÃO FINAL
